@@ -9,7 +9,7 @@ To see the coverage reports, go to <module name>/target/site/jacoco/index.html.
 |   Number   |          Name           |            Email        |   GitHub Username  | Group |
 | ---------- | ----------------------- | ----------------------- | -------------------| ----- |
 |            |                         |                         |                    |   1   |
-|            |                         |                         |                    |   1   |
+|ist187633 |  Bernardo Esteves           | bernardo.esteves@tecnico.ulisboa.pt        | esteveste                   |   1   |
 |            |                         |                         |                    |   1   |
 |            |                         |                         |                    |   2   |
 |            |                         |                         |                    |   2   |
