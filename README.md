@@ -10,8 +10,8 @@ To see the coverage reports, go to <module name>/target/site/jacoco/index.html.
 | ---------- | ----------------------- | ----------------------- | -------------------| ----- |
 |ist187633 |  Bernardo Esteves           | bernardo.esteves@tecnico.ulisboa.pt        | esteveste                   |   1   |
 | ist187635  | Bernardo Santos         | bernardo.d.santos@tecnico.ulisboa.pt         | BSantosCoding                   |   1   |
+| ist187687  |  Miguel Coelho          |   miguelmendescoelho@tecnico.ulisboa.pt      |  CubeSkyy                  |   2   |
 |            |                         |                         |                    |   1   |
-|            |                         |                         |                    |   2   |
 |            |                         |                         |                    |   2   |
 |            |                         |                         |                    |   2   |
 
