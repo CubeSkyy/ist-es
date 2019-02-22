@@ -8,8 +8,8 @@ To see the coverage reports, go to <module name>/target/site/jacoco/index.html.
 
 |   Number   |          Name           |            Email        |   GitHub Username  | Group |
 | ---------- | ----------------------- | ----------------------- | -------------------| ----- |
-|            |                         |                         |                    |   1   |
 |ist187633 |  Bernardo Esteves           | bernardo.esteves@tecnico.ulisboa.pt        | esteveste                   |   1   |
+| ist187635  | Bernardo Santos         | bernardo.d.santos@tecnico.ulisboa.pt         | BSantosCoding                   |   1   |
 |            |                         |                         |                    |   1   |
 |            |                         |                         |                    |   2   |
 |            |                         |                         |                    |   2   |
@@ -50,4 +50,3 @@ To launch all servers execute in bin directory: startservers
 To stop all servers execute: bin/shutdownservers
 
 To run jmeter (nogui) execute in project's top directory: mvn -Pjmeter verify. Results are in target/jmeter/results/, open the .jtl file in jmeter, by associating the appropriate listeners to WorkBench and opening the results file in listener context
-
