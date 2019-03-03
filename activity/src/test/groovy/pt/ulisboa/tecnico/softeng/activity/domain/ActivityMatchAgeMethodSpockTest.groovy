@@ -16,26 +16,26 @@ class ActivityMatchAgeMethodTest extends RollbackSpockTestAbstractClass {
 
   def 'sucess'() {
     expect:
-    this.activity.matchAge((MAX_AGE - MIN_AGE) / 2);
+    this.activity.matchAge((MAX_AGE - MIN_AGE) / 2)
   }
 
   def 'sucess equal min age'() {
     expect:
-    this.activity.matchAge(MIN_AGE);
+    this.activity.matchAge(MIN_AGE)
   }
 
   def 'less than min age'() {
     expect:
-    this.activity.matchAge(MIN_AGE - 1);
+    this.activity.matchAge(MIN_AGE - 1) == false
   }
 
   def 'sucess equal max age'() {
     expect:
-    this.activity.matchAge(MAX_AGE);
+    this.activity.matchAge(MAX_AGE) == false
   }
 
   def 'greater than max age'() {
     expect:
-    this.activity.matchAge(MAX_AGE + 1);
+    this.activity.matchAge(MAX_AGE + 1) == false
   }
 }
