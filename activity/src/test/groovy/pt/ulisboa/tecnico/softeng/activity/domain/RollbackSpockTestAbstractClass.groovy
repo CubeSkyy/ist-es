@@ -1,8 +1,8 @@
-package pt.ulisboa.tecnico.softeng.activity.domain
-import javax.transaction.NotSupportedException
-import javax.transaction.SystemException
-import pt.ist.fenixframework.FenixFramework
-import pt.ist.fenixframework.core.WriteOnReadError
+package pt.ulisboa.tecnico.softeng.activity.domain;
+import javax.transaction.NotSupportedException;
+import javax.transaction.SystemException;
+import pt.ist.fenixframework.FenixFramework;
+import pt.ist.fenixframework.core.WriteOnReadError;
 
 abstract class RollbackSpockTestAbstractClass {
 
@@ -26,7 +26,7 @@ abstract class RollbackSpockTestAbstractClass {
 	}
 
 	def populate4Test(){
-    
+
   }
 
 }
