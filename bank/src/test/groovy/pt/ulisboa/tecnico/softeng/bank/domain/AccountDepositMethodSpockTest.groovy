@@ -7,7 +7,7 @@ class AccountDepositMethodSpockTest extends RollbackSpockTestAbstractClass {
     private Bank bank
     private Account account
 
-
+    @Override
     def populate4Test() {
         this.bank = new Bank("Money", "BK01")
         Client client = new Client(this.bank, "António")

@@ -7,6 +7,7 @@ class AccountContructorMethodSpockTest extends RollbackSpockTestAbstractClass {
     private Bank bank
     private Client client
 
+    @Override
     def populate4Test() {
         this.bank = new Bank("Money", "BK01")
         this.client = new Client(this.bank, "António")
