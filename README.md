@@ -32,16 +32,16 @@ To see the coverage reports, go to <module name>/target/site/jacoco/index.html.
 
 **Nome:** Bernardo Santos **Numero:** ist187635 **Email:** bernardo.d.santos@tecnico.ulisboa.pt  **Github Username:** BSantosCoding
 
-|   Class                                                   |          Package      | Issue |  
-| -------------------------------------------- -------------| --------------------- | ----- |
-| ActivityContructorMethodSpockTest                         |activity.domain        | #1    |
-| ActivityMatchAgeMethodSpockTest                           |activity.domain        | #3    |
-| ActivityOfferConstructorMethodSpockTest                   |activity.domain        | #4    |
-| ActivityOfferGetBookingMethodSpockTest                    |activity.domain        | #5    |
-| ActivityOfferMatchDateMethodSpockTest                     |activity.domain        | #6    |
-| RollbackSpockTestAbstractClass                            |activity.domain        | #2    |
-| BookingContructorMethodSpockTest                          |activity.domain        | #12   |
-| ActivityInterfaceGetActivityReservationDataMethodSpockTest|activity.services.local| #8    |
+|   Class                                                    |          Package      | Issue |  
+| ---------------------------------------------------------- | --------------------- | ----- |
+| ActivityContructorMethodSpockTest                          |activity.domain        | #1    |
+| ActivityMatchAgeMethodSpockTest                            |activity.domain        | #3    |
+| ActivityOfferConstructorMethodSpockTest                    |activity.domain        | #4    |
+| ActivityOfferGetBookingMethodSpockTest                     |activity.domain        | #5    |
+| ActivityOfferMatchDateMethodSpockTest                      |activity.domain        | #6    |
+| RollbackSpockTestAbstractClass                             |activity.domain        | #2    |
+| BookingContructorMethodSpockTest                           |activity.domain        | #12   |
+| ActivityInterfaceGetActivityReservationDataMethodSpockTest |activity.services.local| #8    |
 
 - **Group 1:**
 - **Group 2:**
