@@ -15,6 +15,21 @@ To see the coverage reports, go to <module name>/target/site/jacoco/index.html.
 |ist187636   |Bernardo Faria           |bernardo.faria@tecnico.ulisboa.pt             |BernardoFaria                    |   2   |
 |            |                         |                         |                    |   2   |
 
+
+**Nome:** Miguel Coelho **Numero:** ist187687 **Email:** miguelmendescoelho@tecnico.ulisboa.pt  **Github Username:** CubeSkyy
+
+|   Class                                      |          Package      | Issue     |  
+| -------------------------------------------- | --------------------- | --------- | 
+| AccountContructorMethodSpockTest             |bank.domain            | [#13](#13)| 
+| AccountDepositMethodSpockTest                |bank.domain            | [#14](#14)|
+| AccountWithdrawMethodSpockTest               |bank.domain            | [#15](#15)|
+| BankConstructorSpockTest                     |bank.domain            | [#16](#16)|
+| BankGetAccountMethodSpockTest                |bank.domain            | [#17](#17)|
+| RollbackSpockTestAbstractClass               |bank.domain            | [#22](#22)|
+| BankInterfaceCancelPaymentSpockTest          |bank.services.local    | [#19](#19)|
+| BankInterfaceGetOperationDataMethodSpockTest |bank.services.local    | [#20](#20)|
+| BankInterfaceProcessPaymentMethodSpockTest   |bank.services.local    | [#21](#21)|
+
 - **Group 1:**
 - **Group 2:**
 
