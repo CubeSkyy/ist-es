@@ -42,6 +42,7 @@ To see the coverage reports, go to <module name>/target/site/jacoco/index.html.
 | RollbackSpockTestAbstractClass                             |activity.domain        | #2    |
 | BookingContructorMethodSpockTest                           |activity.domain        | #12   |
 | ActivityProviderConstructorSpockMethodTest                 |activity.domain        | #10   |
+| ActivityProviderFindOfferMethodSpockTest                   |activity.domain        | #11   |
 | ActivityInterfaceGetActivityReservationDataMethodSpockTest |activity.services.local| #8    |
 
 - **Group 1:**
