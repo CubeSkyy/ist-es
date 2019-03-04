@@ -1,6 +1,7 @@
 package pt.ulisboa.tecnico.softeng.bank.domain
 
-import pt.ulisboa.tecnico.softeng.bank.exception.BankException;
+import pt.ulisboa.tecnico.softeng.bank.exception.BankException
+import spock.lang.Unroll
 
 class AccountContructorMethodSpockTest extends RollbackSpockTestAbstractClass {
 
@@ -26,29 +27,31 @@ class AccountContructorMethodSpockTest extends RollbackSpockTestAbstractClass {
         this.bank.getClientSet().contains(this.client)
     }
 
-    def 'notEmptyBankArgument'(){
+    @Unroll('Account: #bank, #client')
+    def 'exceptions'() {
         when:
-        new Account(null, this.client)
+        new Account(bank, client)
 
         then:
         thrown(BankException)
-    }
 
-    def 'notEmptyClientArgument'() {
-        when:
-        new Account(this.bank, null)
+        where:
+        bank      | client
+        null      | this.client
+        this.bank | null
 
-        then:
-        thrown(BankException)
     }
 
     def 'clientDoesNotBelongToBank'() {
         given:
         def allien = new Client(new Bank("MoneyPlus", "BK02"), "António")
+
         when:
         new Account(this.bank, allien)
+
         then:
         thrown(BankException)
     }
+
 
 }

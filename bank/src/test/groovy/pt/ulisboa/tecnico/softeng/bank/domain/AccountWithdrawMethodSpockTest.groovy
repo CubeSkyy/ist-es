@@ -1,6 +1,7 @@
 package pt.ulisboa.tecnico.softeng.bank.domain
 
 import pt.ulisboa.tecnico.softeng.bank.exception.BankException
+import spock.lang.Unroll
 
 class AccountWithdrawMethodSpockTest extends RollbackSpockTestAbstractClass {
     private Bank bank;
@@ -28,20 +29,22 @@ class AccountWithdrawMethodSpockTest extends RollbackSpockTestAbstractClass {
         operation.getValue() == 40
     }
 
-    def 'negativeAmount'() {
+
+    @Unroll('Account withdraw: #amount')
+    def 'exceptions'(Integer amount) {
         when:
-        this.account.withdraw(-20)
+        this.account.withdraw(amount)
 
         then:
         thrown(BankException)
-    }
 
-    def 'zeroAmount'() {
-        when:
-        this.account.withdraw(0)
+        where:
+        amount | _
+        -20    | _
+        0      | _
+        101    | _
+        150    | _
 
-        then:
-        thrown(BankException)
     }
 
 
@@ -60,17 +63,4 @@ class AccountWithdrawMethodSpockTest extends RollbackSpockTestAbstractClass {
         this.account.getBalance() == 0
     }
 
-    def 'equalToBalancePlusOne'() {
-        when:
-        this.account.withdraw(101)
-        then:
-        thrown(BankException)
-    }
-
-    def 'moreThanBalance'() {
-        when:
-        this.account.withdraw(150)
-        then:
-        thrown(BankException)
-    }
 }

@@ -1,6 +1,7 @@
 package pt.ulisboa.tecnico.softeng.bank.domain
 
 import pt.ulisboa.tecnico.softeng.bank.exception.BankException
+import spock.lang.Unroll
 
 class AccountDepositMethodSpockTest extends RollbackSpockTestAbstractClass {
 
@@ -28,16 +29,23 @@ class AccountDepositMethodSpockTest extends RollbackSpockTestAbstractClass {
         operation.getValue() == 50
     }
 
-    def 'zeroAmount'() {
+
+    @Unroll('Account deposit: #amount')
+    def 'exceptions'(Integer amount) {
         when:
-        this.account.deposit(0)
+        this.account.deposit(amount)
 
         then:
         thrown(BankException)
 
+        where:
+        amount | _
+        0      | _
+        -100   | _
+
     }
 
-    def'oneAmount'() {
+    def 'oneAmount'() {
         when:
         this.account.deposit(1)
 
@@ -45,13 +53,4 @@ class AccountDepositMethodSpockTest extends RollbackSpockTestAbstractClass {
         noExceptionThrown()
     }
 
-
-    def 'negativeAmount'() {
-        when:
-        this.account.deposit(-100)
-
-        then:
-        thrown(BankException)
-
-    }
 }
