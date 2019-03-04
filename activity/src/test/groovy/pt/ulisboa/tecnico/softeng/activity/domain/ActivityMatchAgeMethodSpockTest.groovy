@@ -2,7 +2,7 @@ package pt.ulisboa.tecnico.softeng.activity.domain;
 
 import spock.lang.*;
 
-class ActivityMatchAgeMethodTest extends RollbackSpockTestAbstractClass {
+class ActivityMatchAgeMethodSpockTest extends RollbackSpockTestAbstractClass {
   static final MIN_AGE = 25;
   static final MAX_AGE = 80;
   static final CAPACITY = 30;
@@ -16,7 +16,7 @@ class ActivityMatchAgeMethodTest extends RollbackSpockTestAbstractClass {
 
   def 'sucess'() {
     expect:
-    this.activity.matchAge((MAX_AGE - MIN_AGE) / 2)
+    this.activity.matchAge((MAX_AGE - MIN_AGE).intdiv(2))
   }
 
   def 'sucess equal min age'() {
@@ -31,7 +31,7 @@ class ActivityMatchAgeMethodTest extends RollbackSpockTestAbstractClass {
 
   def 'sucess equal max age'() {
     expect:
-    this.activity.matchAge(MAX_AGE) == false
+    this.activity.matchAge(MAX_AGE)
   }
 
   def 'greater than max age'() {

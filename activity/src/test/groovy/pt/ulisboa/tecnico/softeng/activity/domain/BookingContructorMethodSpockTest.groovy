@@ -6,12 +6,12 @@ import spock.lang.*;
 import mockit.FullVerifications;
 import pt.ulisboa.tecnico.softeng.activity.exception.ActivityException;
 
-public class BookingContructorMethodSpockTest extends RollbackSpockTestAbstractClass {
-	def provider;
-	def offer;
+class BookingContructorMethodSpockTest extends RollbackSpockTestAbstractClass {
+	@Shared def provider;
+	@Shared def offer;
 	static final AMOUNT = 30;
-	def IBAN = "IBAN";
-	def NIF = "123456789";
+	@Shared def IBAN = "IBAN";
+	@Shared def NIF = "123456789";
 
 	@Override
 	def populate4Test() {

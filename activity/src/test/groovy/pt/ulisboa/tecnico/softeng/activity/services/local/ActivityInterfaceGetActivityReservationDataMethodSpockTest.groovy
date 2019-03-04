@@ -11,7 +11,7 @@ import pt.ulisboa.tecnico.softeng.activity.domain.RollbackSpockTestAbstractClass
 import pt.ulisboa.tecnico.softeng.activity.exception.ActivityException;
 import pt.ulisboa.tecnico.softeng.activity.services.remote.dataobjects.RestActivityBookingData;
 
-public class ActivityInterfaceGetActivityReservationDataMethodSpockTest extends RollbackSpockTestAbstractClass {
+class ActivityInterfaceGetActivityReservationDataMethodSpockTest extends RollbackSpockTestAbstractClass {
 	def NAME = "ExtremeAdventure";
 	def CODE = "XtremX";
 	def begin = new LocalDate(2016, 12, 19);
@@ -62,26 +62,26 @@ public class ActivityInterfaceGetActivityReservationDataMethodSpockTest extends 
 	}
 
 	def 'null reference'() {
-		given:
+		when:
 		ActivityInterface.getActivityReservationData(null);
 
-		expect:
+		then:
 		thrown(ActivityException)
 	}
 
 	def 'empty reference'() {
-		given:
+		when:
 		ActivityInterface.getActivityReservationData("")
 
-		expect:
+		then:
 		thrown(ActivityException)
 	}
 
 	def 'not exists reference'() {
-		given:
+		when:
 		ActivityInterface.getActivityReservationData("XPTO")
 
-		expect:
+		then:
 		thrown(ActivityException)
 	}
 

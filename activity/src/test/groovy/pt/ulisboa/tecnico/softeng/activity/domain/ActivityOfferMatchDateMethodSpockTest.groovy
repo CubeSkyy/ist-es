@@ -5,7 +5,7 @@ import spock.lang.*;
 
 import pt.ulisboa.tecnico.softeng.activity.exception.ActivityException;
 
-public class ActivityOfferMatchDateMethodSpockTest extends RollbackSpockTestAbstractClass {
+class ActivityOfferMatchDateMethodSpockTest extends RollbackSpockTestAbstractClass {
 	def begin = new LocalDate(2016, 12, 19);
 	def end = new LocalDate(2016, 12, 23);
 
@@ -25,18 +25,18 @@ public class ActivityOfferMatchDateMethodSpockTest extends RollbackSpockTestAbst
   }
 
   def 'null begin date'() {
-    given:
+    when:
     this.offer.matchDate(null, this.end)
 
-    expect:
+    then:
     thrown(ActivityException)
   }
 
   def 'null end date'() {
-    given:
+    when:
     this.offer.matchDate(this.begin, null)
 
-    expect:
+    then:
     thrown(ActivityException)
   }
 

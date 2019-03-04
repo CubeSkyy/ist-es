@@ -11,6 +11,7 @@ class ActivityOfferConstructorMethodSpockTest extends RollbackSpockTestAbstractC
   static final MIN_AGE = 25;
   def begin = new LocalDate(2016, 12, 19);
   def end = new LocalDate(2016, 12, 21);
+  def beginminus1 = new LocalDate(2016, 12, 18);
   def activity;
 
   @Override
@@ -31,20 +32,20 @@ class ActivityOfferConstructorMethodSpockTest extends RollbackSpockTestAbstractC
     offer.getPrice() == 30
   }
 
-  @Unroll('ActivityOffer: #activity, #begin, #end, #price')
-  def 'activity exceptions'() {
-    given:
-    def offer = new ActivityOffer(activity, begin, end, capacity)
+  @Unroll('ActivityOffer: #act, #bgn, #ed, #price')
+  def 'exceptions'() {
+    when:
+    def offer = new ActivityOffer(act, bgn, ed, price)
 
-    expect:
+    then:
     thrown(ActivityException)
 
     where:
-    activity      | begin      | end                     | price
+    act           | bgn        | ed                      | price
     null          | this.begin | this.end                | 30
     this.activity | null       | this.end                | 30
     this.activity | this.begin | null                    | 30
-    this.activity | this.begin | this.begin.minusDays(1) | 30
+    this.activity | this.begin | this.beginminus1        | 30
     this.activity | this.begin | this.end                | 0
   }
 
@@ -56,6 +57,6 @@ class ActivityOfferConstructorMethodSpockTest extends RollbackSpockTestAbstractC
     offer.getBegin() == this.begin
     offer.getEnd() == this.begin
     this.activity.getActivityOfferSet().size() == 1
-    offer.getNumberActiveOfBookings() == 0 
+    offer.getNumberActiveOfBookings() == 0
   }
 }

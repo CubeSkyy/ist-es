@@ -22,7 +22,7 @@ class ActivityConstructorMethodSpockTest extends RollbackSpockTestAbstractClass 
 
   def 'sucess'() {
     given:
-    def activity = new Activity(provider, PROVIDER_NAME, MIN_AGE, MAX_AGE);
+    def activity = new Activity(provider, PROVIDER_NAME, MIN_AGE, MAX_AGE, CAPACITY);
 
     expect:
     activity.getCode().startsWith(provider.getCode())
@@ -38,73 +38,73 @@ class ActivityConstructorMethodSpockTest extends RollbackSpockTestAbstractClass 
 
 
   def 'null provider'() {
-    given:
+    when:
     def activity = new Activity(null, PROVIDER_NAME, MIN_AGE, MAX_AGE, CAPACITY)
 
-    expect:
+    then:
     thrown(ActivityException)
   }
 
 
   def 'null provider name'() {
-    given:
+    when:
     def activity = new Activity(this.provider, null, MIN_AGE, MAX_AGE, CAPACITY)
 
-    expect:
+    then:
     thrown(ActivityException)
   }
 
 
   def 'empty provider name'() {
-    given:
+    when:
     def activity = new Activity(this.provider, ' ', MIN_AGE, MAX_AGE, CAPACITY)
 
-    expect:
+    then:
     thrown(ActivityException)
   }
 
 
   def 'min age less than 18'() {
-    given:
+    when:
     def activity = new Activity(this.provider, PROVIDER_NAME, 17, MAX_AGE, CAPACITY)
 
-    expect:
+    then:
     thrown(ActivityException)
   }
 
 
   def 'max age greater than 99'() {
-    given:
+    when:
     def activity = new Activity(this.provider, PROVIDER_NAME, MIN_AGE, 100, CAPACITY)
 
-    expect:
+    then:
     thrown(ActivityException)
   }
 
 
   def 'min age greater than max age'() {
-    given:
+    when:
     def activity = new Activity(this.provider, PROVIDER_NAME, MAX_AGE + 10, MAX_AGE, CAPACITY)
 
-    expect:
+    then:
     thrown(ActivityException)
   }
 
 
   def 'min age greater euqal max age plus one'() {
-    given:
+    when:
     def activity = new Activity(this.provider, PROVIDER_NAME, MAX_AGE + 1, MAX_AGE, CAPACITY)
 
-    expect:
+    then:
     thrown(ActivityException)
   }
 
 
   def 'zero capacity'() {
-    given:
+    when:
     def activity = new Activity(this.provider, PROVIDER_NAME, MIN_AGE, MAX_AGE, 0)
 
-    expect:
+    then:
     thrown(ActivityException)
   }
 
