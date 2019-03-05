@@ -8,10 +8,10 @@ To see the coverage reports, go to <module name>/target/site/jacoco/index.html.
 
 |   Number   |          Name           |            Email        |   GitHub Username  | Group |
 | ---------- | ----------------------- | ----------------------- | -------------------| ----- |
+|ist187631   |Andre Patricio           |andrepatricio98@tecnico.ulisboa.pt            |Andrempp                    |   1   |
 |ist187633 |  Bernardo Esteves           | bernardo.esteves@tecnico.ulisboa.pt        | esteveste                   |   1   |
 | ist187635  | Bernardo Santos         | bernardo.d.santos@tecnico.ulisboa.pt         | BSantosCoding                   |   1   |
 | ist187687  |  Miguel Coelho          |   miguelmendescoelho@tecnico.ulisboa.pt      |  CubeSkyy                  |   2   |
-|ist187631   |Andre Patricio           |andrepatricio98@tecnico.ulisboa.pt            |Andrempp                    |   1   |
 |ist187636   |Bernardo Faria           |bernardo.faria@tecnico.ulisboa.pt             |BernardoFaria                    |   2   |
 |            |                         |                         |                    |   2   |
 
