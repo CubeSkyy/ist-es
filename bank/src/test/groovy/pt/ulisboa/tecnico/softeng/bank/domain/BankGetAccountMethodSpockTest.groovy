@@ -6,8 +6,8 @@ import spock.lang.Unroll
 
 class BankGetAccountMethodSpockTest extends RollbackSpockTestAbstractClass {
 
-    private Bank bank
-    private Client client
+    Bank bank
+    Client client
 
     @Override
     def 'populate4Test'() {
@@ -17,20 +17,22 @@ class BankGetAccountMethodSpockTest extends RollbackSpockTestAbstractClass {
 
 
     def 'success'() {
-        given:
+        given: 'A new account'
         def account = new Account(this.bank, this.client)
+
+        when: 'Searching for the account in the bank'
         def result = this.bank.getAccount(account.getIBAN())
 
-        expect:
-        account == result
+        then: 'Result matches account'
+        result == account
     }
 
     @Unroll('Bank get account: #IBAN')
     def 'exceptions'() {
-        when:
+        when: 'Searching for an account with invalid IBAN'
         this.bank.getAccount(IBAN)
 
-        then:
+        then: 'An exception is thrown'
         thrown(BankException)
 
         where:
@@ -38,25 +40,23 @@ class BankGetAccountMethodSpockTest extends RollbackSpockTestAbstractClass {
         ""     | _
         "    " | _
 
-
     }
 
-
-
     def 'emptySetOfAccounts'() {
-        given:
-        def account  = this.bank.getAccount("XPTO")
-        expect:
+        when: 'Searching an account that doesn\'t exist'
+        def account = this.bank.getAccount("XPTO")
+
+        then: 'The account is not found'
         account == null
     }
 
 
     def 'severalAccountsDoNoMatch'() {
-        given:
+        given: 'A new Account'
         new Account(this.bank, this.client)
-        when:
+        when: 'Creating the same account'
         new Account(this.bank, this.client)
-        then:
+        then: 'Search does not match'
         this.bank.getAccount("XPTO") == null
 
     }

@@ -13,7 +13,7 @@ To see the coverage reports, go to <module name>/target/site/jacoco/index.html.
 | ist187635  | Bernardo Santos         | bernardo.d.santos@tecnico.ulisboa.pt         | BSantosCoding                   |   1   |
 | ist187687  |  Miguel Coelho          |   miguelmendescoelho@tecnico.ulisboa.pt      |  CubeSkyy                  |   2   |
 |ist187636   |Bernardo Faria           |bernardo.faria@tecnico.ulisboa.pt             |BernardoFaria                    |   2   |
-|            |                         |                         |                    |   2   |
+|ist187700   |Ricardo Silva            |ricardo.f.oliveira.da.silva@tecnico.ulisboa.pt|genlike|2|
 
 
 **Nome:** Miguel Coelho **Numero:** ist187687 **Email:** miguelmendescoelho@tecnico.ulisboa.pt  **Github Username:** CubeSkyy

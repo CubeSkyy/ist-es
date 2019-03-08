@@ -7,11 +7,11 @@ import pt.ulisboa.tecnico.softeng.activity.exception.ActivityException;
 class ActivityConstructorMethodSpockTest extends RollbackSpockTestAbstractClass {
   def IBAN = 'IBAN';
   def NIF = 'NIF';
-  def PROVIDER_NAME = 'Bush Walking';
+  @Shared def PROVIDER_NAME = 'Bush Walking';
   static final MIN_AGE = 25;
   static final MAX_AGE = 50;
   static final CAPACITY = 30;
-  def provider;
+  @Shared def provider;
 
 
   @Override
@@ -36,78 +36,25 @@ class ActivityConstructorMethodSpockTest extends RollbackSpockTestAbstractClass 
 
   }
 
-
-  def 'null provider'() {
+  @Unroll('Activity: #prov, #provname, #min, #max, #cap')
+  def 'exceptions'() {
     when:
-    def activity = new Activity(null, PROVIDER_NAME, MIN_AGE, MAX_AGE, CAPACITY)
+    def activity = new Activity(prov, provname, min, max, cap)
 
     then:
     thrown(ActivityException)
+
+    where:
+    prov          | provname      | min          | max     | cap
+    null          | PROVIDER_NAME | MIN_AGE      | MAX_AGE | CAPACITY
+    this.provider | null          | MIN_AGE      | MAX_AGE | CAPACITY
+    this.provider | ' '           | MIN_AGE      | MAX_AGE | CAPACITY
+    this.provider | PROVIDER_NAME | 17           | MAX_AGE | CAPACITY
+    this.provider | PROVIDER_NAME | MIN_AGE      | 100     | CAPACITY
+    this.provider | PROVIDER_NAME | MAX_AGE + 10 | MAX_AGE | CAPACITY
+    this.provider | PROVIDER_NAME | MAX_AGE + 1  | MAX_AGE | CAPACITY
+    this.provider | PROVIDER_NAME | MIN_AGE      | MAX_AGE | 0
   }
-
-
-  def 'null provider name'() {
-    when:
-    def activity = new Activity(this.provider, null, MIN_AGE, MAX_AGE, CAPACITY)
-
-    then:
-    thrown(ActivityException)
-  }
-
-
-  def 'empty provider name'() {
-    when:
-    def activity = new Activity(this.provider, ' ', MIN_AGE, MAX_AGE, CAPACITY)
-
-    then:
-    thrown(ActivityException)
-  }
-
-
-  def 'min age less than 18'() {
-    when:
-    def activity = new Activity(this.provider, PROVIDER_NAME, 17, MAX_AGE, CAPACITY)
-
-    then:
-    thrown(ActivityException)
-  }
-
-
-  def 'max age greater than 99'() {
-    when:
-    def activity = new Activity(this.provider, PROVIDER_NAME, MIN_AGE, 100, CAPACITY)
-
-    then:
-    thrown(ActivityException)
-  }
-
-
-  def 'min age greater than max age'() {
-    when:
-    def activity = new Activity(this.provider, PROVIDER_NAME, MAX_AGE + 10, MAX_AGE, CAPACITY)
-
-    then:
-    thrown(ActivityException)
-  }
-
-
-  def 'min age greater euqal max age plus one'() {
-    when:
-    def activity = new Activity(this.provider, PROVIDER_NAME, MAX_AGE + 1, MAX_AGE, CAPACITY)
-
-    then:
-    thrown(ActivityException)
-  }
-
-
-  def 'zero capacity'() {
-    when:
-    def activity = new Activity(this.provider, PROVIDER_NAME, MIN_AGE, MAX_AGE, 0)
-
-    then:
-    thrown(ActivityException)
-  }
-
 
   def 'sucess min age equal 18'() {
     given:

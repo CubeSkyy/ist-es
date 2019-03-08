@@ -16,12 +16,10 @@ class BankInterfaceProcessPaymentMethodSpockTest extends RollbackSpockTestAbstra
     private static final String TRANSACTION_SOURCE = "ADVENTURE"
     @Shared
     private static final String TRANSACTION_REFERENCE = "REFERENCE"
-    @Shared
-    private Bank bank
-    @Shared
-    private Account account
-    @Shared
-    private String iban
+
+    Bank bank
+    Account account
+    String iban
 
     @Override
     def 'populate4Test'() {
@@ -34,12 +32,12 @@ class BankInterfaceProcessPaymentMethodSpockTest extends RollbackSpockTestAbstra
 
 
     def 'success'() {
-        given:
+        when: 'Processing a payment'
         this.account.getIBAN()
         def newReference = BankInterface
                 .processPayment(new BankOperationData(this.iban, 100, TRANSACTION_SOURCE, TRANSACTION_REFERENCE))
 
-        expect:
+        then: 'The operation is successful'
         newReference != null
         newReference.startsWith("BK01")
         this.bank.getOperation(newReference) != null

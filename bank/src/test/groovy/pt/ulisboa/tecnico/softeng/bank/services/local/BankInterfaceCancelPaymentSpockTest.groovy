@@ -9,10 +9,9 @@ import spock.lang.Unroll
 
 
 class BankInterfaceCancelPaymentSpockTest extends RollbackSpockTestAbstractClass {
-    private Bank bank
-    private Account account
-    private String reference
-
+    Bank bank
+    Account account
+    String reference
 
     @Override
     def populate4Test() {
@@ -24,23 +23,22 @@ class BankInterfaceCancelPaymentSpockTest extends RollbackSpockTestAbstractClass
 
 
     def 'success'() {
-        given:
+        when: 'Canceling a payment'
         def newReference = BankInterface.cancelPayment(this.reference)
 
-        expect:
+        then: 'The operation with the same reference doesn\'t exist'
         this.bank.getOperation(newReference) != null
     }
 
     @Unroll('Bank cancel payment: #confirmation')
     def 'exceptions'() {
-        when:
+        when: 'Canceling a payment with an invalid confirmation'
         BankInterface.cancelPayment(confirmation)
 
-        then:
+        then: 'An exception is thrown'
         thrown(BankException)
 
         where:
-
         confirmation | _
         null         | _
         ""           | _

@@ -5,8 +5,8 @@ import spock.lang.Unroll
 
 class AccountContructorMethodSpockTest extends RollbackSpockTestAbstractClass {
 
-    private Bank bank
-    private Client client
+    Bank bank
+    Client client
 
     @Override
     def populate4Test() {
@@ -14,11 +14,11 @@ class AccountContructorMethodSpockTest extends RollbackSpockTestAbstractClass {
         this.client = new Client(this.bank, "António")
     }
 
-    def 'sucess'() {
-        given:
+    def 'success'() {
+        given: 'A new account in defined bank'
         def account = new Account(this.bank, this.client)
 
-        expect:
+        expect: 'Bank and client have the right information and balance is 0'
         this.bank == account.getBank()
         account.getIBAN().startsWith(this.bank.getCode())
         this.client == account.getClient()
@@ -29,10 +29,10 @@ class AccountContructorMethodSpockTest extends RollbackSpockTestAbstractClass {
 
     @Unroll('Account: #bank, #client')
     def 'exceptions'() {
-        when:
+        when: 'creating Account with invalid arguments'
         new Account(bank, client)
 
-        then:
+        then: 'throws an exception'
         thrown(BankException)
 
         where:
@@ -43,13 +43,13 @@ class AccountContructorMethodSpockTest extends RollbackSpockTestAbstractClass {
     }
 
     def 'clientDoesNotBelongToBank'() {
-        given:
+        given: 'A client that doesn\'t belong to bank'
         def allien = new Client(new Bank("MoneyPlus", "BK02"), "António")
 
-        when:
+        when: 'An account is created'
         new Account(this.bank, allien)
 
-        then:
+        then: 'An exception is thrown'
         thrown(BankException)
     }
 

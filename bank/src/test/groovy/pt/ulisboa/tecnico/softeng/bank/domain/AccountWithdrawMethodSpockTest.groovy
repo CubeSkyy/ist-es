@@ -4,8 +4,8 @@ import pt.ulisboa.tecnico.softeng.bank.exception.BankException
 import spock.lang.Unroll
 
 class AccountWithdrawMethodSpockTest extends RollbackSpockTestAbstractClass {
-    private Bank bank;
-    private Account account;
+    Bank bank
+    Account account
 
     @Override
     def populate4Test() {
@@ -17,11 +17,11 @@ class AccountWithdrawMethodSpockTest extends RollbackSpockTestAbstractClass {
     }
 
     def 'success'() {
-        given:
+        when: 'A withdraw operation'
         def reference = this.account.withdraw(40).getReference()
         def operation = this.bank.getOperation(reference)
 
-        expect:
+        then: 'Balance is consistent and operation was successful'
         this.account.getBalance() == 60
         operation != null
         operation.getType() == Operation.Type.WITHDRAW
@@ -31,11 +31,11 @@ class AccountWithdrawMethodSpockTest extends RollbackSpockTestAbstractClass {
 
 
     @Unroll('Account withdraw: #amount')
-    def 'exceptions'(Integer amount) {
-        when:
+    def 'exceptions'() {
+        when: 'A withdraw with an invalid ammount'
         this.account.withdraw(amount)
 
-        then:
+        then: 'An exception is thrown'
         thrown(BankException)
 
         where:
@@ -49,17 +49,19 @@ class AccountWithdrawMethodSpockTest extends RollbackSpockTestAbstractClass {
 
 
     def 'oneAmount'() {
-        when:
+        when: 'A valid withdraw'
         this.account.withdraw(1)
-        then:
+
+        then: 'The account balance is consistent'
         this.account.getBalance() == 99
     }
 
 
     def 'equalToBalance'() {
-        when:
+        when: 'A valid full withdraw'
         this.account.withdraw(100)
-        then:
+
+        then: 'The account has no balance'
         this.account.getBalance() == 0
     }
 

@@ -15,10 +15,10 @@ class BankConstructorSpockTest extends RollbackSpockTestAbstractClass {
     }
 
     def 'success'() {
-        given:
+        when: 'Creating a new bank'
         def bank = new Bank(BANK_NAME, BANK_CODE);
 
-        expect:
+        then: 'The bank data is consistent with arguments'
         bank.getName() == BANK_NAME
         bank.getCode() == BANK_CODE
         FenixFramework.getDomainRoot().getBankSet().size() == 1
@@ -28,10 +28,10 @@ class BankConstructorSpockTest extends RollbackSpockTestAbstractClass {
 
     @Unroll('Bank creation: #name, #code')
     def 'exceptions'() {
-        when:
+        when: 'Creating a Bank with invalid arguments'
         new Bank(name, code)
 
-        then:
+        then: 'An exception is thrown'
         thrown(BankException)
 
         where:
@@ -46,14 +46,15 @@ class BankConstructorSpockTest extends RollbackSpockTestAbstractClass {
 
 
     def 'notUniqueCode'() {
-        given:
+        given: 'A new valid bank'
         new Bank(BANK_NAME, BANK_CODE)
-        when:
+
+        when: 'Creating a bank with the same name and code'
         new Bank(BANK_NAME, BANK_CODE)
-        then:
+
+        then: 'An exception is thrown and the bank was not created'
         thrown(BankException)
         FenixFramework.getDomainRoot().getBankSet().size() == 1
-
     }
 
 }
