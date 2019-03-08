@@ -45,6 +45,19 @@ To see the coverage reports, go to <module name>/target/site/jacoco/index.html.
 | ActivityProviderFindOfferMethodSpockTest                   |activity.domain        | #11   |
 | ActivityInterfaceGetActivityReservationDataMethodSpockTest |activity.services.local| #8    |
 
+**Nome:** André Patrício **Numero:** ist187631 **Email:** andrepatricio98@tecnico.ulisboa.pt  **Github Username:** Andrempp
+
+|   Class                                                    |          Package      | Issue |  
+| ---------------------------------------------------------- | --------------------- | ----- |
+| TaxPayerGetTaxesPerYearMethodsSpockTest                    |tax.domain        	 | #57   |
+| TaxPayerGetInvoiceByReferenceSpockTest                     |tax.domain        	 | #55   |
+| ActivityPersistenceSpockTest                  	 		 |activity.domain        | #9    |
+| OperationConstructorMethodSpockTest                        |bank.domain        	 | #45   |
+| OperationRevertMethodSpockTest                             |bank.domain            | #46   |
+| BankPersistenceSpockTest                                   |bank.domain            | #23   |
+| ClientConstructorMethodTestSpock                           |bank.domain            | #44   |
+| TaxInterfaceSubmitInvoiceSpockTest                  		 |tax.domain             | #56   |
+
 - **Group 1:**
 - **Group 2:**
 
