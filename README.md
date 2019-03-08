@@ -8,19 +8,19 @@ To see the coverage reports, go to <module name>/target/site/jacoco/index.html.
 
 |   Number   |          Name           |            Email        |   GitHub Username  | Group |
 | ---------- | ----------------------- | ----------------------- | -------------------| ----- |
+|ist187631   |Andre Patricio           |andrepatricio98@tecnico.ulisboa.pt            |Andrempp                    |   1   |
 |ist187633 |  Bernardo Esteves           | bernardo.esteves@tecnico.ulisboa.pt        | esteveste                   |   1   |
 | ist187635  | Bernardo Santos         | bernardo.d.santos@tecnico.ulisboa.pt         | BSantosCoding                   |   1   |
 | ist187687  |  Miguel Coelho          |   miguelmendescoelho@tecnico.ulisboa.pt      |  CubeSkyy                  |   2   |
-|ist187631   |Andre Patricio           |andrepatricio98@tecnico.ulisboa.pt            |Andrempp                    |   1   |
 |ist187636   |Bernardo Faria           |bernardo.faria@tecnico.ulisboa.pt             |BernardoFaria                    |   2   |
-|            |                         |                         |                    |   2   |
+|ist187700   |Ricardo Silva            |ricardo.f.oliveira.da.silva@tecnico.ulisboa.pt|genlike|2|
 
 
 **Nome:** Miguel Coelho **Numero:** ist187687 **Email:** miguelmendescoelho@tecnico.ulisboa.pt  **Github Username:** CubeSkyy
 
 |   Class                                      |          Package      | Issue |  
-| -------------------------------------------- | --------------------- | ----- | 
-| AccountContructorMethodSpockTest             |bank.domain            | #13   | 
+| -------------------------------------------- | --------------------- | ----- |
+| AccountContructorMethodSpockTest             |bank.domain            | #13   |
 | AccountDepositMethodSpockTest                |bank.domain            | #14   |
 | AccountWithdrawMethodSpockTest               |bank.domain            | #15   |
 | BankConstructorSpockTest                     |bank.domain            | #16   |
@@ -29,6 +29,21 @@ To see the coverage reports, go to <module name>/target/site/jacoco/index.html.
 | BankInterfaceCancelPaymentSpockTest          |bank.services.local    | #19   |
 | BankInterfaceGetOperationDataMethodSpockTest |bank.services.local    | #20   |
 | BankInterfaceProcessPaymentMethodSpockTest   |bank.services.local    | #21   |
+
+**Nome:** Bernardo Santos **Numero:** ist187635 **Email:** bernardo.d.santos@tecnico.ulisboa.pt  **Github Username:** BSantosCoding
+
+|   Class                                                    |          Package      | Issue |  
+| ---------------------------------------------------------- | --------------------- | ----- |
+| ActivityContructorMethodSpockTest                          |activity.domain        | #1    |
+| ActivityMatchAgeMethodSpockTest                            |activity.domain        | #3    |
+| ActivityOfferConstructorMethodSpockTest                    |activity.domain        | #4    |
+| ActivityOfferGetBookingMethodSpockTest                     |activity.domain        | #5    |
+| ActivityOfferMatchDateMethodSpockTest                      |activity.domain        | #6    |
+| RollbackSpockTestAbstractClass                             |activity.domain        | #2    |
+| BookingContructorMethodSpockTest                           |activity.domain        | #12   |
+| ActivityProviderConstructorSpockMethodTest                 |activity.domain        | #10   |
+| ActivityProviderFindOfferMethodSpockTest                   |activity.domain        | #11   |
+| ActivityInterfaceGetActivityReservationDataMethodSpockTest |activity.services.local| #8    |
 
 - **Group 1:**
 - **Group 2:**
