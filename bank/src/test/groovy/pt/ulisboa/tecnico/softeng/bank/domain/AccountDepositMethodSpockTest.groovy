@@ -5,23 +5,23 @@ import spock.lang.Unroll
 
 class AccountDepositMethodSpockTest extends RollbackSpockTestAbstractClass {
 
-    private Bank bank
-    private Account account
+    Bank bank
+    Account account
 
     @Override
     def populate4Test() {
         this.bank = new Bank("Money", "BK01")
-        Client client = new Client(this.bank, "António")
+        def client = new Client(this.bank, "António")
         this.account = new Account(this.bank, client)
     }
 
 
-    def 'sucess'() {
-        given:
+    def 'success'() {
+        when: 'depositing into created account'
         def reference = this.account.deposit(50).getReference()
         def operation = this.bank.getOperation(reference)
 
-        expect:
+        then: 'balance matches deposit and operation was successful'
         this.account.getBalance() == 50
         operation != null
         operation.getType() == Operation.Type.DEPOSIT
@@ -31,25 +31,25 @@ class AccountDepositMethodSpockTest extends RollbackSpockTestAbstractClass {
 
 
     @Unroll('Account deposit: #amount')
-    def 'exceptions'(Integer amount) {
-        when:
+    def 'exceptions'() {
+        when:  'depositing with invalid ammount'
         this.account.deposit(amount)
 
-        then:
+        then: 'throws an exception'
         thrown(BankException)
+
 
         where:
         amount | _
         0      | _
         -100   | _
-
     }
 
     def 'oneAmount'() {
-        when:
+        when: 'depositing a valid ammount'
         this.account.deposit(1)
 
-        then:
+        then: 'No exception is thrown'
         noExceptionThrown()
     }
 

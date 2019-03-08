@@ -11,12 +11,11 @@ import spock.lang.Shared
 import spock.lang.Unroll
 
 class BankInterfaceGetOperationDataMethodSpockTest extends RollbackSpockTestAbstractClass {
+
+    Bank bank
+    Account account
     @Shared
     private static double AMOUNT = 100
-    @Shared
-    private Bank bank
-    @Shared
-    private Account account
     @Shared
     private String reference
 
@@ -29,10 +28,10 @@ class BankInterfaceGetOperationDataMethodSpockTest extends RollbackSpockTestAbst
     }
 
     def 'success'() {
-        given:
+        when: 'Reading operation data'
         def data = BankInterface.getOperationData(this.reference)
 
-        expect:
+        then: 'The data is consistent with the account'
         data.getReference() == this.reference
         this.account.getIBAN() == data.getIban()
         data.getType() == Operation.Type.DEPOSIT.name()
@@ -43,14 +42,13 @@ class BankInterfaceGetOperationDataMethodSpockTest extends RollbackSpockTestAbst
 
     @Unroll('Bank get operation data: #ref')
     def 'exceptions'() {
-        when:
-        BankInterface.getOperationData(ref);
+        when: 'reading operation data'
+        BankInterface.getOperationData(ref)
 
-        then:
+        then: 'An exception is thrown'
         thrown(BankException)
 
         where:
-
         ref    | _
         null   | _
         ""     | _
