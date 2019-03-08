@@ -58,6 +58,19 @@ To see the coverage reports, go to <module name>/target/site/jacoco/index.html.
 | ClientConstructorMethodTestSpock                           |bank.domain            | #44   |
 | TaxInterfaceSubmitInvoiceSpockTest                  		 |tax.domain             | #56   |
 
+**Nome:** Bernardo Faria **Numero:** ist187636 **Email:** bernardo.faria@tecnico.ulisboa.pt  **Github Username:** BernardoFaria
+
+|   Class                                                    |          Package      | Issue |
+| ---------------------------------------------------------- | --------------------- | ----- |
+| BookingConflictMethodSpockTest                             |hotel.domain        	 | #29   |
+| BookingConstructorSpockTest                                |hotel.domain        	 | #30   |
+| HotelConstructorSpockTeste                     	 		 |hotel.domain           | #31   |
+| HotelGetPriceMethodSpockTest                               |hotel.domain        	 | #32   |
+| HotelHasVacancyMethodSpockTest                             |hotel.domain           | #33   |
+| HotelPersistenceSpockTest                                  |hotel.domain           | #34   |
+| HotelSetPriceMethodSpockTest                               |hotel.domain           | #35   |
+| HotelInterfaceGetRoomBookingDataMethodTest                 |hotel.domain           | #58   |
+
 - **Group 1:**
 - **Group 2:**
 
