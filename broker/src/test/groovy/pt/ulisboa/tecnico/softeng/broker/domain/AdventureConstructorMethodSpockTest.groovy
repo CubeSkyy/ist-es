@@ -8,26 +8,38 @@ import spock.lang.Unroll
 import javax.validation.constraints.Null
 
 
-class AdventureConstructorMethodTest extends SpockRollbackTestAbstractClass {
+class AdventureConstructorMethodSpockTest extends SpockRollbackTestAbstractClass {
 
-    @Shared def broker
+    @Shared
+    def broker
     def client
 
-    @Shared def BROKER_IBAN = "BROKER_IBAN"
-    @Shared def NIF_AS_BUYER = "buyerNIF"
-    @Shared def BROKER_NIF_AS_SELLER = "sellerNIF"
-    @Shared def OTHER_NIF = "987654321"
-    @Shared def CLIENT_NIF = "123456789"
-    @Shared def DRIVING_LICENSE = "IMT1234"
-    @Shared def AGE = 20
-    @Shared def AGE_18 = 18
-    @Shared def MARGIN = 0.3
-    @Shared def CLIENT_IBAN = "BK011234567"
+    @Shared
+    def BROKER_IBAN = "BROKER_IBAN"
+    @Shared
+    def NIF_AS_BUYER = "buyerNIF"
+    @Shared
+    def BROKER_NIF_AS_SELLER = "sellerNIF"
+    @Shared
+    def OTHER_NIF = "987654321"
+    @Shared
+    def CLIENT_NIF = "123456789"
+    @Shared
+    def DRIVING_LICENSE = "IMT1234"
+    @Shared
+    def AGE = 20
+    @Shared
+    def AGE_18 = 18
+    @Shared
+    def MARGIN = 0.3
+    @Shared
+    def CLIENT_IBAN = "BK011234567"
 
 
-    @Shared def begin = new LocalDate(2016, 12, 19)
-    @Shared def end = new LocalDate(2016, 12, 21)
-
+    @Shared
+    def begin = new LocalDate(2016, 12, 19)
+    @Shared
+    def end = new LocalDate(2016, 12, 21)
 
 
     @Override
@@ -39,7 +51,7 @@ class AdventureConstructorMethodTest extends SpockRollbackTestAbstractClass {
 
     def 'success'() {
         given:
-        def adventure = new Adventure(broker,begin,end, client, MARGIN)
+        def adventure = new Adventure(broker, begin, end, client, MARGIN)
 
         expect:
         adventure.getBroker() == broker
@@ -63,17 +75,17 @@ class AdventureConstructorMethodTest extends SpockRollbackTestAbstractClass {
         thrown(BrokerException)
 
         where:
-        _broker    | _begin     | _end     | _MARGIN
-        null       | begin      | end      | MARGIN
-        broker     | null       | end      | MARGIN
-        broker     | begin      | null     | MARGIN
+        _broker | _begin | _end | _MARGIN
+        null    | begin  | end  | MARGIN
+        broker  | null   | end  | MARGIN
+        broker  | begin  | null | MARGIN
     }
 
 
     def 'successEqual18'() {
         given:
         def c = new Client(this.broker, CLIENT_IBAN, OTHER_NIF, DRIVING_LICENSE + "1", 18)
-        def adventure = new Adventure(broker,begin,end, c, MARGIN)
+        def adventure = new Adventure(broker, begin, end, c, MARGIN)
 
         expect:
         adventure.getBroker() == broker
@@ -91,7 +103,7 @@ class AdventureConstructorMethodTest extends SpockRollbackTestAbstractClass {
 
     def 'negativeAge'() {
         when:
-        def c = new Client(broker, CLIENT_IBAN, OTHER_NIF, DRIVING_LICENSE,17)
+        def c = new Client(broker, CLIENT_IBAN, OTHER_NIF, DRIVING_LICENSE, 17)
         new Adventure(broker, begin, end, c, MARGIN)
 
         then:
@@ -118,6 +130,7 @@ class AdventureConstructorMethodTest extends SpockRollbackTestAbstractClass {
         adventure.getRoomConfirmation() == null
 
     }
+
     def 'over100'() {
         when:
         new Adventure(broker, begin, end,
@@ -135,7 +148,7 @@ class AdventureConstructorMethodTest extends SpockRollbackTestAbstractClass {
         thrown(BrokerException)
     }
 
-    def 'success1Amount'(){
+    def 'success1Amount'() {
         given:
         def adventure = new Adventure(broker, begin, end, client, 1);
 
@@ -152,7 +165,8 @@ class AdventureConstructorMethodTest extends SpockRollbackTestAbstractClass {
         adventure.getActivityConfirmation() == null
         adventure.getRoomConfirmation() == null
     }
-    def 'zeroAmount'(){
+
+    def 'zeroAmount'() {
         when:
         new Adventure(broker, begin, end, client, 0)
 
@@ -160,7 +174,7 @@ class AdventureConstructorMethodTest extends SpockRollbackTestAbstractClass {
         thrown(BrokerException)
     }
 
-    def 'successEqualDates'(){
+    def 'successEqualDates'() {
         def adventure = new Adventure(broker, begin, begin, client, MARGIN)
 
         expect:
@@ -177,6 +191,7 @@ class AdventureConstructorMethodTest extends SpockRollbackTestAbstractClass {
         adventure.getRoomConfirmation() == null
 
     }
+
     def 'inconsistentDates'() {
         when:
         new Adventure(broker, begin, begin.minusDays(1), client, MARGIN)
