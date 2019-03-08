@@ -1,4 +1,7 @@
-package pt.ulisboa.tecnico.softeng.broker.domain;
+package pt.ulisboa.tecnico.softeng.broker.domain
+
+import org.joda.time.LocalDate
+import spock.lang.Shared;
 
 import static junit.framework.TestCase.assertNull;
 import static junit.framework.TestCase.assertTrue;
@@ -16,98 +19,128 @@ import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.Atomic.TxMode;
 import pt.ist.fenixframework.FenixFramework
 
-class BrokerPersistenceSpockTest extends BaseTest {
+class BrokerPersistenceSpockTest extends SpockPersistenceTestAbstractClass {
 
-	@Test
-	def 'success'() {
-		atomicProcess()
-		atomicAssert()
-	}
+	@Shared
+	def BROKER_CODE = "BR01"
+	@Shared
+	def BROKER_NAME = "WeExplore"
+	@Shared
+	def BROKER_IBAN = "BROKER_IBAN"
+	@Shared
+	def NIF_AS_BUYER = "buyerNIF"
+	@Shared
+	def BROKER_NIF_AS_SELLER = "sellerNIF"
+	@Shared
+	def CLIENT_NIF = "123456789"
+	@Shared
+	def DRIVING_LICENSE = "IMT1234"
+	@Shared
+	def CLIENT_IBAN = "BK011234567"
+	@Shared
+	def NUMBER_OF_BULK = 20
+	@Shared
+	def AGE = 20
 
-	def 'atomicProcess'() {
-		Broker broker = new Broker(BROKER_CODE, BROKER_NAME, BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN)
-		Client client = new Client(broker, CLIENT_IBAN, CLIENT_NIF, DRIVING_LICENSE, AGE)
-		new Adventure(broker, this.begin, this.end, client, MARGIN, true)
+	@Shared
+	def MARGIN = 0.3
 
-		BulkRoomBooking bulk = new BulkRoomBooking(broker, NUMBER_OF_BULK, this.begin, this.end, NIF_AS_BUYER,
+	@Shared
+	def REF_ONE = "ref1";
+
+	@Shared
+	def begin = new LocalDate(2016, 12, 19);
+	@Shared
+	def end = new LocalDate(2016, 12, 21);
+	@Shared
+	def arrival = new LocalDate(2016, 12, 19);
+	@Shared
+	def departure = new LocalDate(2016, 12, 21);
+
+
+	@Override
+	def whenCreateInDatabase() {
+		def broker = new Broker(BROKER_CODE, BROKER_NAME, BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN)
+		def client = new Client(broker, CLIENT_IBAN, CLIENT_NIF, DRIVING_LICENSE, AGE)
+		new Adventure(broker, begin, end, client, MARGIN, true)
+		def bulk = new BulkRoomBooking(broker, NUMBER_OF_BULK, begin, end, NIF_AS_BUYER,
 				CLIENT_IBAN)
-
 		new Reference(bulk, REF_ONE)
+
 	}
 
-	@Atomic(mode = TxMode.READ)
-	public void atomicAssert() {
-		assertEquals(1, FenixFramework.getDomainRoot().getBrokerSet().size());
+	@Override
+	def thenAssert() {
+		assert FenixFramework.getDomainRoot().getBrokerSet().size() == 1
 
-		List<Broker> brokers = new ArrayList<>(FenixFramework.getDomainRoot().getBrokerSet());
-		Broker broker = brokers.get(0);
+		def brokers = new ArrayList<>(FenixFramework.getDomainRoot().getBrokerSet());
+		def broker = brokers.get(0);
 
-		assertEquals(BROKER_CODE, broker.getCode());
-		assertEquals(BROKER_NAME, broker.getName());
-		assertEquals(1, broker.getAdventureSet().size());
-		assertEquals(1, broker.getRoomBulkBookingSet().size());
-		assertEquals(NIF_AS_BUYER, broker.getNifAsBuyer());
-		assertEquals(BROKER_NIF_AS_SELLER, broker.getNifAsSeller());
-		assertEquals(BROKER_IBAN, broker.getIban());
+		assert broker.getCode() == BROKER_CODE
+		assert broker.getName() == BROKER_NAME
+		assert broker.getAdventureSet().size() == 1
+		assert broker.getRoomBulkBookingSet().size() == 1
+		assert broker.getNifAsBuyer() == NIF_AS_BUYER
+		assert broker.getNifAsSeller() == BROKER_NIF_AS_SELLER
+		assert broker.getIban() == BROKER_IBAN
 
-		List<Adventure> adventures = new ArrayList<>(broker.getAdventureSet());
-		Adventure adventure = adventures.get(0);
+		def adventures = new ArrayList<>(broker.getAdventureSet())
+		def adventure = adventures.get(0)
 
-		assertNotNull(adventure.getID());
-		assertEquals(broker, adventure.getBroker());
-		assertEquals(this.begin, adventure.getBegin());
-		assertEquals(this.end, adventure.getEnd());
-		assertEquals(AGE, adventure.getAge());
-		assertEquals(CLIENT_IBAN, adventure.getIban());
-		assertNull(adventure.getPaymentConfirmation());
-		assertNull(adventure.getPaymentCancellation());
-		assertNull(adventure.getRentingConfirmation());
-		assertNull(adventure.getRentingCancellation());
-		assertNull(adventure.getActivityConfirmation());
-		assertNull(adventure.getActivityCancellation());
-		assertNull(adventure.getRentingConfirmation());
-		assertNull(adventure.getRentingCancellation());
-		assertNull(adventure.getInvoiceReference());
-		assertFalse(adventure.getInvoiceCancelled());
-		assertTrue(adventure.getRentVehicle());
-		assertNotNull(adventure.getTime());
-		assertEquals(MARGIN, adventure.getMargin(), 0);
-		assertEquals(0.0, adventure.getCurrentAmount(), 0);
-		assertEquals(1, adventure.getClient().getAdventureSet().size());
+		assert adventure.getID() != null
+		assert adventure.getBroker() == broker
+		assert adventure.getBegin() == begin
+		assert adventure.getEnd() == end
+		assert adventure.getAge() == AGE
+		assert adventure.getIban() == CLIENT_IBAN
+		assert adventure.getPaymentConfirmation() == null
+		assert adventure.getPaymentCancellation() == null
+		assert adventure.getRentingConfirmation() == null
+		assert adventure.getRentingCancellation() == null
+		assert adventure.getActivityConfirmation() == null
+		assert adventure.getActivityCancellation() == null
+		assert adventure.getRentingConfirmation() == null
+		assert adventure.getRentingCancellation() == null
+		assert adventure.getInvoiceReference() == null
+		assert !adventure.getInvoiceCancelled()
+		assert adventure.getRentVehicle()
+		assert adventure.getTime() != null
+		assert adventure.getMargin() == MARGIN
+		assert adventure.getCurrentAmount() == 0.0
+		assert adventure.getClient().getAdventureSet().size() == 1
 
-		assertEquals(Adventure.State.RESERVE_ACTIVITY, adventure.getState().getValue());
-		assertEquals(0, adventure.getState().getNumOfRemoteErrors());
+		assert adventure.getState().getValue() == Adventure.State.RESERVE_ACTIVITY
+		assert adventure.getState().getNumOfRemoteErrors() == 0
 
-		List<BulkRoomBooking> bulks = new ArrayList<>(broker.getRoomBulkBookingSet());
-		BulkRoomBooking bulk = bulks.get(0);
+		def bulks = new ArrayList<>(broker.getRoomBulkBookingSet())
+		def bulk = bulks.get(0)
 
-		assertNotNull(bulk);
-		assertEquals(this.begin, bulk.getArrival());
-		assertEquals(this.end, bulk.getDeparture());
-		assertEquals(NUMBER_OF_BULK, bulk.getNumber());
-		assertFalse(bulk.getCancelled());
-		assertEquals(0, bulk.getNumberOfHotelExceptions());
-		assertEquals(0, bulk.getNumberOfRemoteErrors());
-		assertEquals(1, bulk.getReferenceSet().size());
-		assertEquals(CLIENT_IBAN, bulk.getBuyerIban());
-		assertEquals(NIF_AS_BUYER, bulk.getBuyerNif());
+		assert bulk != null
+		assert bulk.getArrival() == begin
+		assert bulk.getDeparture() == end
+		assert bulk.getNumber() == NUMBER_OF_BULK
+		assert !bulk.getCancelled()
+		assert bulk.getNumberOfHotelExceptions() == 0
+		assert bulk.getNumberOfRemoteErrors() == 0
+		assert bulk.getReferenceSet().size() == 1
+		assert bulk.getBuyerIban() == CLIENT_IBAN
+		assert bulk.getBuyerNif() == NIF_AS_BUYER
 
-		List<Reference> references = new ArrayList<>(bulk.getReferenceSet());
-		Reference reference = references.get(0);
-		assertEquals(REF_ONE, reference.getValue());
+		def references = new ArrayList<>(bulk.getReferenceSet())
+		def reference = references.get(0)
+		assert reference.getValue() == REF_ONE
 
-		Client client = adventure.getClient();
-		assertEquals(CLIENT_IBAN, client.getIban());
-		assertEquals(CLIENT_NIF, client.getNif());
-		assertEquals(AGE, client.getAge());
-		assertEquals(DRIVING_LICENSE, client.getDrivingLicense());
+		def client = adventure.getClient()
+		assert client.getIban() == CLIENT_IBAN
+		assert client.getNif() == CLIENT_NIF
+		assert client.getAge() == AGE
+		assert client.getDrivingLicense() == DRIVING_LICENSE
 	}
 
-	@After
-	@Atomic(mode = TxMode.WRITE)
-	public void tearDown() {
+	@Override
+	def deleteFromDatabase() {
 		for (Broker broker : FenixFramework.getDomainRoot().getBrokerSet()) {
-			broker.delete();
+			broker.delete()
 		}
 	}
 
