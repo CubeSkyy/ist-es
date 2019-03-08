@@ -12,14 +12,12 @@ import pt.ulisboa.tecnico.softeng.tax.exception.TaxException
 import pt.ulisboa.tecnico.softeng.tax.services.local.TaxInterface
 import spock.lang.Unroll
 
-class IRSCancelInvoiceMethodSpockest extends SpockRollbackTestAbstractClass{
+class IRSCancelInvoiceMethodSpockTest extends SpockRollbackTestAbstractClass {
     def SELLER_NIF = "123456789"
     def BUYER_NIF = "987654321"
     def FOOD = "FOOD"
     def VALUE = 16
     def date = new LocalDate(2018, 02, 13)
-
-
 
     def irs
     def reference
@@ -35,27 +33,27 @@ class IRSCancelInvoiceMethodSpockest extends SpockRollbackTestAbstractClass{
         this.reference = this.invoice.getReference()
     }
 
-    def 'success'(){
-        when:'when cancelling an invoice'
+    def 'success'() {
+        when: 'when cancelling an invoice'
         TaxInterface.cancelInvoice(this.reference)
 
-        then:'is cancelled'
-        assert this.invoice.isCancelled()
+        then: 'is cancelled'
+        this.invoice.isCancelled()
     }
 
     @Unroll('#label')
-    def 'exceptions'(){
-        when:'canceling a wrong ref'
+    def 'exceptions'() {
+        when: 'canceling a wrong ref'
         TaxInterface.cancelInvoice(ref)
 
-        then:'throws an exception'
+        then: 'throws an exception'
         thrown(TaxException)
 
         where:
-        label | ref
+        label       | ref
         'wrong ref' | 'XXXXXXXX'
-        'null ref'    | null
-        'empty ref'   | "   "
+        'null ref'  | null
+        'empty ref' | "   "
 
     }
 
