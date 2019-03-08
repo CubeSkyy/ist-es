@@ -1,10 +1,10 @@
-package pt.ulisboa.tecnico.softeng.bank.domain;
+package pt.ulisboa.tecnico.softeng.hotel.domain;
 
-import pt.ist.fenixframework.FenixFramework;
-import pt.ist.fenixframework.core.WriteOnReadError;
-import spock.lang.Specification;
+import pt.ist.fenixframework.FenixFramework
+import pt.ist.fenixframework.core.WriteOnReadError
+import spock.lang.Specification
 
-import javax.transaction.NotSupportedException;
+import javax.transaction.NotSupportedException
 import javax.transaction.SystemException
 
 
