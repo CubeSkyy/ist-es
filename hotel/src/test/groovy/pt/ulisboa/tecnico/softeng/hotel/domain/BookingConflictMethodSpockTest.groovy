@@ -1,19 +1,11 @@
 package pt.ulisboa.tecnico.softeng.hotel.domain
 
 import org.joda.time.LocalDate
-import org.junit.Assert
-import org.junit.Test
-import org.junit.runner.RunWith
 import spock.lang.*
 
-
-import mockit.Mocked
-import mockit.integration.junit4.JMockit
 import pt.ulisboa.tecnico.softeng.hotel.exception.HotelException
 import pt.ulisboa.tecnico.softeng.hotel.services.remote.BankInterface
 import pt.ulisboa.tecnico.softeng.hotel.services.remote.TaxInterface
-
-import javax.validation.constraints.AssertFalse
 
 
 class BookingConflictMethodSpockTest extends RollbackSpockTestAbstractClass {
@@ -21,12 +13,12 @@ class BookingConflictMethodSpockTest extends RollbackSpockTestAbstractClass {
     @Shared def arrival = new LocalDate(2016, 12, 19)
     @Shared def departure = new LocalDate(2016, 12, 24)
     @Shared def booking
-    def String NIF_HOTEL = "123456700"
-    def String NIF_BUYER = "123456789"
-    def String IBAN_BUYER = "IBAN_BUYER"
+    def NIF_HOTEL = "123456700"
+    def NIF_BUYER = "123456789"
+    def IBAN_BUYER = "IBAN_BUYER"
 
-    def TaxInterface taxInterface
-    def BankInterface bankInterface
+    def taxInterface
+    def bankInterface
 
     @Override
     def populate4Test() {
@@ -41,17 +33,14 @@ class BookingConflictMethodSpockTest extends RollbackSpockTestAbstractClass {
         booking.conflict(new LocalDate(2016, 12, 9), new LocalDate(2016, 12, 15)) == false
     }
 
-    /*@Unroll('Booking: #arrival, #departure')
+    @Unroll('Booking: #arri, #depar')
     def 'no conflict because it is cancelled' () {
-        given:
+        when:
         booking.cancel()
 
-        expect: 'booking no conflict'
-        !booking.conflict(arrival, departure)
-        where:
-        arrival              |departure
-        booking.getArrival() |booking.getDeparture()
-    }*/
+        then: 'booking no conflict'
+        !booking.conflict(booking.getArrival(), booking.getDeparture())
+    }
 
     def 'arguments are inconsistent'() {
         when: 'throws an exception if arguments are inconsistens'
