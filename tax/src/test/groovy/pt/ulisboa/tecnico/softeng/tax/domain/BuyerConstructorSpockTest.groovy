@@ -18,13 +18,14 @@ class BuyerConstructorSpockTest extends SpockRollbackTestAbstractClass {
     }
 
     def 'success'() {
+        given:
         def buyer = new Buyer(this.irs, NIF, NAME, ADDRESS)
+        expect:
+        buyer.getNif() == NIF
+        buyer.getName() == NAME
+        buyer.getAddress() == ADDRESS
 
-        assert buyer.getNif() == NIF
-        assert buyer.getName() == NAME
-        assert buyer.getAddress() == ADDRESS
-
-        assert IRS.getIRSInstance().getTaxPayerByNIF(NIF) == buyer
+        IRS.getIRSInstance().getTaxPayerByNIF(NIF) == buyer
     }
 
 
@@ -37,7 +38,8 @@ class BuyerConstructorSpockTest extends SpockRollbackTestAbstractClass {
 
         then: 'throws an exception'
         thrown(TaxException)
-        assert IRS.getIRSInstance().getTaxPayerByNIF(NIF) == seller
+        
+        IRS.getIRSInstance().getTaxPayerByNIF(NIF) == seller
 
     }
 
