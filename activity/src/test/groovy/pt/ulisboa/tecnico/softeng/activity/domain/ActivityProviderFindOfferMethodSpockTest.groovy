@@ -36,22 +36,20 @@ public class ActivityProviderFindOfferMethodSpockTest extends RollbackSpockTestA
 		offers.contains(this.offer)
 	}
 
-	def 'null begin date'() {
-    when:
-		this.provider.findOffer(null, this.end, AGE);
+	@Unroll('findOffer: #bgn, #nd, #a')
+	def 'exceptions'() {
+		when:
+		this.provider.findOffer(bgn, nd, a)
 
-    then:
-    thrown(ActivityException)
+		then:
+		thrown(ActivityException)
+
+		where:
+		bgn | nd | a
+		null | this.end | AGE
+		this.begin | null | AGE
 	}
-
-	def 'null end date'() {
-    when:
-		this.provider.findOffer(this.begin, null, AGE);
-
-    then:
-    thrown(ActivityException)
-	}
-
+	
 	def 'success age equal min'() {
     given:
 		def offers = this.provider.findOffer(this.begin, this.end, MIN_AGE);
