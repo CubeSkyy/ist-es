@@ -18,7 +18,7 @@ To see the coverage reports, go to <module name>/target/site/jacoco/index.html.
 
 **Nome:** Miguel Coelho **Numero:** ist187687 **Email:** miguelmendescoelho@tecnico.ulisboa.pt  **Github Username:** CubeSkyy
 
-|   Class                                      |          Package      | Issue |  
+|   Class                                      |          Package      | Issue |
 | -------------------------------------------- | --------------------- | ----- |
 | AccountContructorMethodSpockTest             |bank.domain            | #13   |
 | AccountDepositMethodSpockTest                |bank.domain            | #14   |
@@ -32,7 +32,7 @@ To see the coverage reports, go to <module name>/target/site/jacoco/index.html.
 
 **Nome:** Bernardo Santos **Numero:** ist187635 **Email:** bernardo.d.santos@tecnico.ulisboa.pt  **Github Username:** BSantosCoding
 
-|   Class                                                    |          Package      | Issue |  
+|   Class                                                    |          Package      | Issue |
 | ---------------------------------------------------------- | --------------------- | ----- |
 | ActivityContructorMethodSpockTest                          |activity.domain        | #1    |
 | ActivityMatchAgeMethodSpockTest                            |activity.domain        | #3    |
@@ -47,7 +47,7 @@ To see the coverage reports, go to <module name>/target/site/jacoco/index.html.
 
 **Nome:** André Patrício **Numero:** ist187631 **Email:** andrepatricio98@tecnico.ulisboa.pt  **Github Username:** Andrempp
 
-|   Class                                                    |          Package      | Issue |  
+|   Class                                                    |          Package      | Issue |
 | ---------------------------------------------------------- | --------------------- | ----- |
 | TaxPayerGetTaxesPerYearMethodsSpockTest                    |tax.domain        	 | #57   |
 | TaxPayerGetInvoiceByReferenceSpockTest                     |tax.domain        	 | #55   |
@@ -70,6 +70,23 @@ To see the coverage reports, go to <module name>/target/site/jacoco/index.html.
 | HotelPersistenceSpockTest                                  |hotel.domain           | #34   |
 | HotelSetPriceMethodSpockTest                               |hotel.domain           | #35   |
 | HotelInterfaceGetRoomBookingDataMethodTest                 |hotel.domain           | #58   |
+
+**Nome:** Bernardo Esteves **Numero:** ist187633 **Email:** bernardo.esteves@tecnico.ulisboa.pt  **Github Username:** esteveste
+
+|   Class                                                    |          Package      | Issue |
+| ---------------------------------------------------------- | --------------------- | ----- |
+|  BuyerToReturnSpockTest                            |tax.domain        	 | #54   |
+|   SpockRollbackTestAbstractClass                              |tax.domain        	 | #27   |
+|    Tax SpockPersistenceTestAbstractClass                 	 		 |tax.domain           | #28   |
+|   TaxPersistenceSpockTest                             |tax.domain        	 | #26   |
+|     BuyerConstructorSpockTest                        |tax.domain           | #25   |
+|       IRSCancelInvoiceMethodSpockTest                           |tax.domain           | #24   |
+|     SellerToPaySpockTest                          |tax.domain           | #48   |
+|   SellerConstructorSpockTest              |tax.domain           | #49   |
+|   InvoiceConstructorSpockTest              |tax.domain           | #52   |
+|   SellerConstructorSpockTest              |hotel.domain           | #49   |
+|   SellerConstructorSpockTest              |hotel.domain           | #49   |
+|   SellerConstructorSpockTest              |hotel.domain           | #49   |
 
 - **Group 1:**
 - **Group 2:**
