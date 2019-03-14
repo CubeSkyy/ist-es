@@ -1,10 +1,5 @@
 package pt.ulisboa.tecnico.softeng.hotel.domain
 
-import spock.lang.Unroll
-
-import static org.junit.Assert.assertEquals
-
-import org.junit.Test
 
 import pt.ulisboa.tecnico.softeng.hotel.exception.HotelException
 
