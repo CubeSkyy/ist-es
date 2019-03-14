@@ -75,18 +75,17 @@ To see the coverage reports, go to <module name>/target/site/jacoco/index.html.
 
 |   Class                                                    |          Package      | Issue |
 | ---------------------------------------------------------- | --------------------- | ----- |
-|  BuyerToReturnSpockTest                            |tax.domain        	 | #54   |
+|    SpockPersistenceTestAbstractClass                 	 		 |tax.domain           | #28   |
 |   SpockRollbackTestAbstractClass                              |tax.domain        	 | #27   |
-|    Tax SpockPersistenceTestAbstractClass                 	 		 |tax.domain           | #28   |
 |   TaxPersistenceSpockTest                             |tax.domain        	 | #26   |
 |     BuyerConstructorSpockTest                        |tax.domain           | #25   |
-|       IRSCancelInvoiceMethodSpockTest                           |tax.domain           | #24   |
+|       IRSCancelInvoiceMethodSpockTest                           |tax.domain.services.local           | #24   |
 |     SellerToPaySpockTest                          |tax.domain           | #48   |
 |   SellerConstructorSpockTest              |tax.domain           | #49   |
-|   InvoiceConstructorSpockTest              |tax.domain           | #52   |
-|   SellerConstructorSpockTest              |hotel.domain           | #49   |
-|   SellerConstructorSpockTest              |hotel.domain           | #49   |
-|   SellerConstructorSpockTest              |hotel.domain           | #49   |
+|   ItemTypeConstructorSpockTest              |tax.domain           | #50   |
+|   IRSGetTaxPayerByNIFSpockTest              |tax.domain           | #51   |
+|   InvoiceConstructorSpockTest               |tax.domain           | #52   |
+|  BuyerToReturnSpockTest                            |tax.domain        	 | #54   |
 
 - **Group 1:**
 - **Group 2:**
