@@ -11,45 +11,49 @@ import spock.lang.Shared
 import spock.lang.Unroll
 
 class BankInterfaceGetOperationDataMethodSpockTest extends RollbackSpockTestAbstractClass {
-
+    @Shared
     Bank bank
+    @Shared
     Account account
     @Shared
-    private static double AMOUNT = 100
+    String reference
     @Shared
-    private String reference
+    def AMOUNT = 100
+
 
     @Override
     def 'populate4Test'() {
-        this.bank = new Bank("Money", "BK01")
-        def client = new Client(this.bank, "António")
-        this.account = new Account(this.bank, client)
-        this.reference = this.account.deposit(AMOUNT).getReference()
+        bank = new Bank("Money", "BK01")
+        def client = new Client(bank, "António")
+        account = new Account(bank, client)
+        reference = account.deposit(AMOUNT).getReference()
     }
 
     def 'success'() {
         when: 'Reading operation data'
-        def data = BankInterface.getOperationData(this.reference)
+        def data = BankInterface.getOperationData(reference)
 
         then: 'The data is consistent with the account'
-        data.getReference() == this.reference
-        this.account.getIBAN() == data.getIban()
-        data.getType() == Operation.Type.DEPOSIT.name()
-        data.getValue() == AMOUNT
-        data.getTime() != null
+        with(data) {
+            getReference() == reference
+            getIban() == account.getIBAN()
+            getType() == Operation.Type.DEPOSIT.name()
+            getValue() == AMOUNT
+            getTime() != null
+        }
     }
 
 
-    @Unroll('Bank get operation data: #ref')
+    @Unroll('Bank get operation data: #_ref')
     def 'exceptions'() {
         when: 'reading operation data'
-        BankInterface.getOperationData(ref)
+        BankInterface.getOperationData(_ref)
 
         then: 'An exception is thrown'
         thrown(BankException)
 
         where:
-        ref    | _
+        _ref   | _
         null   | _
         ""     | _
         "XPTO" | _
