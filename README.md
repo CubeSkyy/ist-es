@@ -45,6 +45,23 @@ To see the coverage reports, go to <module name>/target/site/jacoco/index.html.
 | ActivityProviderFindOfferMethodSpockTest                   |activity.domain        | #11   |
 | ActivityInterfaceGetActivityReservationDataMethodSpockTest |activity.services.local| #8    |
 
+**Nome:** Ricardo Silva **Numero:** ist187700 **Email:** ricardo.f.oliveira.da.silva@tecnico.ulisboa.pt  **Github Username:** genlike
+
+|   Class                                                    |          Package      | Issue |  
+| ---------------------------------------------------------- | --------------------- | ----- |
+| BrokerConstructorMethodTest                                |broker.domain          | #41   |
+| AdventureConstructorMethodTest                             |broker.domain          | #40   |
+| ClientConstructorMethodTest                                |broker.domain          | #43   |
+| BrokerPersistenceMethodTest                                |broker.domain          | #42   |
+| IRSGetItemTypeByNameSpockTest                              |tax.domain             | #53   |
+| RoomReservedMethodTest                                     |hotel.domain           | #39   |
+| RoomGetBookingMethodTest                                   |hotel.domain           | #38   |
+| RoomConstructorMethodTest                                  |hotel.domain           | #37   |
+
+
+ClientConstructorMethodTest
+
+
 - **Group 1:**
 - **Group 2:**
 

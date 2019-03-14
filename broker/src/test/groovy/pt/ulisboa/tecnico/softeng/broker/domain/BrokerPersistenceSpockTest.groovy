@@ -3,20 +3,6 @@ package pt.ulisboa.tecnico.softeng.broker.domain
 import org.joda.time.LocalDate
 import spock.lang.Shared;
 
-import static junit.framework.TestCase.assertNull;
-import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.After;
-import org.junit.Test;
-
-import pt.ist.fenixframework.Atomic;
-import pt.ist.fenixframework.Atomic.TxMode;
 import pt.ist.fenixframework.FenixFramework
 
 class BrokerPersistenceSpockTest extends SpockPersistenceTestAbstractClass {
@@ -73,8 +59,8 @@ class BrokerPersistenceSpockTest extends SpockPersistenceTestAbstractClass {
 	def thenAssert() {
 		assert FenixFramework.getDomainRoot().getBrokerSet().size() == 1
 
-		def brokers = new ArrayList<>(FenixFramework.getDomainRoot().getBrokerSet());
-		def broker = brokers.get(0);
+		def brokers = new ArrayList<>(FenixFramework.getDomainRoot().getBrokerSet())
+		def broker = brokers.get(0)
 
 		assert broker.getCode() == BROKER_CODE
 		assert broker.getName() == BROKER_NAME

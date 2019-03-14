@@ -5,8 +5,6 @@ import pt.ulisboa.tecnico.softeng.broker.exception.BrokerException
 import spock.lang.Shared
 import spock.lang.Unroll
 
-import javax.validation.constraints.Null
-
 
 class AdventureConstructorMethodSpockTest extends SpockRollbackTestAbstractClass {
 
@@ -54,16 +52,18 @@ class AdventureConstructorMethodSpockTest extends SpockRollbackTestAbstractClass
         def adventure = new Adventure(broker, begin, end, client, MARGIN)
 
         expect:
-        adventure.getBroker() == broker
-        adventure.getBegin() == begin
-        adventure.getEnd() == end
-        adventure.getClient() == client
-        adventure.getMargin() == MARGIN
-        broker.getAdventureSet().contains(adventure)
+        adventure.with() {
+            getBroker() == broker
+            getBegin() == begin
+            getEnd() == end
+            getClient() == client
+            getMargin() == MARGIN
 
-        adventure.getPaymentConfirmation() == null
-        adventure.getActivityConfirmation() == null
-        adventure.getRoomConfirmation() == null
+            getPaymentConfirmation() == null
+            getActivityConfirmation() == null
+            getRoomConfirmation() == null
+        }
+        broker.getAdventureSet().contains(adventure)
     }
 
     @Unroll('Adventure creation: #_broker, #_begin, #_end, #_margin')
