@@ -24,21 +24,19 @@ class ActivityOfferMatchDateMethodSpockTest extends RollbackSpockTestAbstractCla
     this.offer.matchDate(this.begin, this.end)
   }
 
-  def 'null begin date'() {
-    when:
-    this.offer.matchDate(null, this.end)
+	@Unroll('matchDate: #bgn, #nd')
+	def 'exceptions'() {
+		when:
+		this.offer.matchDate(bgn, nd)
 
-    then:
-    thrown(ActivityException)
-  }
+		then:
+		thrown(ActivityException)
 
-  def 'null end date'() {
-    when:
-    this.offer.matchDate(this.begin, null)
-
-    then:
-    thrown(ActivityException)
-  }
+		where:
+		bgn        | nd
+		null       | this.end
+		this.begin | null
+	}
 
   def 'begin plus one'() {
     expect:

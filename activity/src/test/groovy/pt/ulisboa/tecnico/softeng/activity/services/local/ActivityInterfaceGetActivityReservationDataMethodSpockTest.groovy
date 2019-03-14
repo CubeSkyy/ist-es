@@ -61,28 +61,18 @@ class ActivityInterfaceGetActivityReservationDataMethodSpockTest extends Rollbac
 		data.getCancellationDate() != null
 	}
 
-	def 'null reference'() {
+	@Unroll('getActivityReservationData: #bking')
+	def 'exceptions'() {
 		when:
-		ActivityInterface.getActivityReservationData(null);
+		ActivityInterface.getActivityReservationData(bking)
 
 		then:
 		thrown(ActivityException)
+
+		where:
+		bking | _
+		null | _
+		' ' | _
+		"XPTO" | _
 	}
-
-	def 'empty reference'() {
-		when:
-		ActivityInterface.getActivityReservationData("")
-
-		then:
-		thrown(ActivityException)
-	}
-
-	def 'not exists reference'() {
-		when:
-		ActivityInterface.getActivityReservationData("XPTO")
-
-		then:
-		thrown(ActivityException)
-	}
-
 }

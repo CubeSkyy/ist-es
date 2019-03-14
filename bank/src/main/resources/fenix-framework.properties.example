@@ -1,0 +1,7 @@
+# Copy this file to fenix-framework.properties
+# and replace password by your mysql root password
+dbAlias=//localhost:3306/advbank
+dbUsername=root
+dbPassword=87636
+updateRepositoryStructureIfNeeded=true
+canCreateDomainMetaObjects=false
