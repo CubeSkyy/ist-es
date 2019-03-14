@@ -2,41 +2,43 @@ package pt.ulisboa.tecnico.softeng.bank.domain
 
 import pt.ulisboa.tecnico.softeng.bank.exception.BankException
 import spock.lang.Unroll
-
+import spock.lang.Shared
 
 class BankGetAccountMethodSpockTest extends RollbackSpockTestAbstractClass {
-
+    @Shared
     Bank bank
+    @Shared
     Client client
 
     @Override
     def 'populate4Test'() {
-        this.bank = new Bank("Money", "BK01")
-        this.client = new Client(this.bank, "António")
+        bank = new Bank("Money", "BK01")
+        client = new Client(bank, "António")
     }
 
 
     def 'success'() {
         given: 'A new account'
-        def account = new Account(this.bank, this.client)
+        def account = new Account(bank, client)
 
         when: 'Searching for the account in the bank'
-        def result = this.bank.getAccount(account.getIBAN())
+        def result = bank.getAccount(account.getIBAN())
 
         then: 'Result matches account'
         result == account
     }
 
-    @Unroll('Bank get account: #IBAN')
+    @Unroll('Bank get account: #_iban')
     def 'exceptions'() {
         when: 'Searching for an account with invalid IBAN'
-        this.bank.getAccount(IBAN)
+        bank.getAccount(_iban)
 
         then: 'An exception is thrown'
         thrown(BankException)
 
         where:
-        IBAN   | _
+        _iban  | _
+        null   | _
         ""     | _
         "    " | _
 
@@ -44,7 +46,7 @@ class BankGetAccountMethodSpockTest extends RollbackSpockTestAbstractClass {
 
     def 'emptySetOfAccounts'() {
         when: 'Searching an account that doesn\'t exist'
-        def account = this.bank.getAccount("XPTO")
+        def account = bank.getAccount("XPTO")
 
         then: 'The account is not found'
         account == null
@@ -53,11 +55,13 @@ class BankGetAccountMethodSpockTest extends RollbackSpockTestAbstractClass {
 
     def 'severalAccountsDoNoMatch'() {
         given: 'A new Account'
-        new Account(this.bank, this.client)
+        new Account(bank, client)
+
         when: 'Creating the same account'
-        new Account(this.bank, this.client)
+        new Account(bank, client)
+
         then: 'Search does not match'
-        this.bank.getAccount("XPTO") == null
+        bank.getAccount("XPTO") == null
 
     }
 

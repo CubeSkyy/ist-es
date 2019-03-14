@@ -13,67 +13,69 @@ import spock.lang.Unroll
 class BankInterfaceProcessPaymentMethodSpockTest extends RollbackSpockTestAbstractClass {
 
     @Shared
-    private static final String TRANSACTION_SOURCE = "ADVENTURE"
-    @Shared
-    private static final String TRANSACTION_REFERENCE = "REFERENCE"
-
     Bank bank
+    @Shared
     Account account
+    @Shared
     String iban
+    @Shared
+    def TRANSACTION_SOURCE = "ADVENTURE"
+    @Shared
+    def TRANSACTION_REFERENCE = "REFERENCE"
 
     @Override
     def 'populate4Test'() {
-        this.bank = new Bank("Money", "BK01")
-        def client = new Client(this.bank, "António")
-        this.account = new Account(this.bank, client)
-        this.iban = this.account.getIBAN()
-        this.account.deposit(500)
+        bank = new Bank("Money", "BK01")
+        def client = new Client(bank, "António")
+        account = new Account(bank, client)
+        iban = account.getIBAN()
+        account.deposit(500)
     }
 
 
     def 'success'() {
         when: 'Processing a payment'
-        this.account.getIBAN()
+        account.getIBAN()
         def newReference = BankInterface
-                .processPayment(new BankOperationData(this.iban, 100, TRANSACTION_SOURCE, TRANSACTION_REFERENCE))
+                .processPayment(new BankOperationData(iban, 100, TRANSACTION_SOURCE, TRANSACTION_REFERENCE))
 
         then: 'The operation is successful'
         newReference != null
         newReference.startsWith("BK01")
-        this.bank.getOperation(newReference) != null
-        this.bank.getOperation(newReference).getType() == Operation.Type.WITHDRAW
+        bank.getOperation(newReference) != null
+        bank.getOperation(newReference).getType() == Operation.Type.WITHDRAW
     }
 
 
     def 'successTwoBanks'() {
-        given:
+        given: 'After creating another bank'
         def otherBank = new Bank("Money", "BK02")
         def otherClient = new Client(otherBank, "Manuel")
         def otherAccount = new Account(otherBank, otherClient)
         def otherIban = otherAccount.getIBAN()
 
-        when:
+        when: 'Processing a transaction between the two banks'
         otherAccount.deposit(1000)
         BankInterface.processPayment(new BankOperationData(otherIban, 100, TRANSACTION_SOURCE, TRANSACTION_REFERENCE))
         BankInterface.processPayment(
-                new BankOperationData(this.iban, 100, TRANSACTION_SOURCE, TRANSACTION_REFERENCE + "PLUS"))
+                new BankOperationData(iban, 100, TRANSACTION_SOURCE, TRANSACTION_REFERENCE + "PLUS"))
 
-        then:
+        then: 'Both accounts have a consistent balance'
         otherAccount.getBalance() == 900
-        this.account.getBalance() == 400
+        account.getBalance() == 400
     }
 
     def 'redoAnAlreadyPayed'() {
-        given:
-        this.account.getIBAN()
+        given: 'Two references of the same operation'
+        account.getIBAN()
         def firstReference = BankInterface
-                .processPayment(new BankOperationData(this.iban, 100, TRANSACTION_SOURCE, TRANSACTION_REFERENCE))
+                .processPayment(new BankOperationData(iban, 100, TRANSACTION_SOURCE, TRANSACTION_REFERENCE))
         def secondReference = BankInterface
-                .processPayment(new BankOperationData(this.iban, 100, TRANSACTION_SOURCE, TRANSACTION_REFERENCE))
+                .processPayment(new BankOperationData(iban, 100, TRANSACTION_SOURCE, TRANSACTION_REFERENCE))
 
-        expect:
+        expect: 'They are equal and balance didn\'t deduct twice'
         firstReference == secondReference
-        this.account.getBalance() == 400
+        account.getBalance() == 400
     }
 
 
@@ -82,25 +84,22 @@ class BankInterfaceProcessPaymentMethodSpockTest extends RollbackSpockTestAbstra
         when:
         BankInterface.processPayment(new BankOperationData(_iban, _value, TRANSACTION_SOURCE, TRANSACTION_REFERENCE))
 
-
         then:
         thrown(BankException)
 
         where:
-
         _iban     | _value
         null      | 100
         "  "      | 100
-        this.iban | 0
+        iban | 0
         "other"   | 0
     }
 
     def 'oneAmount'() {
-        given:
-        BankInterface.processPayment(new BankOperationData(this.iban, 1, TRANSACTION_SOURCE, TRANSACTION_REFERENCE))
-        expect:
-        this.account.getBalance() == 499
-
+        given: 'A border transaction of 1'
+        BankInterface.processPayment(new BankOperationData(iban, 1, TRANSACTION_SOURCE, TRANSACTION_REFERENCE))
+        expect: 'The balance gets deducted 1 unit'
+        account.getBalance() == 499
     }
 
 

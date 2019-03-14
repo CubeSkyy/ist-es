@@ -7,8 +7,10 @@ import spock.lang.Shared
 
 class BankConstructorSpockTest extends RollbackSpockTestAbstractClass {
 
-    @Shared def BANK_CODE = "BK01"
-    @Shared def BANK_NAME = "Money"
+    @Shared
+    def BANK_CODE = "BK01"
+    @Shared
+    def BANK_NAME = "Money"
 
     @Override
     def populate4Test() {
@@ -16,26 +18,29 @@ class BankConstructorSpockTest extends RollbackSpockTestAbstractClass {
 
     def 'success'() {
         when: 'Creating a new bank'
-        def bank = new Bank(BANK_NAME, BANK_CODE);
+        def bank = new Bank(BANK_NAME, BANK_CODE)
 
         then: 'The bank data is consistent with arguments'
-        bank.getName() == BANK_NAME
-        bank.getCode() == BANK_CODE
-        FenixFramework.getDomainRoot().getBankSet().size() == 1
-        bank.getAccountSet().size() == 0
-        bank.getClientSet().size() == 0
+
+        with(bank){
+            getName() == BANK_NAME
+            getCode() == BANK_CODE
+            FenixFramework.getDomainRoot().getBankSet().size() == 1
+            getAccountSet().size() == 0
+            getClientSet().size() == 0
+        }
     }
 
-    @Unroll('Bank creation: #name, #code')
+    @Unroll('Bank creation: #_name, #_code')
     def 'exceptions'() {
         when: 'Creating a Bank with invalid arguments'
-        new Bank(name, code)
+        new Bank(_name, _code)
 
         then: 'An exception is thrown'
         thrown(BankException)
 
         where:
-        name      | code
+        _name      | _code
         null      | BANK_CODE
         "    "    | BANK_CODE
         BANK_NAME | null
