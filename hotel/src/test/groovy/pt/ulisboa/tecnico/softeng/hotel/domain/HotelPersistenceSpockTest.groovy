@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory
 import pt.ist.fenixframework.FenixFramework
 import pt.ulisboa.tecnico.softeng.hotel.domain.Room.Type
 
-abstract class HotelPersistenceSpockTest extends SpockPersistenceTestAbstractClass{
+class HotelPersistenceSpockTest extends SpockPersistenceTestAbstractClass{
     def logger = LoggerFactory.getLogger(HotelPersistenceSpockTest.class)
 
     def HOTEL_NIF = "123456789"
