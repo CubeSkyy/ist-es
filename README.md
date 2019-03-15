@@ -70,6 +70,7 @@ To see the coverage reports, go to <module name>/target/site/jacoco/index.html.
 | HotelPersistenceSpockTest                  | hotel.domain | #34   |
 | HotelSetPriceMethodSpockTest               | hotel.domain | #35   |
 | HotelInterfaceGetRoomBookingDataMethodTest | hotel.domain | #58   |
+| RollbackSpockTestAbstractClass             | hotel.domain | #36   |
 
 **Nome:** Bernardo Esteves **Numero:** ist187633 **Email:** bernardo.esteves@tecnico.ulisboa.pt  **Github Username:** esteveste
 
