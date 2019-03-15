@@ -98,10 +98,12 @@ class ClientConstructorMethodSpockTest extends SpockRollbackTestAbstractClass {
         def client = new Client(broker, CLIENT_IBAN, CLIENT_NIF, null, AGE);
 
         expect:
-        client.getIban() == CLIENT_IBAN
-        client.getNif() == CLIENT_NIF
-        client.getAge() == AGE
-        client.getDrivingLicense() == null
+        client.with() {
+            getIban() == CLIENT_IBAN
+            getNif() == CLIENT_NIF
+            getAge() == AGE
+            getDrivingLicense() == null
+        }
     }
 
 }
