@@ -6,7 +6,7 @@ import org.junit.Test
 import pt.ist.fenixframework.FenixFramework
 import pt.ulisboa.tecnico.softeng.hotel.exception.HotelException
 
-class HotelConstructorSpockTeste extends RollbackSpockTestAbstractClass {
+class HotelConstructorSpockTest extends RollbackSpockTestAbstractClass {
     def IBAN = "IBAN"
     def NIF = "NIF"
 
@@ -35,7 +35,7 @@ class HotelConstructorSpockTeste extends RollbackSpockTestAbstractClass {
 
     def 'null code'() {
         when:
-        Hotel(null, HOTEL_NAME, NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE)
+        new Hotel(null, HOTEL_NAME, NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE)
 
         then:
         thrown(HotelException)
@@ -43,7 +43,7 @@ class HotelConstructorSpockTeste extends RollbackSpockTestAbstractClass {
 
     def 'blank code'() {
         when:
-        Hotel("      ", HOTEL_NAME, NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE)
+        new Hotel("      ", HOTEL_NAME, NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE)
 
         then:
         thrown(HotelException)
@@ -51,7 +51,7 @@ class HotelConstructorSpockTeste extends RollbackSpockTestAbstractClass {
 
     def 'empty code'() {
         when:
-        Hotel("", HOTEL_NAME, NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE)
+        new  Hotel("", HOTEL_NAME, NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE)
 
         then:
         thrown(HotelException)
@@ -59,7 +59,7 @@ class HotelConstructorSpockTeste extends RollbackSpockTestAbstractClass {
 
     def 'null name'() {
         when:
-        Hotel(HOTEL_CODE, null, NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE)
+        new Hotel(HOTEL_CODE, null, NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE)
 
         then:
         thrown(HotelException)
@@ -67,7 +67,7 @@ class HotelConstructorSpockTeste extends RollbackSpockTestAbstractClass {
 
     def 'blank name'() {
         when:
-        Hotel(HOTEL_CODE, "  ", NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE)
+        new Hotel(HOTEL_CODE, "  ", NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE)
 
         then:
         thrown(HotelException)
@@ -75,7 +75,7 @@ class HotelConstructorSpockTeste extends RollbackSpockTestAbstractClass {
 
     def 'empty name'() {
         when:
-        Hotel(HOTEL_CODE, "", NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE)
+        new Hotel(HOTEL_CODE, "", NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE)
 
         then:
         thrown(HotelException)
@@ -83,7 +83,7 @@ class HotelConstructorSpockTeste extends RollbackSpockTestAbstractClass {
 
     def 'code size less'() {
         when:
-        Hotel("123456", HOTEL_NAME, NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE)
+        new Hotel("123456", HOTEL_NAME, NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE)
 
         then:
         thrown(HotelException)
@@ -91,7 +91,7 @@ class HotelConstructorSpockTeste extends RollbackSpockTestAbstractClass {
 
     def 'code size more'() {
         when:
-        Hotel("12345678", HOTEL_NAME, NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE)
+        new Hotel("12345678", HOTEL_NAME, NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE)
 
         then:
         thrown(HotelException)
@@ -99,8 +99,8 @@ class HotelConstructorSpockTeste extends RollbackSpockTestAbstractClass {
 
     def 'code not unique'() {
         when:
-        Hotel(HOTEL_CODE, HOTEL_NAME, NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE)
-        Hotel(HOTEL_CODE, HOTEL_NAME + " City", NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE)
+        new Hotel(HOTEL_CODE, HOTEL_NAME, NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE)
+        new Hotel(HOTEL_CODE, HOTEL_NAME + " City", NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE)
 
         then:
         thrown(HotelException)
@@ -108,8 +108,8 @@ class HotelConstructorSpockTeste extends RollbackSpockTestAbstractClass {
 
     def 'nif not unique'() {
         when:
-        Hotel(HOTEL_CODE, HOTEL_NAME, NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE)
-        Hotel(HOTEL_CODE + "_new", HOTEL_NAME + "_New", NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE)
+        new Hotel(HOTEL_CODE, HOTEL_NAME, NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE)
+        new Hotel(HOTEL_CODE + "_new", HOTEL_NAME + "_New", NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE)
 
         then:
         thrown(HotelException)
@@ -117,7 +117,7 @@ class HotelConstructorSpockTeste extends RollbackSpockTestAbstractClass {
 
     def 'negative price single'() {
         when:
-        Hotel(HOTEL_CODE, HOTEL_NAME, NIF, IBAN, -1.0, PRICE_DOUBLE)
+        new Hotel(HOTEL_CODE, HOTEL_NAME, NIF, IBAN, -1.0, PRICE_DOUBLE)
 
         then:
         thrown(HotelException)
@@ -125,7 +125,7 @@ class HotelConstructorSpockTeste extends RollbackSpockTestAbstractClass {
 
     def 'negative price double'() {
         when:
-        Hotel(HOTEL_CODE, HOTEL_NAME, NIF, IBAN, PRICE_SINGLE, -1.0)
+        new Hotel(HOTEL_CODE, HOTEL_NAME, NIF, IBAN, PRICE_SINGLE, -1.0)
 
         then:
         thrown(HotelException)
