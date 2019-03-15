@@ -3,14 +3,16 @@ package pt.ulisboa.tecnico.softeng.tax.domain
 import pt.ulisboa.tecnico.softeng.tax.domain.IRS
 import pt.ulisboa.tecnico.softeng.tax.domain.ItemType
 
+
 class IRSGetItemTypeByNameSpockTest extends SpockRollbackTestAbstractClass {
 	def FOOD = "FOOD"
 	def VALUE = 16
 
-	def irs = IRS.getIRSInstance()
+	def irs
 
 	@Override
 	def populate4Test() {
+		irs = IRS.getIRSInstance()
 		new ItemType(irs, FOOD, VALUE)
 	}
 

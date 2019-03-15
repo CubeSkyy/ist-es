@@ -45,12 +45,12 @@ class TaxPayerGetTaxesPerYearMethodsSpockTest extends SpockRollbackTestAbstractC
     }
 
     def "success empty"(){
+        given:
         def toPay = seller.getToPayPerYear()
-
-        toPay.keySet().size() == 0
-
         def taxReturn = buyer.getTaxReturnPerYear()
 
+        expect:
+        toPay.keySet().size() == 0
         taxReturn.keySet().size() == 0
     }
 }
