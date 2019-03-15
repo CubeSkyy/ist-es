@@ -1,7 +1,7 @@
 package pt.ulisboa.tecnico.softeng.hotel.domain
 
 import spock.lang.Shared
-import spock.lang.Unroll;
+import spock.lang.Unroll
 
 import org.joda.time.LocalDate
 
@@ -32,8 +32,10 @@ class RoomReserveMethodSpockTest extends RollbackSpockTestAbstractClass {
 	}
 
 	def 'success'() {
+        given:
 		def booking = room.reserve(Type.SINGLE, arrival, departure, NIF_BUYER, IBAN_BUYER)
 
+        expect:
 		room.getBookingSet().size() == 1
 		booking.getReference().length() > 0
 		booking.getArrival() == arrival
