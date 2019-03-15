@@ -15,7 +15,7 @@ class RoomReserveMethodSpockTest extends RollbackSpockTestAbstractClass {
 	def departure = new LocalDate(2016, 12, 24)
 
 	def room
-	@Shared
+
 	def NIF_HOTEL = "123456700"
 	@Shared
 	def NIF_BUYER = "123456789"
