@@ -16,6 +16,10 @@ class HotelGetPriceMethodSpockTest extends RollbackSpockTestAbstractClass {
     def 'success single' () {
         expect:
         priceSingle == hotel.getPrice(Room.Type.SINGLE)
+    }
+
+    def 'success double' () {
+        expect:
         priceDouble == hotel.getPrice(Room.Type.DOUBLE)
     }
 
