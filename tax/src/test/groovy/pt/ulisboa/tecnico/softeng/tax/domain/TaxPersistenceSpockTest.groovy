@@ -62,15 +62,16 @@ class TaxPersistenceSpockTest extends SpockPersistenceTestAbstractClass {
 
         assert irs.getInvoiceSet().size() == 1
         def invoice = new ArrayList<Invoice>(irs.getInvoiceSet()).get(0)
-        assert invoice.getValue() == VALUE
-        assert invoice.getReference() != null
-        assert date == invoice.getDate()
-        assert invoice.getBuyer().getNif() == BUYER_NIF
-        assert invoice.getSeller().getNif() == SELLER_NIF
-        assert invoice.getItemType() == itemType
-        assert invoice.getTime() != null
-        assert !invoice.getCancelled()
-
+        with(invoice){
+            assert getValue() == VALUE
+            assert getReference() != null
+            assert date == getDate()
+            assert getBuyer().getNif() == BUYER_NIF
+            assert getSeller().getNif() == SELLER_NIF
+            assert getItemType() == itemType
+            assert getTime() != null
+            assert !getCancelled()
+        }
     }
 
     @Override
