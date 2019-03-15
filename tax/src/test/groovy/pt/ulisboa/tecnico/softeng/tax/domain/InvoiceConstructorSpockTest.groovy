@@ -66,8 +66,11 @@ class InvoiceConstructorSpockTest extends SpockRollbackTestAbstractClass {
     }
 
     def 'create invoice equal to 1970'() {
-        given:
+        when:
         new Invoice(VALUE, new LocalDate(1970, 01, 01), this.itemType, this.seller, this.buyer)
+
+        then:
+        noExceptionThrown()
     }
 
 }

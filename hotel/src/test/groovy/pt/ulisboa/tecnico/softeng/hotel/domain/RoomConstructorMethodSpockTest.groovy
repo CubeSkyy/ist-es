@@ -18,7 +18,7 @@ class RoomConstructorMethodSpockTest extends RollbackSpockTestAbstractClass {
     def 'success'() {
         given:
         def room = new Room(hotel, "01", Type.DOUBLE)
-		
+
         expect:
         room.getHotel() == hotel
         room.getNumber() == "01"
