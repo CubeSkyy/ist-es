@@ -44,8 +44,10 @@ class HotelInterfaceGetRoomBookingDataMethodSpockTest extends RollbackSpockTestA
 
 
     def 'success' () {
+        given:
         def data = HotelInterface.getRoomBookingData(booking.getReference())
 
+        expect:
         booking.getReference() == data.getReference()
         data.getCancellation() == null
         data.getCancellationDate() == null
@@ -78,7 +80,7 @@ class HotelInterfaceGetRoomBookingDataMethodSpockTest extends RollbackSpockTestA
     }
 
 
-    def 'null referene'() {
+    def 'null reference'() {
         when:
         HotelInterface.getRoomBookingData(null)
 
@@ -86,7 +88,7 @@ class HotelInterfaceGetRoomBookingDataMethodSpockTest extends RollbackSpockTestA
         thrown(HotelException)
     }
 
-    def 'empty referene'() {
+    def 'empty reference'() {
         when:
         HotelInterface.getRoomBookingData("")
 
@@ -94,7 +96,7 @@ class HotelInterfaceGetRoomBookingDataMethodSpockTest extends RollbackSpockTestA
         thrown(HotelException)
     }
 
-    def 'referene does not exist'() {
+    def 'reference does not exist'() {
         when:
         HotelInterface.getRoomBookingData("XPTO")
 

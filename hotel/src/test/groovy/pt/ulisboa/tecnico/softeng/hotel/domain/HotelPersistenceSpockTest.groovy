@@ -1,25 +1,13 @@
 package pt.ulisboa.tecnico.softeng.hotel.domain
 
-import static org.junit.Assert.assertArrayEquals
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertNotNull
-
-import java.util.ArrayList
-import java.util.List
-
 import org.joda.time.LocalDate
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-import pt.ist.fenixframework.Atomic
-import pt.ist.fenixframework.Atomic.TxMode
 import pt.ist.fenixframework.FenixFramework
 import pt.ulisboa.tecnico.softeng.hotel.domain.Room.Type
 
-abstract class HotelPersistenceSpockTest extends RollbackSpockTestAbstractClass{
+abstract class HotelPersistenceSpockTest extends SpockPersistenceTestAbstractClass{
     def logger = LoggerFactory.getLogger(HotelPersistenceSpockTest.class)
 
     def HOTEL_NIF = "123456789"
@@ -33,31 +21,35 @@ abstract class HotelPersistenceSpockTest extends RollbackSpockTestAbstractClass{
     def arrival = new LocalDate(2017, 12, 15)
     def departure = new LocalDate(2017, 12, 19)
 
-    def setUpThings() {
-        for (def hotel : FenixFramework.getDomainRoot().getHotelSet()) {
-            hotel.delete();
-        }
-    }
 
+
+
+    @Override
     def whenCreateInDatabase() {
+        for (def hotel : FenixFramework.getDomainRoot().getHotelSet()) {
+            hotel.delete()
+        }
         def hotel = new Hotel(HOTEL_CODE, HOTEL_NAME, HOTEL_NIF, HOTEL_IBAN, 10.0, 20.0)
         new Room(hotel, ROOM_NUMBER, Type.DOUBLE)
         hotel.reserveRoom(Type.DOUBLE, arrival, departure, CLIENT_NIF, CLIENT_IBAN, "adventureId")
     }
 
+    @Override
     def thenAssert() {
         assert FenixFramework.getDomainRoot().getHotelSet().size() == 1
 
         List<Hotel> hotels = new ArrayList<>(FenixFramework.getDomainRoot().getHotelSet())
         def hotel = hotels.get(0)
+        with(hotel){
+            getName() == HOTEL_NAME
+            getCode() == HOTEL_CODE
+            getIban() == HOTEL_IBAN
+            getNif() == HOTEL_NIF
+            getPriceSingle() == 10.0
+            getPriceDouble() == 20.0
+            getRoomSet().size() == 1    
+        }
 
-        hotel.getName() == HOTEL_NAME
-        hotel.getCode() == HOTEL_CODE
-        hotel.getIban() == HOTEL_IBAN
-        hotel.getNif() == HOTEL_NIF
-        hotel.getPriceSingle() == 10.0
-        hotel.getPriceDouble() == 20.0
-        hotel.getRoomSet().size() == 1
         def processor = hotel.getProcessor()
         processor != null
         processor.getBookingSet().size() == 1
@@ -87,6 +79,7 @@ abstract class HotelPersistenceSpockTest extends RollbackSpockTestAbstractClass{
     }
 
 
+    @Override
     def deleteFromDatabase() {
         for (def h : FenixFramework.getDomainRoot().getHotelSet()) {
             h.delete()
