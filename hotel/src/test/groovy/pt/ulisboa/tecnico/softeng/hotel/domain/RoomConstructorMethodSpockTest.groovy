@@ -40,7 +40,6 @@ class RoomConstructorMethodSpockTest extends RollbackSpockTestAbstractClass {
 		hotel	|	"     "	| Type.DOUBLE
 		hotel	|	"JOSE"	| Type.DOUBLE
 		hotel	|	"01"	| null
-
 	}
 
 	def 'nonUniqueRoomNumber'(){

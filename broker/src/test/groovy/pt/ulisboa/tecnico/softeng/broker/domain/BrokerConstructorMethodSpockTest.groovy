@@ -31,13 +31,9 @@ class BrokerConstructorMethodSpockTest extends SpockRollbackTestAbstractClass {
     @Shared
     def CLIENT_IBAN = "BK011234567"
 
-    @Shared
     def begin = new LocalDate(2016, 12, 19)
-    @Shared
     def end = new LocalDate(2016, 12, 21)
-    @Shared
     def arrival = new LocalDate(2016, 12, 19)
-    @Shared
     def departure = new LocalDate(2016, 12, 21)
 
 

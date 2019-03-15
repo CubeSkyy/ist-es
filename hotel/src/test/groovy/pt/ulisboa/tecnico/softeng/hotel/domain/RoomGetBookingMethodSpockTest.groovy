@@ -1,6 +1,8 @@
 package pt.ulisboa.tecnico.softeng.hotel.domain
 
 import org.joda.time.LocalDate
+import pt.ulisboa.tecnico.softeng.hotel.domain.Room.Type;
+
 
 class RoomGetBookingMethodSpockTest extends RollbackSpockTestAbstractClass {
 	def arrival = new LocalDate(2016, 12, 19)
@@ -21,15 +23,19 @@ class RoomGetBookingMethodSpockTest extends RollbackSpockTestAbstractClass {
 	}
 
 	def 'success'() {
-		room.getBooking(this.booking.getReference()) == booking
+		expect:
+		room.getBooking(booking.getReference()) == booking
 	}
 
 	def 'successCancelled'() {
+		given:
 		booking.cancel()
+		expect:
 		room.getBooking(booking.getCancellation()) == booking
 	}
 
 	def 'doesNotExist'() {
+		expect:
 		room.getBooking("XPTO") == null
 	}
 }

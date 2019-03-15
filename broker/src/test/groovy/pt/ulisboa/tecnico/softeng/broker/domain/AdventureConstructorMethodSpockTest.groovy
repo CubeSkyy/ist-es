@@ -88,17 +88,19 @@ class AdventureConstructorMethodSpockTest extends SpockRollbackTestAbstractClass
         def adventure = new Adventure(broker, begin, end, c, MARGIN)
 
         expect:
-        adventure.getBroker() == broker
-        adventure.getBegin() == begin
-        adventure.getEnd() == end
-        adventure.getAge() == AGE_18
-        adventure.getIban() == CLIENT_IBAN
-        adventure.getMargin() == MARGIN
-        broker.getAdventureSet().contains(adventure)
+        adventure.with() {
+            getBroker() == broker
+            getBegin() == begin
+            getEnd() == end
+            getAge() == AGE_18
+            getIban() == CLIENT_IBAN
+            getMargin() == MARGIN
 
-        adventure.getPaymentConfirmation() == null
-        adventure.getActivityConfirmation() == null
-        adventure.getRoomConfirmation() == null
+            getPaymentConfirmation() == null
+            getActivityConfirmation() == null
+            getRoomConfirmation() == null
+        }
+        broker.getAdventureSet().contains(adventure)
     }
 
     def 'negativeAge'() {

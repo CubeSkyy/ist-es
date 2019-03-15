@@ -32,7 +32,7 @@ class BrokerPersistenceSpockTest extends SpockPersistenceTestAbstractClass {
 	def MARGIN = 0.3
 
 	@Shared
-	def REF_ONE = "ref1";
+	def REF_ONE = "ref1"
 
 	@Shared
 	def begin = new LocalDate(2016, 12, 19);
