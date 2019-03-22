@@ -64,36 +64,42 @@ public class AdventureSequenceTest extends RollbackTestAbstractClass {
 		// Testing: book activity, hotel, car, pay, tax, confirm
 		new Expectations() {
 			{
-				ActivityInterface.reserveActivity((RestActivityBookingData) this.any);
+				activityInterface.reserveActivity((RestActivityBookingData) this.any);
 				this.result = AdventureSequenceTest.this.bookingActivityData;
 
-				HotelInterface.reserveRoom((RestRoomBookingData) this.any);
+				roomInterface.reserveRoom((RestRoomBookingData) this.any);
 				this.result = AdventureSequenceTest.this.bookingRoomData;
 
-				CarInterface.rentCar((CarInterface.Type) this.any, this.anyString, this.anyString, this.anyString,
+				carInterface.rentCar((CarInterface.Type) this.any, this.anyString, this.anyString, this.anyString,
 						(LocalDate) this.any, (LocalDate) this.any, this.anyString);
 				this.result = AdventureSequenceTest.this.rentingData;
 
-				BankInterface.processPayment((RestBankOperationData) this.any);
+				bankInterface.processPayment((RestBankOperationData) this.any);
 				this.result = PAYMENT_CONFIRMATION;
 
-				TaxInterface.submitInvoice((RestInvoiceData) this.any);
+				taxInterface.submitInvoice((RestInvoiceData) this.any);
 				this.result = INVOICE_DATA;
 
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
 
-				ActivityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
+				activityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
 				this.result = AdventureSequenceTest.this.bookingActivityData;
 
-				CarInterface.getRentingData(RENTING_CONFIRMATION);
+				carInterface.getRentingData(RENTING_CONFIRMATION);
 				this.result = AdventureSequenceTest.this.rentingData;
 
-				HotelInterface.getRoomBookingData(ROOM_CONFIRMATION);
+				roomInterface.getRoomBookingData(ROOM_CONFIRMATION);
 				this.result = AdventureSequenceTest.this.bookingRoomData;
 			}
 		};
 
 		Adventure adventure = new Adventure(this.broker, ARRIVAL, DEPARTURE, this.client, MARGIN, true);
+
+		adventure.setActivityInterface(activityInterface);
+		adventure.setCarInterface(carInterface);
+		adventure.setHotelInterface(roomInterface);
+		adventure.setBankInterface(bankInterface);
+		adventure.setTaxInterface(taxInterface);
 
 		adventure.process();
 		adventure.process();
@@ -112,29 +118,36 @@ public class AdventureSequenceTest extends RollbackTestAbstractClass {
 		// Testing: book activity, hotel, pay, tax, confirm
 		new Expectations() {
 			{
-				ActivityInterface.reserveActivity((RestActivityBookingData) this.any);
+				activityInterface.reserveActivity((RestActivityBookingData) this.any);
 				this.result = AdventureSequenceTest.this.bookingActivityData;
 
-				HotelInterface.reserveRoom((RestRoomBookingData) this.any);
+				roomInterface.reserveRoom((RestRoomBookingData) this.any);
 				this.result = AdventureSequenceTest.this.bookingRoomData;
 
-				BankInterface.processPayment((RestBankOperationData) this.any);
+				bankInterface.processPayment((RestBankOperationData) this.any);
 				this.result = PAYMENT_CONFIRMATION;
 
-				TaxInterface.submitInvoice((RestInvoiceData) this.any);
+				taxInterface.submitInvoice((RestInvoiceData) this.any);
 				this.result = INVOICE_DATA;
 
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
 
-				ActivityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
+				activityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
 				this.result = AdventureSequenceTest.this.bookingActivityData;
 
-				HotelInterface.getRoomBookingData(ROOM_CONFIRMATION);
+				roomInterface.getRoomBookingData(ROOM_CONFIRMATION);
 				this.result = AdventureSequenceTest.this.bookingRoomData;
 			}
 		};
 
 		Adventure adventure = new Adventure(this.broker, ARRIVAL, DEPARTURE, this.client, MARGIN);
+
+		adventure.setActivityInterface(activityInterface);
+		adventure.setCarInterface(carInterface);
+		adventure.setActivityInterface(activityInterface);
+		adventure.setHotelInterface(roomInterface);
+		adventure.setBankInterface(bankInterface);
+		adventure.setTaxInterface(taxInterface);
 
 		adventure.process();
 		adventure.process();
@@ -153,30 +166,37 @@ public class AdventureSequenceTest extends RollbackTestAbstractClass {
 		// Testing: book activity, car, pay, tax, confirm
 		new Expectations() {
 			{
-				ActivityInterface.reserveActivity((RestActivityBookingData) this.any);
+				activityInterface.reserveActivity((RestActivityBookingData) this.any);
 				this.result = AdventureSequenceTest.this.bookingActivityData;
 
-				CarInterface.rentCar((CarInterface.Type) this.any, this.anyString, this.anyString, this.anyString,
+				carInterface.rentCar((CarInterface.Type) this.any, this.anyString, this.anyString, this.anyString,
 						(LocalDate) this.any, (LocalDate) this.any, this.anyString);
 				this.result = AdventureSequenceTest.this.rentingData;
 
-				BankInterface.processPayment((RestBankOperationData) this.any);
+				bankInterface.processPayment((RestBankOperationData) this.any);
 				this.result = PAYMENT_CONFIRMATION;
 
-				TaxInterface.submitInvoice((RestInvoiceData) this.any);
+				taxInterface.submitInvoice((RestInvoiceData) this.any);
 				this.result = INVOICE_DATA;
 
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
 
-				ActivityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
+				activityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
 				this.result = AdventureSequenceTest.this.bookingActivityData;
 
-				CarInterface.getRentingData(RENTING_CONFIRMATION);
+				carInterface.getRentingData(RENTING_CONFIRMATION);
 				this.result = AdventureSequenceTest.this.rentingData;
 			}
 		};
 
 		Adventure adventure = new Adventure(this.broker, ARRIVAL, ARRIVAL, this.client, MARGIN, true);
+
+		adventure.setActivityInterface(activityInterface);
+		adventure.setCarInterface(carInterface);
+		adventure.setActivityInterface(activityInterface);
+		adventure.setHotelInterface(roomInterface);
+		adventure.setBankInterface(bankInterface);
+		adventure.setTaxInterface(taxInterface);
 
 		adventure.process();
 		adventure.process();
@@ -194,23 +214,29 @@ public class AdventureSequenceTest extends RollbackTestAbstractClass {
 		// Testing: book activity, pay, tax, confirm
 		new Expectations() {
 			{
-				ActivityInterface.reserveActivity((RestActivityBookingData) this.any);
+				activityInterface.reserveActivity((RestActivityBookingData) this.any);
 				this.result = AdventureSequenceTest.this.bookingActivityData;
 
-				BankInterface.processPayment((RestBankOperationData) this.any);
+				bankInterface.processPayment((RestBankOperationData) this.any);
 				this.result = PAYMENT_CONFIRMATION;
 
-				TaxInterface.submitInvoice((RestInvoiceData) this.any);
+				taxInterface.submitInvoice((RestInvoiceData) this.any);
 				this.result = INVOICE_DATA;
 
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
 
-				ActivityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
+				activityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
 				this.result = AdventureSequenceTest.this.bookingActivityData;
 			}
 		};
 
 		Adventure adventure = new Adventure(this.broker, ARRIVAL, ARRIVAL, this.client, MARGIN);
+
+		adventure.setActivityInterface(activityInterface);
+		adventure.setActivityInterface(activityInterface);
+		adventure.setHotelInterface(roomInterface);
+		adventure.setBankInterface(bankInterface);
+		adventure.setTaxInterface(taxInterface);
 
 		adventure.process();
 		adventure.process();
@@ -227,12 +253,18 @@ public class AdventureSequenceTest extends RollbackTestAbstractClass {
 		// Testing: fail activity, undo, cancelled
 		new Expectations() {
 			{
-				ActivityInterface.reserveActivity((RestActivityBookingData) this.any);
+				activityInterface.reserveActivity((RestActivityBookingData) this.any);
 				this.result = new ActivityException();
 			}
 		};
 
 		Adventure adventure = new Adventure(this.broker, ARRIVAL, DEPARTURE, this.client, MARGIN);
+
+		adventure.setActivityInterface(activityInterface);
+		adventure.setActivityInterface(activityInterface);
+		adventure.setHotelInterface(roomInterface);
+		adventure.setBankInterface(bankInterface);
+		adventure.setTaxInterface(taxInterface);
 
 		adventure.process();
 		adventure.process();
@@ -246,18 +278,25 @@ public class AdventureSequenceTest extends RollbackTestAbstractClass {
 		// Testing: activity, fail hotel, undo, cancelled
 		new Expectations() {
 			{
-				ActivityInterface.reserveActivity((RestActivityBookingData) this.any);
+				activityInterface.reserveActivity((RestActivityBookingData) this.any);
 				this.result = AdventureSequenceTest.this.bookingActivityData;
 
-				HotelInterface.reserveRoom((RestRoomBookingData) this.any);
+				roomInterface.reserveRoom((RestRoomBookingData) this.any);
 				this.result = new HotelException();
 
-				ActivityInterface.cancelReservation(ACTIVITY_CONFIRMATION);
+				activityInterface.cancelReservation(ACTIVITY_CONFIRMATION);
 				this.result = ACTIVITY_CANCELLATION;
 			}
 		};
 
 		Adventure adventure = new Adventure(this.broker, ARRIVAL, DEPARTURE, this.client, MARGIN);
+
+		adventure.setActivityInterface(activityInterface);
+		adventure.setActivityInterface(activityInterface);
+		adventure.setHotelInterface(roomInterface);
+		adventure.setBankInterface(bankInterface);
+		adventure.setTaxInterface(taxInterface);
+
 
 		adventure.process();
 		adventure.process();
@@ -274,19 +313,25 @@ public class AdventureSequenceTest extends RollbackTestAbstractClass {
 		// Testing: activity, fail car, undo, cancelled
 		new Expectations() {
 			{
-				ActivityInterface.reserveActivity((RestActivityBookingData) this.any);
+				activityInterface.reserveActivity((RestActivityBookingData) this.any);
 				this.result = AdventureSequenceTest.this.bookingActivityData;
 
-				CarInterface.rentCar((CarInterface.Type) this.any, this.anyString, this.anyString, this.anyString,
+				carInterface.rentCar((CarInterface.Type) this.any, this.anyString, this.anyString, this.anyString,
 						(LocalDate) this.any, (LocalDate) this.any, this.anyString);
 				this.result = new CarException();
 
-				ActivityInterface.cancelReservation(ACTIVITY_CONFIRMATION);
+				activityInterface.cancelReservation(ACTIVITY_CONFIRMATION);
 				this.result = ACTIVITY_CANCELLATION;
 			}
 		};
 
 		Adventure adventure = new Adventure(this.broker, ARRIVAL, ARRIVAL, this.client, MARGIN, true);
+		adventure.setActivityInterface(activityInterface);
+		adventure.setCarInterface(carInterface);
+		adventure.setActivityInterface(activityInterface);
+		adventure.setTaxInterface(taxInterface);
+		adventure.setBankInterface(bankInterface);
+		adventure.setHotelInterface(roomInterface);
 
 		adventure.process();
 		adventure.process();
@@ -304,31 +349,37 @@ public class AdventureSequenceTest extends RollbackTestAbstractClass {
 		// Testing: activity, room, car, fail payment, undo, cancelled
 		new Expectations() {
 			{
-				ActivityInterface.reserveActivity((RestActivityBookingData) this.any);
+				activityInterface.reserveActivity((RestActivityBookingData) this.any);
 				this.result = AdventureSequenceTest.this.bookingActivityData;
 
-				HotelInterface.reserveRoom((RestRoomBookingData) this.any);
+				roomInterface.reserveRoom((RestRoomBookingData) this.any);
 				this.result = AdventureSequenceTest.this.bookingRoomData;
 
-				CarInterface.rentCar((CarInterface.Type) this.any, this.anyString, this.anyString, this.anyString,
+				carInterface.rentCar((CarInterface.Type) this.any, this.anyString, this.anyString, this.anyString,
 						(LocalDate) this.any, (LocalDate) this.any, this.anyString);
 				this.result = AdventureSequenceTest.this.rentingData;
 
-				BankInterface.processPayment((RestBankOperationData) this.any);
+				bankInterface.processPayment((RestBankOperationData) this.any);
 				this.result = new BankException();
 
-				ActivityInterface.cancelReservation(this.anyString);
+				activityInterface.cancelReservation(this.anyString);
 				this.result = ACTIVITY_CANCELLATION;
 
-				HotelInterface.cancelBooking(ROOM_CONFIRMATION);
+				roomInterface.cancelBooking(ROOM_CONFIRMATION);
 				this.result = ROOM_CANCELLATION;
 
-				CarInterface.cancelRenting(RENTING_CONFIRMATION);
+				carInterface.cancelRenting(RENTING_CONFIRMATION);
 				this.result = RENTING_CANCELLATION;
 			}
 		};
 
 		Adventure adventure = new Adventure(this.broker, ARRIVAL, DEPARTURE, this.client, MARGIN, true);
+		adventure.setActivityInterface(activityInterface);
+		adventure.setCarInterface(carInterface);
+		adventure.setActivityInterface(activityInterface);
+		adventure.setHotelInterface(roomInterface);
+		adventure.setBankInterface(bankInterface);
+		adventure.setTaxInterface(taxInterface);
 
 		adventure.process();
 		adventure.process();
@@ -347,37 +398,43 @@ public class AdventureSequenceTest extends RollbackTestAbstractClass {
 		// Testing: activity, room, car, payment, fail tax, undo, cancelled
 		new Expectations() {
 			{
-				ActivityInterface.reserveActivity((RestActivityBookingData) this.any);
+				activityInterface.reserveActivity((RestActivityBookingData) this.any);
 				this.result = AdventureSequenceTest.this.bookingActivityData;
 
-				HotelInterface.reserveRoom((RestRoomBookingData) this.any);
+				roomInterface.reserveRoom((RestRoomBookingData) this.any);
 				this.result = AdventureSequenceTest.this.bookingRoomData;
 
-				CarInterface.rentCar(CarInterface.Type.CAR, this.anyString, this.anyString, this.anyString,
+				carInterface.rentCar(CarInterface.Type.CAR, this.anyString, this.anyString, this.anyString,
 						(LocalDate) this.any, (LocalDate) this.any, this.anyString);
 				this.result = AdventureSequenceTest.this.rentingData;
 
-				BankInterface.processPayment((RestBankOperationData) this.any);
+				bankInterface.processPayment((RestBankOperationData) this.any);
 				this.result = PAYMENT_CONFIRMATION;
 
-				TaxInterface.submitInvoice((RestInvoiceData) this.any);
+				taxInterface.submitInvoice((RestInvoiceData) this.any);
 				this.result = new TaxException();
 
-				ActivityInterface.cancelReservation(ACTIVITY_CONFIRMATION);
+				activityInterface.cancelReservation(ACTIVITY_CONFIRMATION);
 				this.result = ACTIVITY_CANCELLATION;
 
-				HotelInterface.cancelBooking(ROOM_CONFIRMATION);
+				roomInterface.cancelBooking(ROOM_CONFIRMATION);
 				this.result = ROOM_CANCELLATION;
 
-				CarInterface.cancelRenting(RENTING_CONFIRMATION);
+				carInterface.cancelRenting(RENTING_CONFIRMATION);
 				this.result = RENTING_CANCELLATION;
 
-				BankInterface.cancelPayment(PAYMENT_CONFIRMATION);
+				bankInterface.cancelPayment(PAYMENT_CONFIRMATION);
 				this.result = PAYMENT_CANCELLATION;
 			}
 		};
 
 		Adventure adventure = new Adventure(this.broker, ARRIVAL, DEPARTURE, this.client, MARGIN, true);
+		adventure.setActivityInterface(activityInterface);
+		adventure.setCarInterface(carInterface);
+		adventure.setActivityInterface(activityInterface);
+		adventure.setHotelInterface(roomInterface);
+		adventure.setBankInterface(bankInterface);
+		adventure.setTaxInterface(taxInterface);
 
 		adventure.process();
 		adventure.process();

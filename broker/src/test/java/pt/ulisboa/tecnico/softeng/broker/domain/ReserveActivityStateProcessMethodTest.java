@@ -20,6 +20,9 @@ public class ReserveActivityStateProcessMethodTest extends RollbackTestAbstractC
 	@Mocked
 	private TaxInterface taxInterface;
 
+    @Mocked
+    private ActivityInterface activityInterface;
+
 	private RestActivityBookingData bookingData;
 
 	@Override
@@ -32,16 +35,20 @@ public class ReserveActivityStateProcessMethodTest extends RollbackTestAbstractC
 		this.bookingData.setPrice(76.78);
 
 		this.adventure.setState(State.RESERVE_ACTIVITY);
+        adventure.setTaxInterface(taxInterface);
+        adventure.setActivityInterface(activityInterface);
+
 	}
 
 	@Test
-	public void successNoBookRoom(@Mocked final ActivityInterface activityInterface) {
+	public void successNoBookRoom() {
 		Adventure sameDayAdventure = new Adventure(this.broker, this.BEGIN, this.BEGIN, this.client, MARGIN);
 		sameDayAdventure.setState(State.RESERVE_ACTIVITY);
-
+        sameDayAdventure.setTaxInterface(taxInterface);
+        sameDayAdventure.setActivityInterface(activityInterface);
 		new Expectations() {
 			{
-				ActivityInterface.reserveActivity((RestActivityBookingData) this.any);
+				activityInterface.reserveActivity((RestActivityBookingData) this.any);
 				this.result = ReserveActivityStateProcessMethodTest.this.bookingData;
 			}
 		};
@@ -52,13 +59,14 @@ public class ReserveActivityStateProcessMethodTest extends RollbackTestAbstractC
 	}
 
 	@Test
-	public void successToRentVehicle(@Mocked final ActivityInterface activityInterface) {
+	public void successToRentVehicle() {
 		Adventure adv = new Adventure(this.broker, this.BEGIN, this.BEGIN, this.client, MARGIN, true);
 		adv.setState(State.RESERVE_ACTIVITY);
-
+        adv.setTaxInterface(taxInterface);
+        adv.setActivityInterface(activityInterface);
 		new Expectations() {
 			{
-				ActivityInterface.reserveActivity((RestActivityBookingData) this.any);
+				activityInterface.reserveActivity((RestActivityBookingData) this.any);
 				this.result = ReserveActivityStateProcessMethodTest.this.bookingData;
 			}
 		};
@@ -69,10 +77,10 @@ public class ReserveActivityStateProcessMethodTest extends RollbackTestAbstractC
 	}
 
 	@Test
-	public void successBookRoom(@Mocked final ActivityInterface activityInterface) {
+	public void successBookRoom() {
 		new Expectations() {
 			{
-				ActivityInterface.reserveActivity((RestActivityBookingData) this.any);
+				activityInterface.reserveActivity((RestActivityBookingData) this.any);
 				this.result = ReserveActivityStateProcessMethodTest.this.bookingData;
 			}
 		};
@@ -83,10 +91,10 @@ public class ReserveActivityStateProcessMethodTest extends RollbackTestAbstractC
 	}
 
 	@Test
-	public void activityException(@Mocked final ActivityInterface activityInterface) {
+	public void activityException() {
 		new Expectations() {
 			{
-				ActivityInterface.reserveActivity((RestActivityBookingData) this.any);
+				activityInterface.reserveActivity((RestActivityBookingData) this.any);
 				this.result = new ActivityException();
 			}
 		};
@@ -97,13 +105,14 @@ public class ReserveActivityStateProcessMethodTest extends RollbackTestAbstractC
 	}
 
 	@Test
-	public void singleRemoteAccessException(@Mocked final ActivityInterface activityInterface) {
+	public void singleRemoteAccessException() {
 		new Expectations() {
 			{
-				ActivityInterface.reserveActivity((RestActivityBookingData) this.any);
+				activityInterface.reserveActivity((RestActivityBookingData) this.any);
 				this.result = new RemoteAccessException();
 			}
 		};
+
 
 		this.adventure.process();
 
@@ -111,10 +120,10 @@ public class ReserveActivityStateProcessMethodTest extends RollbackTestAbstractC
 	}
 
 	@Test
-	public void maxRemoteAccessException(@Mocked final ActivityInterface activityInterface) {
+	public void maxRemoteAccessException() {
 		new Expectations() {
 			{
-				ActivityInterface.reserveActivity((RestActivityBookingData) this.any);
+				activityInterface.reserveActivity((RestActivityBookingData) this.any);
 				this.result = new RemoteAccessException();
 			}
 		};
@@ -129,10 +138,10 @@ public class ReserveActivityStateProcessMethodTest extends RollbackTestAbstractC
 	}
 
 	@Test
-	public void maxMinusOneRemoteAccessException(@Mocked final ActivityInterface activityInterface) {
+	public void maxMinusOneRemoteAccessException() {
 		new Expectations() {
 			{
-				ActivityInterface.reserveActivity((RestActivityBookingData) this.any);
+				activityInterface.reserveActivity((RestActivityBookingData) this.any);
 				this.result = new RemoteAccessException();
 			}
 		};
@@ -146,10 +155,10 @@ public class ReserveActivityStateProcessMethodTest extends RollbackTestAbstractC
 	}
 
 	@Test
-	public void twoRemoteAccessExceptionOneSuccess(@Mocked final ActivityInterface activityInterface) {
+	public void twoRemoteAccessExceptionOneSuccess() {
 		new Expectations() {
 			{
-				ActivityInterface.reserveActivity((RestActivityBookingData) this.any);
+				activityInterface.reserveActivity((RestActivityBookingData) this.any);
 				this.result = new Delegate() {
 					int i = 0;
 
@@ -175,10 +184,10 @@ public class ReserveActivityStateProcessMethodTest extends RollbackTestAbstractC
 	}
 
 	@Test
-	public void oneRemoteAccessExceptionOneActivityException(@Mocked final ActivityInterface activityInterface) {
+	public void oneRemoteAccessExceptionOneActivityException() {
 		new Expectations() {
 			{
-				ActivityInterface.reserveActivity((RestActivityBookingData) this.any);
+				activityInterface.reserveActivity((RestActivityBookingData) this.any);
 				this.result = new Delegate() {
 					int i = 0;
 

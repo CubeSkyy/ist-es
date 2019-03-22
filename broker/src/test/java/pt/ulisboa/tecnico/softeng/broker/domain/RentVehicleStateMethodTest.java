@@ -17,163 +17,169 @@ import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.RemoteAccessE
 
 @RunWith(JMockit.class)
 public class RentVehicleStateMethodTest extends RollbackTestAbstractClass {
-	@Mocked
-	private TaxInterface taxInterface;
+    @Mocked
+    private TaxInterface taxInterface;
 
-	private RestRentingData rentingData;
+    @Mocked
+    private CarInterface carInterface;
 
-	@Override
-	public void populate4Test() {
-		this.broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN);
-		this.client = new Client(this.broker, CLIENT_IBAN, CLIENT_NIF, DRIVING_LICENSE, AGE);
-		this.adventure = new Adventure(this.broker, this.BEGIN, this.END, this.client, MARGIN);
+    private RestRentingData rentingData;
 
-		this.rentingData = new RestRentingData();
-		this.rentingData.setReference(RENTING_CONFIRMATION);
-		this.rentingData.setPrice(76.78);
+    @Override
+    public void populate4Test() {
+        this.broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN);
+        this.client = new Client(this.broker, CLIENT_IBAN, CLIENT_NIF, DRIVING_LICENSE, AGE);
+        this.adventure = new Adventure(this.broker, BEGIN, END, this.client, MARGIN);
 
-		this.adventure.setState(State.RENT_VEHICLE);
-	}
+        this.rentingData = new RestRentingData();
+        this.rentingData.setReference(RENTING_CONFIRMATION);
+        this.rentingData.setPrice(76.78);
 
-	@Test
-	public void successRentVehicle(@Mocked final CarInterface carInterface) {
-		new Expectations() {
-			{
-				CarInterface.rentCar(CarInterface.Type.CAR, DRIVING_LICENSE, BROKER_NIF_AS_BUYER, BROKER_IBAN,
-						RentVehicleStateMethodTest.this.BEGIN, RentVehicleStateMethodTest.this.END, this.anyString);
-				this.result = RentVehicleStateMethodTest.this.rentingData;
-				this.times = 1;
-			}
-		};
+        this.adventure.setState(State.RENT_VEHICLE);
+        adventure.setTaxInterface(taxInterface);
+        adventure.setCarInterface(carInterface);
 
-		this.adventure.process();
+    }
 
-		Assert.assertEquals(State.PROCESS_PAYMENT, this.adventure.getState().getValue());
-	}
+    @Test
+    public void successRentVehicle() {
+        new Expectations() {
+            {
+                carInterface.rentCar(CarInterface.Type.CAR, DRIVING_LICENSE, BROKER_NIF_AS_BUYER, BROKER_IBAN,
+                        BEGIN, END, this.anyString);
+                this.result = RentVehicleStateMethodTest.this.rentingData;
+                this.times = 1;
+            }
+        };
 
-	@Test
-	public void carException(@Mocked final CarInterface carInterface) {
-		new Expectations() {
-			{
-				CarInterface.rentCar(CarInterface.Type.CAR, DRIVING_LICENSE, BROKER_NIF_AS_BUYER, BROKER_IBAN,
-						RentVehicleStateMethodTest.this.BEGIN, RentVehicleStateMethodTest.this.END, this.anyString);
-				this.result = new CarException();
-				this.times = 1;
-			}
-		};
+        this.adventure.process();
 
-		this.adventure.process();
+        Assert.assertEquals(State.PROCESS_PAYMENT, this.adventure.getState().getValue());
+    }
 
-		Assert.assertEquals(State.UNDO, this.adventure.getState().getValue());
-	}
+    @Test
+    public void carException() {
+        new Expectations() {
+            {
+                carInterface.rentCar(CarInterface.Type.CAR, DRIVING_LICENSE, BROKER_NIF_AS_BUYER, BROKER_IBAN,
+                        BEGIN, END, this.anyString);
+                this.result = new CarException();
+                this.times = 1;
+            }
+        };
 
-	@Test
-	public void singleRemoteAccessException(@Mocked final CarInterface carInterface) {
-		new Expectations() {
-			{
-				CarInterface.rentCar(CarInterface.Type.CAR, DRIVING_LICENSE, BROKER_NIF_AS_BUYER, BROKER_IBAN,
-						RentVehicleStateMethodTest.this.BEGIN, RentVehicleStateMethodTest.this.END, this.anyString);
-				this.result = new RemoteAccessException();
-				this.times = 1;
-			}
-		};
+        this.adventure.process();
 
-		this.adventure.process();
+        Assert.assertEquals(State.UNDO, this.adventure.getState().getValue());
+    }
 
-		Assert.assertEquals(State.RENT_VEHICLE, this.adventure.getState().getValue());
-	}
+    @Test
+    public void singleRemoteAccessException() {
+        new Expectations() {
+            {
+                carInterface.rentCar(CarInterface.Type.CAR, DRIVING_LICENSE, BROKER_NIF_AS_BUYER, BROKER_IBAN,
+                        BEGIN, END, this.anyString);
+                this.result = new RemoteAccessException();
+                this.times = 1;
+            }
+        };
 
-	@Test
-	public void maxRemoteAccessException(@Mocked final CarInterface carInterface) {
-		new Expectations() {
-			{
-				CarInterface.rentCar(CarInterface.Type.CAR, DRIVING_LICENSE, BROKER_NIF_AS_BUYER, BROKER_IBAN,
-						RentVehicleStateMethodTest.this.BEGIN, RentVehicleStateMethodTest.this.END, this.anyString);
-				this.result = new RemoteAccessException();
-				this.times = RentVehicleState.MAX_REMOTE_ERRORS;
-			}
-		};
+        this.adventure.process();
 
-		for (int i = 0; i < RentVehicleState.MAX_REMOTE_ERRORS; i++) {
-			this.adventure.process();
-		}
+        Assert.assertEquals(State.RENT_VEHICLE, this.adventure.getState().getValue());
+    }
 
-		Assert.assertEquals(State.UNDO, this.adventure.getState().getValue());
-	}
+    @Test
+    public void maxRemoteAccessException() {
+        new Expectations() {
+            {
+                carInterface.rentCar(CarInterface.Type.CAR, DRIVING_LICENSE, BROKER_NIF_AS_BUYER, BROKER_IBAN,
+                        BEGIN, END, this.anyString);
+                this.result = new RemoteAccessException();
+                this.times = RentVehicleState.MAX_REMOTE_ERRORS;
+            }
+        };
 
-	@Test
-	public void maxMinusOneRemoteAccessException(@Mocked final CarInterface carInterface) {
-		new Expectations() {
-			{
-				CarInterface.rentCar(CarInterface.Type.CAR, DRIVING_LICENSE, BROKER_NIF_AS_BUYER, BROKER_IBAN,
-						RentVehicleStateMethodTest.this.BEGIN, RentVehicleStateMethodTest.this.END, this.anyString);
-				this.result = new RemoteAccessException();
-				this.times = RentVehicleState.MAX_REMOTE_ERRORS - 1;
-			}
-		};
+        for (int i = 0; i < RentVehicleState.MAX_REMOTE_ERRORS; i++) {
+            this.adventure.process();
+        }
 
-		for (int i = 0; i < RentVehicleState.MAX_REMOTE_ERRORS - 1; i++) {
-			this.adventure.process();
-		}
+        Assert.assertEquals(State.UNDO, this.adventure.getState().getValue());
+    }
 
-		Assert.assertEquals(State.RENT_VEHICLE, this.adventure.getState().getValue());
-	}
+    @Test
+    public void maxMinusOneRemoteAccessException() {
+        new Expectations() {
+            {
+                carInterface.rentCar(CarInterface.Type.CAR, DRIVING_LICENSE, BROKER_NIF_AS_BUYER, BROKER_IBAN,
+                        BEGIN, END, this.anyString);
+                this.result = new RemoteAccessException();
+                this.times = RentVehicleState.MAX_REMOTE_ERRORS - 1;
+            }
+        };
 
-	@Test
-	public void twoRemoteAccessExceptionOneSuccess(@Mocked final CarInterface carInterface) {
-		new Expectations() {
-			{
-				CarInterface.rentCar(CarInterface.Type.CAR, DRIVING_LICENSE, BROKER_NIF_AS_BUYER, BROKER_IBAN,
-						RentVehicleStateMethodTest.this.BEGIN, RentVehicleStateMethodTest.this.END, this.anyString);
-				this.result = new Delegate() {
-					int i = 0;
+        for (int i = 0; i < RentVehicleState.MAX_REMOTE_ERRORS - 1; i++) {
+            this.adventure.process();
+        }
 
-					public RestRentingData delegate() {
-						if (this.i < 2) {
-							this.i++;
-							throw new RemoteAccessException();
-						} else {
-							return RentVehicleStateMethodTest.this.rentingData;
-						}
-					}
-				};
-				this.times = 3;
-			}
-		};
+        Assert.assertEquals(State.RENT_VEHICLE, this.adventure.getState().getValue());
+    }
 
-		this.adventure.process();
-		this.adventure.process();
-		this.adventure.process();
+    @Test
+    public void twoRemoteAccessExceptionOneSuccess() {
+        new Expectations() {
+            {
+                carInterface.rentCar(CarInterface.Type.CAR, DRIVING_LICENSE, BROKER_NIF_AS_BUYER, BROKER_IBAN,
+                        BEGIN, END, this.anyString);
+                this.result = new Delegate() {
+                    int i = 0;
 
-		Assert.assertEquals(State.PROCESS_PAYMENT, this.adventure.getState().getValue());
-	}
+                    public RestRentingData delegate() {
+                        if (this.i < 2) {
+                            this.i++;
+                            throw new RemoteAccessException();
+                        } else {
+                            return RentVehicleStateMethodTest.this.rentingData;
+                        }
+                    }
+                };
+                this.times = 3;
+            }
+        };
 
-	@Test
-	public void oneRemoteAccessExceptionOneCarException(@Mocked final CarInterface carInterface) {
-		new Expectations() {
-			{
-				CarInterface.rentCar(CarInterface.Type.CAR, DRIVING_LICENSE, BROKER_NIF_AS_BUYER, BROKER_IBAN,
-						RentVehicleStateMethodTest.this.BEGIN, RentVehicleStateMethodTest.this.END, this.anyString);
-				this.result = new Delegate() {
-					int i = 0;
+        this.adventure.process();
+        this.adventure.process();
+        this.adventure.process();
 
-					public String delegate() {
-						if (this.i < 1) {
-							this.i++;
-							throw new RemoteAccessException();
-						} else {
-							throw new CarException();
-						}
-					}
-				};
-				this.times = 2;
-			}
-		};
+        Assert.assertEquals(State.PROCESS_PAYMENT, this.adventure.getState().getValue());
+    }
 
-		this.adventure.process();
-		this.adventure.process();
+    @Test
+    public void oneRemoteAccessExceptionOneCarException() {
+        new Expectations() {
+            {
+                carInterface.rentCar(CarInterface.Type.CAR, DRIVING_LICENSE, BROKER_NIF_AS_BUYER, BROKER_IBAN,
+                        BEGIN, END, this.anyString);
+                this.result = new Delegate() {
+                    int i = 0;
 
-		Assert.assertEquals(State.UNDO, this.adventure.getState().getValue());
-	}
+                    public String delegate() {
+                        if (this.i < 1) {
+                            this.i++;
+                            throw new RemoteAccessException();
+                        } else {
+                            throw new CarException();
+                        }
+                    }
+                };
+                this.times = 2;
+            }
+        };
+
+        this.adventure.process();
+        this.adventure.process();
+
+        Assert.assertEquals(State.UNDO, this.adventure.getState().getValue());
+    }
 
 }

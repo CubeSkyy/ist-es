@@ -43,10 +43,16 @@ public class ConfirmedStateProcessMethodTest extends RollbackTestAbstractClass {
 
 	@Override
 	public void populate4Test() {
+
 		this.broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN);
 		this.client = new Client(this.broker, CLIENT_IBAN, CLIENT_NIF, DRIVING_LICENSE, AGE);
 		this.adventure = new Adventure(this.broker, this.BEGIN, this.END, this.client, MARGIN);
-
+		adventure.setActivityInterface(activityInterface);
+		adventure.setCarInterface(carInterface);
+		adventure.setActivityInterface(activityInterface);
+		adventure.setHotelInterface(roomInterface);
+		adventure.setBankInterface(bankInterface);
+		adventure.setTaxInterface(taxInterface);
 		this.adventure.setState(State.CONFIRMED);
 	}
 
@@ -58,13 +64,13 @@ public class ConfirmedStateProcessMethodTest extends RollbackTestAbstractClass {
 		this.adventure.setRoomConfirmation(ROOM_CONFIRMATION);
 		new Expectations() {
 			{
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
 
-				ActivityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
+				activityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
 
-				CarInterface.getRentingData(RENTING_CONFIRMATION);
+				carInterface.getRentingData(RENTING_CONFIRMATION);
 
-				HotelInterface.getRoomBookingData(ROOM_CONFIRMATION);
+				roomInterface.getRoomBookingData(ROOM_CONFIRMATION);
 
 				ConfirmedStateProcessMethodTest.this.activityReservationData.getPaymentReference();
 				this.result = REFERENCE;
@@ -98,11 +104,11 @@ public class ConfirmedStateProcessMethodTest extends RollbackTestAbstractClass {
 		this.adventure.setRoomConfirmation(ROOM_CONFIRMATION);
 		new Expectations() {
 			{
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
 
-				ActivityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
+				activityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
 
-				HotelInterface.getRoomBookingData(ROOM_CONFIRMATION);
+				roomInterface.getRoomBookingData(ROOM_CONFIRMATION);
 
 				ConfirmedStateProcessMethodTest.this.activityReservationData.getPaymentReference();
 				this.result = REFERENCE;
@@ -130,11 +136,11 @@ public class ConfirmedStateProcessMethodTest extends RollbackTestAbstractClass {
 		this.adventure.setRentingConfirmation(RENTING_CONFIRMATION);
 		new Expectations() {
 			{
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
 
-				ActivityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
+				activityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
 
-				CarInterface.getRentingData(RENTING_CONFIRMATION);
+				carInterface.getRentingData(RENTING_CONFIRMATION);
 
 				ConfirmedStateProcessMethodTest.this.activityReservationData.getPaymentReference();
 				this.result = REFERENCE;
@@ -161,9 +167,9 @@ public class ConfirmedStateProcessMethodTest extends RollbackTestAbstractClass {
 		this.adventure.setActivityConfirmation(ACTIVITY_CONFIRMATION);
 		new Expectations() {
 			{
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
 
-				ActivityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
+				activityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
 
 				ConfirmedStateProcessMethodTest.this.activityReservationData.getPaymentReference();
 				this.result = REFERENCE;
@@ -184,7 +190,7 @@ public class ConfirmedStateProcessMethodTest extends RollbackTestAbstractClass {
 		this.adventure.setActivityConfirmation(ACTIVITY_CONFIRMATION);
 		new Expectations() {
 			{
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
 				this.result = new BankException();
 			}
 		};
@@ -200,7 +206,7 @@ public class ConfirmedStateProcessMethodTest extends RollbackTestAbstractClass {
 		this.adventure.setActivityConfirmation(ACTIVITY_CONFIRMATION);
 		new Expectations() {
 			{
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
 				this.result = new BankException();
 			}
 		};
@@ -218,7 +224,7 @@ public class ConfirmedStateProcessMethodTest extends RollbackTestAbstractClass {
 		this.adventure.setActivityConfirmation(ACTIVITY_CONFIRMATION);
 		new Expectations() {
 			{
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
 				this.result = new BankException();
 			}
 		};
@@ -236,7 +242,7 @@ public class ConfirmedStateProcessMethodTest extends RollbackTestAbstractClass {
 		this.adventure.setActivityConfirmation(ACTIVITY_CONFIRMATION);
 		new Expectations() {
 			{
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
 				this.result = new RemoteAccessException();
 			}
 		};
@@ -252,9 +258,9 @@ public class ConfirmedStateProcessMethodTest extends RollbackTestAbstractClass {
 		this.adventure.setActivityConfirmation(ACTIVITY_CONFIRMATION);
 		new Expectations() {
 			{
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
 
-				ActivityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
+				activityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
 				this.result = new ActivityException();
 			}
 		};
@@ -270,9 +276,9 @@ public class ConfirmedStateProcessMethodTest extends RollbackTestAbstractClass {
 		this.adventure.setActivityConfirmation(ACTIVITY_CONFIRMATION);
 		new Expectations() {
 			{
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
 
-				ActivityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
+				activityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
 				this.result = new RemoteAccessException();
 			}
 		};
@@ -288,9 +294,9 @@ public class ConfirmedStateProcessMethodTest extends RollbackTestAbstractClass {
 		this.adventure.setActivityConfirmation(ACTIVITY_CONFIRMATION);
 		new Expectations() {
 			{
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
 
-				ActivityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
+				activityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
 
 				ConfirmedStateProcessMethodTest.this.activityReservationData.getPaymentReference();
 				this.result = null;
@@ -308,9 +314,9 @@ public class ConfirmedStateProcessMethodTest extends RollbackTestAbstractClass {
 		this.adventure.setActivityConfirmation(ACTIVITY_CONFIRMATION);
 		new Expectations() {
 			{
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
 
-				ActivityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
+				activityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
 
 				ConfirmedStateProcessMethodTest.this.activityReservationData.getPaymentReference();
 				this.result = REFERENCE;
@@ -332,9 +338,9 @@ public class ConfirmedStateProcessMethodTest extends RollbackTestAbstractClass {
 		this.adventure.setRentingConfirmation(RENTING_CONFIRMATION);
 		new Expectations() {
 			{
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
 
-				ActivityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
+				activityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
 
 				ConfirmedStateProcessMethodTest.this.activityReservationData.getPaymentReference();
 				this.result = REFERENCE;
@@ -342,7 +348,7 @@ public class ConfirmedStateProcessMethodTest extends RollbackTestAbstractClass {
 				ConfirmedStateProcessMethodTest.this.activityReservationData.getInvoiceReference();
 				this.result = REFERENCE;
 
-				CarInterface.getRentingData(RENTING_CONFIRMATION);
+				carInterface.getRentingData(RENTING_CONFIRMATION);
 				this.result = new CarException();
 			}
 		};
@@ -359,9 +365,9 @@ public class ConfirmedStateProcessMethodTest extends RollbackTestAbstractClass {
 		this.adventure.setRentingConfirmation(RENTING_CONFIRMATION);
 		new Expectations() {
 			{
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
 
-				ActivityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
+				activityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
 
 				ConfirmedStateProcessMethodTest.this.activityReservationData.getPaymentReference();
 				this.result = REFERENCE;
@@ -369,7 +375,7 @@ public class ConfirmedStateProcessMethodTest extends RollbackTestAbstractClass {
 				ConfirmedStateProcessMethodTest.this.activityReservationData.getInvoiceReference();
 				this.result = REFERENCE;
 
-				CarInterface.getRentingData(RENTING_CONFIRMATION);
+				carInterface.getRentingData(RENTING_CONFIRMATION);
 				this.result = new RemoteAccessException();
 			}
 		};
@@ -386,9 +392,9 @@ public class ConfirmedStateProcessMethodTest extends RollbackTestAbstractClass {
 		this.adventure.setRentingConfirmation(RENTING_CONFIRMATION);
 		new Expectations() {
 			{
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
 
-				ActivityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
+				activityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
 
 				ConfirmedStateProcessMethodTest.this.activityReservationData.getPaymentReference();
 				this.result = REFERENCE;
@@ -396,7 +402,7 @@ public class ConfirmedStateProcessMethodTest extends RollbackTestAbstractClass {
 				ConfirmedStateProcessMethodTest.this.activityReservationData.getInvoiceReference();
 				this.result = REFERENCE;
 
-				CarInterface.getRentingData(RENTING_CONFIRMATION);
+				carInterface.getRentingData(RENTING_CONFIRMATION);
 
 				ConfirmedStateProcessMethodTest.this.rentingData.getPaymentReference();
 				this.result = null;
@@ -415,9 +421,9 @@ public class ConfirmedStateProcessMethodTest extends RollbackTestAbstractClass {
 		this.adventure.setRentingConfirmation(RENTING_CONFIRMATION);
 		new Expectations() {
 			{
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
 
-				ActivityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
+				activityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
 
 				ConfirmedStateProcessMethodTest.this.activityReservationData.getPaymentReference();
 				this.result = REFERENCE;
@@ -425,7 +431,7 @@ public class ConfirmedStateProcessMethodTest extends RollbackTestAbstractClass {
 				ConfirmedStateProcessMethodTest.this.activityReservationData.getInvoiceReference();
 				this.result = REFERENCE;
 
-				CarInterface.getRentingData(RENTING_CONFIRMATION);
+				carInterface.getRentingData(RENTING_CONFIRMATION);
 
 				ConfirmedStateProcessMethodTest.this.rentingData.getPaymentReference();
 				this.result = REFERENCE;
@@ -447,9 +453,9 @@ public class ConfirmedStateProcessMethodTest extends RollbackTestAbstractClass {
 		this.adventure.setRoomConfirmation(ROOM_CONFIRMATION);
 		new Expectations() {
 			{
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
 
-				ActivityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
+				activityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
 
 				ConfirmedStateProcessMethodTest.this.activityReservationData.getPaymentReference();
 				this.result = REFERENCE;
@@ -457,7 +463,7 @@ public class ConfirmedStateProcessMethodTest extends RollbackTestAbstractClass {
 				ConfirmedStateProcessMethodTest.this.activityReservationData.getInvoiceReference();
 				this.result = REFERENCE;
 
-				HotelInterface.getRoomBookingData(ROOM_CONFIRMATION);
+				roomInterface.getRoomBookingData(ROOM_CONFIRMATION);
 				this.result = new HotelException();
 			}
 		};
@@ -474,9 +480,9 @@ public class ConfirmedStateProcessMethodTest extends RollbackTestAbstractClass {
 		this.adventure.setRoomConfirmation(ROOM_CONFIRMATION);
 		new Expectations() {
 			{
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
 
-				ActivityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
+				activityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
 
 				ConfirmedStateProcessMethodTest.this.activityReservationData.getPaymentReference();
 				this.result = REFERENCE;
@@ -484,7 +490,7 @@ public class ConfirmedStateProcessMethodTest extends RollbackTestAbstractClass {
 				ConfirmedStateProcessMethodTest.this.activityReservationData.getInvoiceReference();
 				this.result = REFERENCE;
 
-				HotelInterface.getRoomBookingData(ROOM_CONFIRMATION);
+				roomInterface.getRoomBookingData(ROOM_CONFIRMATION);
 				this.result = new RemoteAccessException();
 			}
 		};
@@ -501,9 +507,9 @@ public class ConfirmedStateProcessMethodTest extends RollbackTestAbstractClass {
 		this.adventure.setRoomConfirmation(ROOM_CONFIRMATION);
 		new Expectations() {
 			{
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
 
-				ActivityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
+				activityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
 
 				ConfirmedStateProcessMethodTest.this.activityReservationData.getPaymentReference();
 				this.result = REFERENCE;
@@ -511,7 +517,7 @@ public class ConfirmedStateProcessMethodTest extends RollbackTestAbstractClass {
 				ConfirmedStateProcessMethodTest.this.activityReservationData.getInvoiceReference();
 				this.result = REFERENCE;
 
-				HotelInterface.getRoomBookingData(ROOM_CONFIRMATION);
+				roomInterface.getRoomBookingData(ROOM_CONFIRMATION);
 
 				ConfirmedStateProcessMethodTest.this.roomBookingData.getPaymentReference();
 				this.result = null;
@@ -530,9 +536,9 @@ public class ConfirmedStateProcessMethodTest extends RollbackTestAbstractClass {
 		this.adventure.setRoomConfirmation(ROOM_CONFIRMATION);
 		new Expectations() {
 			{
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
 
-				ActivityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
+				activityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION);
 
 				ConfirmedStateProcessMethodTest.this.activityReservationData.getPaymentReference();
 				this.result = REFERENCE;
@@ -540,7 +546,7 @@ public class ConfirmedStateProcessMethodTest extends RollbackTestAbstractClass {
 				ConfirmedStateProcessMethodTest.this.activityReservationData.getInvoiceReference();
 				this.result = REFERENCE;
 
-				HotelInterface.getRoomBookingData(ROOM_CONFIRMATION);
+				roomInterface.getRoomBookingData(ROOM_CONFIRMATION);
 
 				ConfirmedStateProcessMethodTest.this.roomBookingData.getPaymentReference();
 				this.result = REFERENCE;

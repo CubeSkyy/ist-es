@@ -86,7 +86,7 @@ public class BulkRoomBooking extends BulkRoomBooking_Base {
         for (Reference reference : getReferenceSet()) {
             RestRoomBookingData data = null;
             try {
-                data = HotelInterface.getRoomBookingData(reference.getValue());
+                data = getHotelInterface().getRoomBookingData(reference.getValue());
                 setNumberOfRemoteErrors(0);
             } catch (HotelException he) {
                 setNumberOfRemoteErrors(0);

@@ -17,19 +17,22 @@ import static org.junit.Assert.*;
 public class BulkRoomBookingGetRoomBookingData4TypeMethodTest extends RollbackTestAbstractClass {
     private BulkRoomBooking bulk;
 
+    @Mocked private HotelInterface roomInterface;
+    
     @Override
     public void populate4Test() {
         this.broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN);
         this.bulk = new BulkRoomBooking(this.broker, NUMBER_OF_BULK, this.BEGIN, this.END, NIF_AS_BUYER, CLIENT_IBAN);
+        this.bulk.setHotelInterface(roomInterface);
         new Reference(this.bulk, REF_ONE);
         new Reference(this.bulk, REF_TWO);
     }
 
     @Test
-    public void successSINGLE(@Mocked final HotelInterface roomInterface) {
+    public void successSINGLE() {
         new Expectations() {
             {
-                HotelInterface.getRoomBookingData(this.anyString);
+                roomInterface.getRoomBookingData(this.anyString);
                 this.result = new Delegate() {
                     RestRoomBookingData delegate() {
                         RestRoomBookingData roomBookingData = new RestRoomBookingData();
@@ -46,10 +49,10 @@ public class BulkRoomBookingGetRoomBookingData4TypeMethodTest extends RollbackTe
     }
 
     @Test
-    public void successDOUBLE(@Mocked final HotelInterface roomInterface) {
+    public void successDOUBLE() {
         new Expectations() {
             {
-                HotelInterface.getRoomBookingData(this.anyString);
+                roomInterface.getRoomBookingData(this.anyString);
                 this.result = new Delegate() {
                     RestRoomBookingData delegate() {
                         RestRoomBookingData roomBookingData = new RestRoomBookingData();
@@ -66,10 +69,10 @@ public class BulkRoomBookingGetRoomBookingData4TypeMethodTest extends RollbackTe
     }
 
     @Test
-    public void hotelException(@Mocked final HotelInterface roomInterface) {
+    public void hotelException() {
         new Expectations() {
             {
-                HotelInterface.getRoomBookingData(this.anyString);
+                roomInterface.getRoomBookingData(this.anyString);
                 this.result = new HotelException();
                 this.times = 2;
             }
@@ -81,10 +84,10 @@ public class BulkRoomBookingGetRoomBookingData4TypeMethodTest extends RollbackTe
     }
 
     @Test
-    public void remoteException(@Mocked final HotelInterface roomInterface) {
+    public void remoteException() {
         new Expectations() {
             {
-                HotelInterface.getRoomBookingData(this.anyString);
+                roomInterface.getRoomBookingData(this.anyString);
                 this.result = new RemoteAccessException();
                 this.times = 2;
             }
@@ -96,10 +99,10 @@ public class BulkRoomBookingGetRoomBookingData4TypeMethodTest extends RollbackTe
     }
 
     @Test
-    public void maxRemoteException(@Mocked final HotelInterface roomInterface) {
+    public void maxRemoteException() {
         new Expectations() {
             {
-                HotelInterface.getRoomBookingData(this.anyString);
+                roomInterface.getRoomBookingData(this.anyString);
                 this.result = new RemoteAccessException();
                 this.times = BulkRoomBooking.MAX_REMOTE_ERRORS;
             }
@@ -114,10 +117,10 @@ public class BulkRoomBookingGetRoomBookingData4TypeMethodTest extends RollbackTe
     }
 
     @Test
-    public void maxMinusOneRemoteException(@Mocked final HotelInterface roomInterface) {
+    public void maxMinusOneRemoteException() {
         new Expectations() {
             {
-                HotelInterface.getRoomBookingData(this.anyString);
+                roomInterface.getRoomBookingData(this.anyString);
                 this.result = new Delegate() {
                     int i = 0;
 
@@ -144,10 +147,10 @@ public class BulkRoomBookingGetRoomBookingData4TypeMethodTest extends RollbackTe
     }
 
     @Test
-    public void remoteExceptionValueIsResetBySuccess(@Mocked final HotelInterface roomInterface) {
+    public void remoteExceptionValueIsResetBySuccess() {
         new Expectations() {
             {
-                HotelInterface.getRoomBookingData(this.anyString);
+                roomInterface.getRoomBookingData(this.anyString);
                 this.result = new Delegate() {
                     int i = 0;
 
@@ -183,10 +186,10 @@ public class BulkRoomBookingGetRoomBookingData4TypeMethodTest extends RollbackTe
     }
 
     @Test
-    public void remoteExceptionValueIsResetByHotelException(@Mocked final HotelInterface roomInterface) {
+    public void remoteExceptionValueIsResetByHotelException() {
         new Expectations() {
             {
-                HotelInterface.getRoomBookingData(this.anyString);
+                roomInterface.getRoomBookingData(this.anyString);
                 this.result = new Delegate() {
                     int i = 0;
 
