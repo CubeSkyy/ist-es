@@ -6,10 +6,15 @@ import org.slf4j.LoggerFactory;
 
 import pt.ist.fenixframework.FenixFramework;
 import pt.ulisboa.tecnico.softeng.broker.exception.BrokerException;
+import pt.ulisboa.tecnico.softeng.broker.services.remote.*;
 
 public class Broker extends Broker_Base {
 	private static Logger logger = LoggerFactory.getLogger(Broker.class);
-
+	private TaxInterface taxInterface;
+	private HotelInterface hotelInterface;
+	private ActivityInterface activityInterface;
+	private CarInterface carInterface;
+	private BankInterface bankInterface;
 	public Broker(String code, String name, String nifAsSeller, String nifAsBuyer, String iban) {
 		checkArguments(code, name, nifAsSeller, nifAsBuyer, iban);
 
@@ -19,8 +24,34 @@ public class Broker extends Broker_Base {
 		setNifAsBuyer(nifAsBuyer);
 		setIban(iban);
 
+
+
 		FenixFramework.getDomainRoot().addBroker(this);
 	}
+
+
+	public TaxInterface getTaxInterface() {
+		return this.taxInterface;
+	}
+	public void setTaxInterface(TaxInterface ti){this.taxInterface = ti; }
+
+
+	public HotelInterface getHotelInterface() {
+		return this.hotelInterface;
+	}
+	public void setHotelInterface(HotelInterface hi){this.hotelInterface = hi; }
+
+
+	public ActivityInterface getActivityInterface() {
+		return this.activityInterface;
+	}
+	public void setActivityInterface(ActivityInterface ai){this.activityInterface = ai; }
+
+
+	public CarInterface getCarInterface() {
+		return this.carInterface;
+	}
+	public void setCarInterface(CarInterface ci){this.carInterface = ci; }
 
 	public void delete() {
 		setRoot(null);
