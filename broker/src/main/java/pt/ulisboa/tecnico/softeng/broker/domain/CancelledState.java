@@ -26,13 +26,15 @@ public class CancelledState extends CancelledState_Base {
 	public void process() {
 		if (getAdventure().getPaymentCancellation() != null) {
 			try {
-				BankInterface.getOperationData(getAdventure().getPaymentConfirmation());
+				String a = getAdventure().getPaymentConfirmation();
+				BankInterface b = getAdventure().getBankInterface();
+				getAdventure().getBankInterface().getOperationData(getAdventure().getPaymentConfirmation());
 			} catch (BankException | RemoteAccessException e) {
 				return;
 			}
 
 			try {
-				BankInterface.getOperationData(getAdventure().getPaymentCancellation());
+				getAdventure().getBankInterface().getOperationData(getAdventure().getPaymentCancellation());
 			} catch (BankException | RemoteAccessException e) {
 				return;
 			}
@@ -40,7 +42,7 @@ public class CancelledState extends CancelledState_Base {
 
 		if (getAdventure().getActivityCancellation() != null) {
 			try {
-				ActivityInterface.getActivityReservationData(getAdventure().getActivityCancellation());
+				getAdventure().getActivityInterface().getActivityReservationData(getAdventure().getActivityCancellation());
 			} catch (ActivityException | RemoteAccessException e) {
 				return;
 			}
@@ -48,7 +50,7 @@ public class CancelledState extends CancelledState_Base {
 
 		if (getAdventure().getRoomCancellation() != null) {
 			try {
-				HotelInterface.getRoomBookingData(getAdventure().getRoomCancellation());
+				getAdventure().getHotelInterface().getRoomBookingData(getAdventure().getRoomCancellation());
 			} catch (HotelException | RemoteAccessException e) {
 				return;
 			}
@@ -56,7 +58,7 @@ public class CancelledState extends CancelledState_Base {
 
 		if (getAdventure().getRentingCancellation() != null) {
 			try {
-				CarInterface.getRentingData(getAdventure().getRentingCancellation());
+				getAdventure().getCarInterface().getRentingData(getAdventure().getRentingCancellation());
 			} catch (CarException | RemoteAccessException e) {
 				return;
 			}

@@ -20,14 +20,17 @@ import static org.junit.Assert.*;
 public class BulkRoomBookingProcessBookingMethodTest extends RollbackTestAbstractClass {
     private BulkRoomBooking bulk;
 
+    @Mocked private HotelInterface roomInterface;
+    
     @Override
     public void populate4Test() {
         this.broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN);
         this.bulk = new BulkRoomBooking(this.broker, NUMBER_OF_BULK, this.BEGIN, this.END, NIF_AS_BUYER, IBAN_BUYER);
+        this.bulk.setHotelInterface(roomInterface);
     }
 
     @Test
-    public void success(@Mocked final HotelInterface roomInterface) {
+    public void success() {
         new Expectations() {
             {
                 HotelInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
@@ -42,7 +45,7 @@ public class BulkRoomBookingProcessBookingMethodTest extends RollbackTestAbstrac
     }
 
     @Test
-    public void successTwice(@Mocked final HotelInterface roomInterface) {
+    public void successTwice() {
         new Expectations() {
             {
                 HotelInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
@@ -59,7 +62,7 @@ public class BulkRoomBookingProcessBookingMethodTest extends RollbackTestAbstrac
     }
 
     @Test
-    public void oneHotelException(@Mocked final HotelInterface roomInterface) {
+    public void oneHotelException() {
         new Expectations() {
             {
                 HotelInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
@@ -77,7 +80,7 @@ public class BulkRoomBookingProcessBookingMethodTest extends RollbackTestAbstrac
     }
 
     @Test
-    public void maxHotelException(@Mocked final HotelInterface roomInterface) {
+    public void maxHotelException() {
         new Expectations() {
             {
                 HotelInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
@@ -95,7 +98,7 @@ public class BulkRoomBookingProcessBookingMethodTest extends RollbackTestAbstrac
     }
 
     @Test
-    public void maxMinusOneHotelException(@Mocked final HotelInterface roomInterface) {
+    public void maxMinusOneHotelException() {
         new Expectations() {
             {
                 HotelInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
@@ -124,7 +127,7 @@ public class BulkRoomBookingProcessBookingMethodTest extends RollbackTestAbstrac
     }
 
     @Test
-    public void hotelExceptionValueIsResetByRemoteException(@Mocked final HotelInterface roomInterface) {
+    public void hotelExceptionValueIsResetByRemoteException() {
         new Expectations() {
             {
                 HotelInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
@@ -160,7 +163,7 @@ public class BulkRoomBookingProcessBookingMethodTest extends RollbackTestAbstrac
     }
 
     @Test
-    public void oneRemoteException(@Mocked final HotelInterface roomInterface) {
+    public void oneRemoteException() {
         new Expectations() {
             {
                 HotelInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
@@ -178,7 +181,7 @@ public class BulkRoomBookingProcessBookingMethodTest extends RollbackTestAbstrac
     }
 
     @Test
-    public void maxRemoteException(@Mocked final HotelInterface roomInterface) {
+    public void maxRemoteException() {
         new Expectations() {
             {
                 HotelInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
@@ -197,7 +200,7 @@ public class BulkRoomBookingProcessBookingMethodTest extends RollbackTestAbstrac
     }
 
     @Test
-    public void maxMinusOneRemoteException(@Mocked final HotelInterface roomInterface) {
+    public void maxMinusOneRemoteException() {
         new Expectations() {
             {
                 HotelInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
@@ -233,7 +236,7 @@ public class BulkRoomBookingProcessBookingMethodTest extends RollbackTestAbstrac
     }
 
     @Test
-    public void remoteExceptionValueIsResetByHotelException(@Mocked final HotelInterface roomInterface) {
+    public void remoteExceptionValueIsResetByHotelException() {
         new Expectations() {
             {
                 HotelInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,

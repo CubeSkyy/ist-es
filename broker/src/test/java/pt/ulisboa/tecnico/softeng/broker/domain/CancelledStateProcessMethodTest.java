@@ -22,6 +22,15 @@ import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.RemoteAccessE
 public class CancelledStateProcessMethodTest extends RollbackTestAbstractClass {
 	@Mocked
 	private TaxInterface taxInterface;
+	@Mocked
+	private BankInterface bankInterface;
+	@Mocked
+	private ActivityInterface activityInterface;
+	@Mocked
+	private HotelInterface hotelInterface;
+	@Mocked
+	private CarInterface carInterface;
+
 
 	@Override
 	public void populate4Test() {
@@ -30,11 +39,17 @@ public class CancelledStateProcessMethodTest extends RollbackTestAbstractClass {
 		this.adventure = new Adventure(this.broker, this.BEGIN, this.END, this.client, MARGIN);
 
 		this.adventure.setState(State.CANCELLED);
+		adventure.setActivityInterface(activityInterface);
+		adventure.setCarInterface(carInterface);
+		adventure.setHotelInterface(hotelInterface);
+		adventure.setBankInterface(bankInterface);
+		adventure.setTaxInterface(taxInterface);
+
 	}
 
 	@Test
-	public void didNotPayed(@Mocked final BankInterface bankInterface,
-			@Mocked final ActivityInterface activityInterface, @Mocked final HotelInterface hotelInterface) {
+	public void didNotPayed() {
+
 
 		this.adventure.process();
 
@@ -42,26 +57,26 @@ public class CancelledStateProcessMethodTest extends RollbackTestAbstractClass {
 
 		new Verifications() {
 			{
-				BankInterface.getOperationData(this.anyString);
+				bankInterface.getOperationData(this.anyString);
 				this.times = 0;
 
-				ActivityInterface.getActivityReservationData(this.anyString);
+				activityInterface.getActivityReservationData(this.anyString);
 				this.times = 0;
 
-				HotelInterface.getRoomBookingData(this.anyString);
+				hotelInterface.getRoomBookingData(this.anyString);
 				this.times = 0;
 			}
 		};
 	}
 
 	@Test
-	public void cancelledPaymentFirstBankException(@Mocked final BankInterface bankInterface) {
+	public void cancelledPaymentFirstBankException() {
 		this.adventure.setPaymentConfirmation(PAYMENT_CONFIRMATION);
 		this.adventure.setPaymentCancellation(PAYMENT_CANCELLATION);
 
 		new Expectations() {
 			{
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
 				this.result = new BankException();
 			}
 		};
@@ -72,13 +87,14 @@ public class CancelledStateProcessMethodTest extends RollbackTestAbstractClass {
 	}
 
 	@Test
-	public void cancelledPaymentFirstRemoteAccessException(@Mocked final BankInterface bankInterface) {
+	public void cancelledPaymentFirstRemoteAccessException() {
+
 		this.adventure.setPaymentConfirmation(PAYMENT_CONFIRMATION);
 		this.adventure.setPaymentCancellation(PAYMENT_CANCELLATION);
 
 		new Expectations() {
 			{
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
 				this.result = new RemoteAccessException();
 			}
 		};
@@ -89,13 +105,13 @@ public class CancelledStateProcessMethodTest extends RollbackTestAbstractClass {
 	}
 
 	@Test
-	public void cancelledPaymentSecondBankException(@Mocked final BankInterface bankInterface) {
+	public void cancelledPaymentSecondBankException() {
 		this.adventure.setPaymentConfirmation(PAYMENT_CONFIRMATION);
 		this.adventure.setPaymentCancellation(PAYMENT_CANCELLATION);
 
 		new Expectations() {
 			{
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
 				this.result = new RestBankOperationData();
 				this.result = new BankException();
 			}
@@ -107,13 +123,14 @@ public class CancelledStateProcessMethodTest extends RollbackTestAbstractClass {
 	}
 
 	@Test
-	public void cancelledPaymentSecondRemoteAccessException(@Mocked final BankInterface bankInterface) {
+	public void cancelledPaymentSecondRemoteAccessException() {
+
 		this.adventure.setPaymentConfirmation(PAYMENT_CONFIRMATION);
 		this.adventure.setPaymentCancellation(PAYMENT_CANCELLATION);
 
 		new Expectations() {
 			{
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
 				this.result = new RestBankOperationData();
 				this.result = new RemoteAccessException();
 			}
@@ -125,15 +142,16 @@ public class CancelledStateProcessMethodTest extends RollbackTestAbstractClass {
 	}
 
 	@Test
-	public void cancelledPayment(@Mocked final BankInterface bankInterface) {
+	public void cancelledPayment() {
+
 		this.adventure.setPaymentConfirmation(PAYMENT_CONFIRMATION);
 		this.adventure.setPaymentCancellation(PAYMENT_CANCELLATION);
 
 		new Expectations() {
 			{
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
 
-				BankInterface.getOperationData(PAYMENT_CANCELLATION);
+				bankInterface.getOperationData(PAYMENT_CANCELLATION);
 			}
 		};
 
@@ -143,8 +161,8 @@ public class CancelledStateProcessMethodTest extends RollbackTestAbstractClass {
 	}
 
 	@Test
-	public void cancelledActivity(@Mocked final BankInterface bankInterface,
-			@Mocked final ActivityInterface activityInterface) {
+	public void cancelledActivity() {
+
 		this.adventure.setPaymentConfirmation(PAYMENT_CONFIRMATION);
 		this.adventure.setPaymentCancellation(PAYMENT_CANCELLATION);
 		this.adventure.setActivityConfirmation(ACTIVITY_CONFIRMATION);
@@ -152,11 +170,11 @@ public class CancelledStateProcessMethodTest extends RollbackTestAbstractClass {
 
 		new Expectations() {
 			{
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
 
-				BankInterface.getOperationData(PAYMENT_CANCELLATION);
+				bankInterface.getOperationData(PAYMENT_CANCELLATION);
 
-				ActivityInterface.getActivityReservationData(ACTIVITY_CANCELLATION);
+				activityInterface.getActivityReservationData(ACTIVITY_CANCELLATION);
 			}
 		};
 
@@ -166,8 +184,9 @@ public class CancelledStateProcessMethodTest extends RollbackTestAbstractClass {
 	}
 
 	@Test
-	public void cancelledRoom(@Mocked final BankInterface bankInterface,
-			@Mocked final ActivityInterface activityInterface, @Mocked final HotelInterface hotelInterface) {
+	public void cancelledRoom() {
+
+
 		this.adventure.setPaymentConfirmation(PAYMENT_CONFIRMATION);
 		this.adventure.setPaymentCancellation(PAYMENT_CANCELLATION);
 		this.adventure.setActivityConfirmation(ACTIVITY_CONFIRMATION);
@@ -177,13 +196,13 @@ public class CancelledStateProcessMethodTest extends RollbackTestAbstractClass {
 
 		new Expectations() {
 			{
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
 
-				BankInterface.getOperationData(PAYMENT_CANCELLATION);
+				bankInterface.getOperationData(PAYMENT_CANCELLATION);
 
-				ActivityInterface.getActivityReservationData(ACTIVITY_CANCELLATION);
+				activityInterface.getActivityReservationData(ACTIVITY_CANCELLATION);
 
-				HotelInterface.getRoomBookingData(ROOM_CANCELLATION);
+				hotelInterface.getRoomBookingData(ROOM_CANCELLATION);
 			}
 		};
 
@@ -193,8 +212,8 @@ public class CancelledStateProcessMethodTest extends RollbackTestAbstractClass {
 	}
 
 	@Test
-	public void cancelledRenting(@Mocked final BankInterface bankInterface,
-			@Mocked final ActivityInterface activityInterface, @Mocked final CarInterface carInterface) {
+	public void cancelledRenting() {
+
 		this.adventure.setPaymentConfirmation(PAYMENT_CONFIRMATION);
 		this.adventure.setPaymentCancellation(PAYMENT_CANCELLATION);
 		this.adventure.setActivityConfirmation(ACTIVITY_CONFIRMATION);
@@ -204,10 +223,10 @@ public class CancelledStateProcessMethodTest extends RollbackTestAbstractClass {
 
 		new Expectations() {
 			{
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
-				BankInterface.getOperationData(PAYMENT_CANCELLATION);
-				ActivityInterface.getActivityReservationData(ACTIVITY_CANCELLATION);
-				CarInterface.getRentingData(RENTING_CANCELLATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CANCELLATION);
+				activityInterface.getActivityReservationData(ACTIVITY_CANCELLATION);
+				carInterface.getRentingData(RENTING_CANCELLATION);
 			}
 		};
 
@@ -217,9 +236,8 @@ public class CancelledStateProcessMethodTest extends RollbackTestAbstractClass {
 	}
 
 	@Test
-	public void cancelledBookAndRenting(@Mocked final BankInterface bankInterface,
-			@Mocked final ActivityInterface activityInterface, @Mocked final HotelInterface hotelInterface,
-			@Mocked final CarInterface carInterface) {
+	public void cancelledBookAndRenting() {
+
 		this.adventure.setPaymentConfirmation(PAYMENT_CONFIRMATION);
 		this.adventure.setPaymentCancellation(PAYMENT_CANCELLATION);
 		this.adventure.setActivityConfirmation(ACTIVITY_CONFIRMATION);
@@ -231,11 +249,11 @@ public class CancelledStateProcessMethodTest extends RollbackTestAbstractClass {
 
 		new Expectations() {
 			{
-				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
-				BankInterface.getOperationData(PAYMENT_CANCELLATION);
-				ActivityInterface.getActivityReservationData(ACTIVITY_CANCELLATION);
-				HotelInterface.getRoomBookingData(ROOM_CANCELLATION);
-				CarInterface.getRentingData(RENTING_CANCELLATION);
+				bankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				bankInterface.getOperationData(PAYMENT_CANCELLATION);
+				activityInterface.getActivityReservationData(ACTIVITY_CANCELLATION);
+				hotelInterface.getRoomBookingData(ROOM_CANCELLATION);
+				carInterface.getRentingData(RENTING_CANCELLATION);
 			}
 		};
 

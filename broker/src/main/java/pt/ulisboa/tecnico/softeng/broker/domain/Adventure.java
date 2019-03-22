@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pt.ulisboa.tecnico.softeng.broker.exception.BrokerException;
+import pt.ulisboa.tecnico.softeng.broker.services.remote.BankInterface;
 
 public class Adventure extends Adventure_Base {
 	private static Logger logger = LoggerFactory.getLogger(Adventure.class);
@@ -36,6 +37,8 @@ public class Adventure extends Adventure_Base {
 
 		setState(State.RESERVE_ACTIVITY);
 	}
+
+
 
 	public void delete() {
 		setBroker(null);

@@ -17,10 +17,11 @@ public class TaxPaymentState extends TaxPaymentState_Base {
 	@Override
 	public void process() {
 		try {
+			TaxInterface a = getAdventure().getTaxInterface();
 			RestInvoiceData invoiceData = new RestInvoiceData(getAdventure().getBroker().getNifAsSeller(),
 					getAdventure().getClient().getNif(), "ADVENTURE", getAdventure().getAmount(),
 					getAdventure().getBegin(), getAdventure().getTime());
-			getAdventure().setInvoiceReference(TaxInterface.submitInvoice(invoiceData));
+			getAdventure().setInvoiceReference(getAdventure().getTaxInterface().submitInvoice(invoiceData));
 		} catch (TaxException be) {
 			getAdventure().setState(State.UNDO);
 			return;
