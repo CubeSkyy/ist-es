@@ -61,10 +61,6 @@ class ActivityOfferHasVacancyMethodSpockTest extends SpockRollbackTestAbstractCl
 	}
 
 	def 'has cancelled bookings'() {
-        given:
-        bankInterface.processPayment(_)
-        taxInterface.submitInvoice(_)
-
 		when:
 		provider.getProcessor().submitBooking(new Booking(provider, offer, NIF, IBAN))
 		provider.getProcessor().submitBooking(new Booking(provider, offer, NIF, IBAN))
@@ -77,10 +73,6 @@ class ActivityOfferHasVacancyMethodSpockTest extends SpockRollbackTestAbstractCl
 	}
 
 	def 'has cancelled bookings but full'() {
-        given:
-        bankInterface.processPayment(_)
-        taxInterface.submitInvoice(_)
-
 		when:
 		provider.getProcessor().submitBooking(new Booking(provider, offer, NIF, IBAN))
 		provider.getProcessor().submitBooking(new Booking(provider, offer, NIF, IBAN))
