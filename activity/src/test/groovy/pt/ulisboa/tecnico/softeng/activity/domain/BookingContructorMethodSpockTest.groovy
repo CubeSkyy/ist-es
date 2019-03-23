@@ -3,6 +3,7 @@ package pt.ulisboa.tecnico.softeng.activity.domain
 import org.joda.time.LocalDate
 
 import pt.ulisboa.tecnico.softeng.activity.exception.ActivityException
+import pt.ulisboa.tecnico.softeng.activity.services.remote.BankInterface
 import spock.lang.Shared
 import spock.lang.Unroll
 
@@ -74,6 +75,8 @@ class BookingContructorMethodSpockTest extends SpockRollbackTestAbstractClass {
 
 	def 'booking equal capacity but has cancelled'() {
 		given: 'is complete'
+		BankInterface bankInterface = new BankInterface();
+		provider.setBankInterface(bankInterface);
 		new Booking(provider,offer,NIF,IBAN)
 		new Booking(provider,offer,NIF,IBAN)
 		def booking = new Booking(provider,offer,NIF,IBAN)
