@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import pt.ulisboa.tecnico.softeng.activity.domain.*;
 import pt.ulisboa.tecnico.softeng.activity.exception.ActivityException;
+import pt.ulisboa.tecnico.softeng.activity.services.remote.BankInterface;
 import pt.ulisboa.tecnico.softeng.activity.services.remote.dataobjects.RestActivityBookingData;
 
 public class ActivityInterfaceGetActivityReservationDataMethodTest extends RollbackTestAbstractClass {
@@ -19,6 +20,7 @@ public class ActivityInterfaceGetActivityReservationDataMethodTest extends Rollb
 	private ActivityProvider provider;
 	private ActivityOffer offer;
 	private Booking booking;
+	private RestActivityBookingData data;
 
 	@Override
 	public void populate4Test() {
@@ -32,7 +34,7 @@ public class ActivityInterfaceGetActivityReservationDataMethodTest extends Rollb
 	public void success() {
 		this.booking = new Booking(this.provider, this.offer, "123456789", "IBAN");
 
-		RestActivityBookingData data = ActivityInterface.getActivityReservationData(this.booking.getReference());
+		this.data = ActivityInterface.getActivityReservationData(this.booking.getReference());
 
 		assertEquals(this.booking.getReference(), data.getReference());
 		assertNull(data.getCancellation());
@@ -46,9 +48,11 @@ public class ActivityInterfaceGetActivityReservationDataMethodTest extends Rollb
 	@Test
 	public void successCancelled() {
 		this.booking = new Booking(this.provider, this.offer, "123456789", "IBAN");
+		BankInterface bankInterface = new BankInterface();
+		this.provider.setBankInterface(bankInterface);
 		this.provider.getProcessor().submitBooking(this.booking);
 		this.booking.cancel();
-		RestActivityBookingData data = ActivityInterface.getActivityReservationData(this.booking.getCancel());
+		this.data = ActivityInterface.getActivityReservationData(this.booking.getCancel());
 
 		assertEquals(this.booking.getReference(), data.getReference());
 		assertEquals(this.booking.getCancel(), data.getCancellation());

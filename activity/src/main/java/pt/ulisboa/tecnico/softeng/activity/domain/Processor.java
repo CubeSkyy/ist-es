@@ -3,8 +3,6 @@ package pt.ulisboa.tecnico.softeng.activity.domain;
 import java.util.HashSet;
 import java.util.Set;
 
-import pt.ulisboa.tecnico.softeng.activity.services.remote.BankInterface;
-import pt.ulisboa.tecnico.softeng.activity.services.remote.TaxInterface;
 import pt.ulisboa.tecnico.softeng.activity.services.remote.dataobjects.RestBankOperationData;
 import pt.ulisboa.tecnico.softeng.activity.services.remote.dataobjects.RestInvoiceData;
 import pt.ulisboa.tecnico.softeng.activity.services.remote.exceptions.BankException;
@@ -35,7 +33,7 @@ public class Processor extends Processor_Base {
 			if (!booking.isCancelled()) {
 				if (booking.getPaymentReference() == null) {
 					try {
-						booking.setPaymentReference(BankInterface.processPayment(new RestBankOperationData(
+						booking.setPaymentReference(getActivityProvider().getBankInterface().processPayment(new RestBankOperationData(
 								booking.getIban(), booking.getAmount(), TRANSACTION_SOURCE, booking.getReference())));
 					} catch (BankException | RemoteAccessException ex) {
 						failedToProcess.add(booking);
@@ -45,7 +43,7 @@ public class Processor extends Processor_Base {
 				RestInvoiceData invoiceData = new RestInvoiceData(booking.getProviderNif(), booking.getBuyerNif(),
 						booking.getType(), booking.getAmount(), booking.getDate(), booking.getTime());
 				try {
-					booking.setInvoiceReference(TaxInterface.submitInvoice(invoiceData));
+					booking.setInvoiceReference(getActivityProvider().getTaxInterface().submitInvoice(invoiceData));
 				} catch (TaxException | RemoteAccessException ex) {
 					failedToProcess.add(booking);
 				}
@@ -53,9 +51,9 @@ public class Processor extends Processor_Base {
 				try {
 					if (booking.getCancelledPaymentReference() == null) {
 						booking.setCancelledPaymentReference(
-								BankInterface.cancelPayment(booking.getPaymentReference()));
+								getActivityProvider().getBankInterface().cancelPayment(booking.getPaymentReference()));
 					}
-					TaxInterface.cancelInvoice(booking.getInvoiceReference());
+					getActivityProvider().getTaxInterface().cancelInvoice(booking.getInvoiceReference());
 					booking.setCancelledInvoice(true);
 				} catch (BankException | TaxException | RemoteAccessException ex) {
 					failedToProcess.add(booking);

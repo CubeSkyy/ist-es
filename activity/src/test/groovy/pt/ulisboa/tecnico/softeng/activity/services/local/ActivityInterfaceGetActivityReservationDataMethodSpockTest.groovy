@@ -8,6 +8,7 @@ import pt.ulisboa.tecnico.softeng.activity.domain.ActivityProvider
 import pt.ulisboa.tecnico.softeng.activity.domain.Booking
 import pt.ulisboa.tecnico.softeng.activity.domain.SpockRollbackTestAbstractClass
 import pt.ulisboa.tecnico.softeng.activity.exception.ActivityException
+import pt.ulisboa.tecnico.softeng.activity.services.remote.BankInterface
 import pt.ulisboa.tecnico.softeng.activity.services.remote.dataobjects.RestActivityBookingData
 import spock.lang.Unroll
 
@@ -47,6 +48,8 @@ class ActivityInterfaceGetActivityReservationDataMethodSpockTest extends SpockRo
 	def 'success cancelled'() {
 		given: 'a cancelled booking'
 		booking = new Booking(provider,offer,'123456789','IBAN')
+        BankInterface bankInterface = new BankInterface()
+        provider.setBankInterface(bankInterface)
 		provider.getProcessor().submitBooking(booking)
 		booking.cancel()
 

@@ -24,6 +24,11 @@ public class ActivityInterfaceCancelReservationMethodTest extends RollbackTestAb
 	private ActivityProvider provider;
 	private ActivityOffer offer;
 
+	@Mocked
+	private TaxInterface taxInterface;
+	@Mocked
+	private BankInterface bankInterface;
+
 	@Override
 	public void populate4Test() {
 		this.provider = new ActivityProvider("XtremX", "ExtremeAdventure", "NIF", IBAN);
@@ -32,14 +37,16 @@ public class ActivityInterfaceCancelReservationMethodTest extends RollbackTestAb
 		LocalDate begin = new LocalDate(2016, 12, 19);
 		LocalDate end = new LocalDate(2016, 12, 21);
 		this.offer = new ActivityOffer(activity, begin, end, 30);
+		this.provider.setBankInterface(bankInterface);
+		this.provider.setTaxInterface(taxInterface);
 	}
 
-	public void success(@Mocked final TaxInterface taxInterface, @Mocked final BankInterface bankInterface) {
+	public void success() {
 		new Expectations() {
 			{
-				BankInterface.processPayment((RestBankOperationData) this.any);
+				bankInterface.processPayment((RestBankOperationData) this.any);
 
-				TaxInterface.submitInvoice((RestInvoiceData) this.any);
+				taxInterface.submitInvoice((RestInvoiceData) this.any);
 			}
 		};
 
@@ -53,12 +60,12 @@ public class ActivityInterfaceCancelReservationMethodTest extends RollbackTestAb
 	}
 
 	@Test(expected = ActivityException.class)
-	public void doesNotExist(@Mocked final TaxInterface taxInterface, @Mocked final BankInterface bankInterface) {
+	public void doesNotExist() {
 		new Expectations() {
 			{
-				BankInterface.processPayment((RestBankOperationData) this.any);
+				bankInterface.processPayment((RestBankOperationData) this.any);
 
-				TaxInterface.submitInvoice((RestInvoiceData) this.any);
+				taxInterface.submitInvoice((RestInvoiceData) this.any);
 			}
 		};
 

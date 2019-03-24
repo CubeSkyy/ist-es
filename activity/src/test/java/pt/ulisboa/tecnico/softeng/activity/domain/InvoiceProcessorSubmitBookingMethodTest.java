@@ -29,6 +29,12 @@ public class InvoiceProcessorSubmitBookingMethodTest extends RollbackTestAbstrac
 	private ActivityOffer offer;
 	private Booking booking;
 
+	@Mocked
+	private TaxInterface taxInterface;
+
+	@Mocked
+	private BankInterface bankInterface;
+
 	@Override
 	public void populate4Test() {
 		this.provider = new ActivityProvider("XtremX", "ExtremeAdventure", "NIF", IBAN);
@@ -38,14 +44,17 @@ public class InvoiceProcessorSubmitBookingMethodTest extends RollbackTestAbstrac
 		LocalDate end = new LocalDate(2016, 12, 21);
 		this.offer = new ActivityOffer(activity, begin, end, AMOUNT);
 		this.booking = new Booking(this.provider, this.offer, NIF, IBAN);
+
+		this.provider.setBankInterface(bankInterface);
+		this.provider.setTaxInterface(taxInterface);
 	}
 
 	@Test
-	public void success(@Mocked final TaxInterface taxInterface, @Mocked final BankInterface bankInterface) {
+	public void success() {
 		new Expectations() {
 			{
-				BankInterface.processPayment((RestBankOperationData) this.any);
-				TaxInterface.submitInvoice((RestInvoiceData) this.any);
+				bankInterface.processPayment((RestBankOperationData) this.any);
+				taxInterface.submitInvoice((RestInvoiceData) this.any);
 			}
 		};
 
@@ -58,13 +67,12 @@ public class InvoiceProcessorSubmitBookingMethodTest extends RollbackTestAbstrac
 	}
 
 	@Test
-	public void oneTaxFailureOnSubmitInvoice(@Mocked final TaxInterface taxInterface,
-			@Mocked final BankInterface bankInterface) {
+	public void oneTaxFailureOnSubmitInvoice() {
 		new Expectations() {
 			{
-				BankInterface.processPayment((RestBankOperationData) this.any);
+				bankInterface.processPayment((RestBankOperationData) this.any);
 				this.result = PAYMENT_REFERENCE;
-				TaxInterface.submitInvoice((RestInvoiceData) this.any);
+				taxInterface.submitInvoice((RestInvoiceData) this.any);
 				this.result = new TaxException();
 				this.result = INVOICE_REFERENCE;
 			}
@@ -75,20 +83,19 @@ public class InvoiceProcessorSubmitBookingMethodTest extends RollbackTestAbstrac
 
 		new FullVerifications(taxInterface) {
 			{
-				TaxInterface.submitInvoice((RestInvoiceData) this.any);
+				taxInterface.submitInvoice((RestInvoiceData) this.any);
 				this.times = 3;
 			}
 		};
 	}
 
 	@Test
-	public void oneRemoteFailureOnSubmitInvoice(@Mocked final TaxInterface taxInterface,
-			@Mocked final BankInterface bankInterface) {
+	public void oneRemoteFailureOnSubmitInvoice() {
 		new Expectations() {
 			{
-				BankInterface.processPayment((RestBankOperationData) this.any);
+				bankInterface.processPayment((RestBankOperationData) this.any);
 				this.result = PAYMENT_REFERENCE;
-				TaxInterface.submitInvoice((RestInvoiceData) this.any);
+				taxInterface.submitInvoice((RestInvoiceData) this.any);
 				this.result = new RemoteAccessException();
 				this.result = INVOICE_REFERENCE;
 			}
@@ -99,21 +106,20 @@ public class InvoiceProcessorSubmitBookingMethodTest extends RollbackTestAbstrac
 
 		new FullVerifications(taxInterface) {
 			{
-				TaxInterface.submitInvoice((RestInvoiceData) this.any);
+				taxInterface.submitInvoice((RestInvoiceData) this.any);
 				this.times = 3;
 			}
 		};
 	}
 
 	@Test
-	public void oneBankFailureOnProcessPayment(@Mocked final TaxInterface taxInterface,
-			@Mocked final BankInterface bankInterface) {
+	public void oneBankFailureOnProcessPayment() {
 		new Expectations() {
 			{
-				BankInterface.processPayment((RestBankOperationData) this.any);
+				bankInterface.processPayment((RestBankOperationData) this.any);
 				this.result = new BankException();
 				this.result = PAYMENT_REFERENCE;
-				TaxInterface.submitInvoice((RestInvoiceData) this.any);
+				taxInterface.submitInvoice((RestInvoiceData) this.any);
 				this.result = INVOICE_REFERENCE;
 			}
 		};
@@ -123,21 +129,20 @@ public class InvoiceProcessorSubmitBookingMethodTest extends RollbackTestAbstrac
 
 		new FullVerifications(bankInterface) {
 			{
-				BankInterface.processPayment((RestBankOperationData) this.any);
+				bankInterface.processPayment((RestBankOperationData) this.any);
 				this.times = 3;
 			}
 		};
 	}
 
 	@Test
-	public void oneRemoteFailureOnProcessPayment(@Mocked final TaxInterface taxInterface,
-			@Mocked final BankInterface bankInterface) {
+	public void oneRemoteFailureOnProcessPayment() {
 		new Expectations() {
 			{
-				BankInterface.processPayment((RestBankOperationData) this.any);
+				bankInterface.processPayment((RestBankOperationData) this.any);
 				this.result = new RemoteAccessException();
 				this.result = PAYMENT_REFERENCE;
-				TaxInterface.submitInvoice((RestInvoiceData) this.any);
+				taxInterface.submitInvoice((RestInvoiceData) this.any);
 				this.result = INVOICE_REFERENCE;
 			}
 		};
@@ -147,21 +152,21 @@ public class InvoiceProcessorSubmitBookingMethodTest extends RollbackTestAbstrac
 
 		new FullVerifications(bankInterface) {
 			{
-				BankInterface.processPayment((RestBankOperationData) this.any);
+				bankInterface.processPayment((RestBankOperationData) this.any);
 				this.times = 3;
 			}
 		};
 	}
 
 	@Test
-	public void successCancel(@Mocked final TaxInterface taxInterface, @Mocked final BankInterface bankInterface) {
+	public void successCancel() {
 		new Expectations() {
 			{
-				TaxInterface.submitInvoice((RestInvoiceData) this.any);
-				BankInterface.processPayment((RestBankOperationData) this.any);
+				taxInterface.submitInvoice((RestInvoiceData) this.any);
+				bankInterface.processPayment((RestBankOperationData) this.any);
 
-				TaxInterface.cancelInvoice(this.anyString);
-				BankInterface.cancelPayment(this.anyString);
+				taxInterface.cancelInvoice(this.anyString);
+				bankInterface.cancelPayment(this.anyString);
 			}
 		};
 
@@ -175,17 +180,16 @@ public class InvoiceProcessorSubmitBookingMethodTest extends RollbackTestAbstrac
 	}
 
 	@Test
-	public void oneBankExceptionOnCancelPayment(@Mocked final TaxInterface taxInterface,
-			@Mocked final BankInterface bankInterface) {
+	public void oneBankExceptionOnCancelPayment() {
 		new Expectations() {
 			{
-				TaxInterface.submitInvoice((RestInvoiceData) this.any);
-				BankInterface.processPayment((RestBankOperationData) this.any);
+				taxInterface.submitInvoice((RestInvoiceData) this.any);
+				bankInterface.processPayment((RestBankOperationData) this.any);
 
-				BankInterface.cancelPayment(this.anyString);
+				bankInterface.cancelPayment(this.anyString);
 				this.result = new BankException();
 				this.result = CANCEL_PAYMENT_REFERENCE;
-				TaxInterface.cancelInvoice(this.anyString);
+				taxInterface.cancelInvoice(this.anyString);
 			}
 		};
 
@@ -195,24 +199,23 @@ public class InvoiceProcessorSubmitBookingMethodTest extends RollbackTestAbstrac
 
 		new FullVerifications(bankInterface) {
 			{
-				BankInterface.cancelPayment(this.anyString);
+				bankInterface.cancelPayment(this.anyString);
 				this.times = 2;
 			}
 		};
 	}
 
 	@Test
-	public void oneRemoteExceptionOnCancelPayment(@Mocked final TaxInterface taxInterface,
-			@Mocked final BankInterface bankInterface) {
+	public void oneRemoteExceptionOnCancelPayment() {
 		new Expectations() {
 			{
-				TaxInterface.submitInvoice((RestInvoiceData) this.any);
-				BankInterface.processPayment((RestBankOperationData) this.any);
+				taxInterface.submitInvoice((RestInvoiceData) this.any);
+				bankInterface.processPayment((RestBankOperationData) this.any);
 
-				BankInterface.cancelPayment(this.anyString);
+				bankInterface.cancelPayment(this.anyString);
 				this.result = new RemoteAccessException();
 				this.result = CANCEL_PAYMENT_REFERENCE;
-				TaxInterface.cancelInvoice(this.anyString);
+				taxInterface.cancelInvoice(this.anyString);
 			}
 		};
 
@@ -222,22 +225,21 @@ public class InvoiceProcessorSubmitBookingMethodTest extends RollbackTestAbstrac
 
 		new FullVerifications(bankInterface) {
 			{
-				BankInterface.cancelPayment(this.anyString);
+				bankInterface.cancelPayment(this.anyString);
 				this.times = 2;
 			}
 		};
 	}
 
 	@Test
-	public void oneTaxExceptionOnCancelInvoice(@Mocked final TaxInterface taxInterface,
-			@Mocked final BankInterface bankInterface) {
+	public void oneTaxExceptionOnCancelInvoice() {
 		new Expectations() {
 			{
-				BankInterface.processPayment((RestBankOperationData) this.any);
-				TaxInterface.submitInvoice((RestInvoiceData) this.any);
-				BankInterface.cancelPayment(this.anyString);
+				bankInterface.processPayment((RestBankOperationData) this.any);
+				taxInterface.submitInvoice((RestInvoiceData) this.any);
+				bankInterface.cancelPayment(this.anyString);
 				this.result = CANCEL_PAYMENT_REFERENCE;
-				TaxInterface.cancelInvoice(this.anyString);
+				taxInterface.cancelInvoice(this.anyString);
 				this.result = new Delegate() {
 					int i = 0;
 
@@ -257,23 +259,22 @@ public class InvoiceProcessorSubmitBookingMethodTest extends RollbackTestAbstrac
 
 		new FullVerifications(taxInterface) {
 			{
-				TaxInterface.cancelInvoice(this.anyString);
+				taxInterface.cancelInvoice(this.anyString);
 				this.times = 2;
 			}
 		};
 	}
 
 	@Test
-	public void oneRemoteExceptionOnCancelInvoice(@Mocked final TaxInterface taxInterface,
-			@Mocked final BankInterface bankInterface) {
+	public void oneRemoteExceptionOnCancelInvoice() {
 		new Expectations() {
 			{
-				BankInterface.processPayment((RestBankOperationData) this.any);
-				TaxInterface.submitInvoice((RestInvoiceData) this.any);
+				bankInterface.processPayment((RestBankOperationData) this.any);
+				taxInterface.submitInvoice((RestInvoiceData) this.any);
 
-				BankInterface.cancelPayment(this.anyString);
+				bankInterface.cancelPayment(this.anyString);
 				this.result = CANCEL_PAYMENT_REFERENCE;
-				TaxInterface.cancelInvoice(this.anyString);
+				taxInterface.cancelInvoice(this.anyString);
 				this.result = new Delegate() {
 					int i = 0;
 
@@ -293,7 +294,7 @@ public class InvoiceProcessorSubmitBookingMethodTest extends RollbackTestAbstrac
 
 		new FullVerifications(taxInterface) {
 			{
-				TaxInterface.cancelInvoice(this.anyString);
+				taxInterface.cancelInvoice(this.anyString);
 				this.times = 2;
 			}
 		};
