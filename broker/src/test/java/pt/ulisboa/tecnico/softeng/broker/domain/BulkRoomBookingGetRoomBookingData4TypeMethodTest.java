@@ -23,7 +23,7 @@ public class BulkRoomBookingGetRoomBookingData4TypeMethodTest extends RollbackTe
     public void populate4Test() {
         this.broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN);
         this.bulk = new BulkRoomBooking(this.broker, NUMBER_OF_BULK, this.BEGIN, this.END, NIF_AS_BUYER, CLIENT_IBAN);
-        this.bulk.setHotelInterface(roomInterface);
+        this.broker.setHotelInterface(roomInterface);
         new Reference(this.bulk, REF_ONE);
         new Reference(this.bulk, REF_TWO);
     }
