@@ -6,14 +6,15 @@ To run tests execute: mvn clean install
 To see the coverage reports, go to <module name>/target/site/jacoco/index.html.
 
 
-|   Number   |          Name           |            Email        |   GitHub Username  | Group |
-| ---------- | ----------------------- | ----------------------- | -------------------| ----- |
-|            |                         |                         |                    |   1   |
-|            |                         |                         |                    |   1   |
-|            |                         |                         |                    |   1   |
-|            |                         |                         |                    |   2   |
-|            |                         |                         |                    |   2   |
-|            |                         |                         |                    |   2   |
+| Number    | Name             | Email                                          | GitHub Username | Group |
+| --------- | ---------------- | ---------------------------------------------- | --------------- | ----- |
+| ist187631 | Andre Patricio   | andrepatricio98@tecnico.ulisboa.pt             | Andrempp        | 1     |
+| ist187633 | Bernardo Esteves | bernardo.esteves@tecnico.ulisboa.pt            | esteveste       | 1     |
+| ist187635 | Bernardo Santos  | bernardo.d.santos@tecnico.ulisboa.pt           | BSantosCoding   | 1     |
+| ist187687 | Miguel Coelho    | miguelmendescoelho@tecnico.ulisboa.pt          | CubeSkyy        | 2     |
+| ist187636 | Bernardo Faria   | bernardo.faria@tecnico.ulisboa.pt              | BernardoFaria   | 2     |
+| ist187700 | Ricardo Silva    | ricardo.f.oliveira.da.silva@tecnico.ulisboa.pt | genlike         | 2     |
+
 
 - **Group 1:**
 - **Group 2:**
@@ -50,3 +51,4 @@ To launch all servers execute in bin directory: startservers
 To stop all servers execute: bin/shutdownservers
 
 To run jmeter (nogui) execute in project's top directory: mvn -Pjmeter verify. Results are in target/jmeter/results/, open the .jtl file in jmeter, by associating the appropriate listeners to WorkBench and opening the results file in listener context
+
