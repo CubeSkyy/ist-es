@@ -62,6 +62,15 @@ class ReserveActivityStateProcessMethodSpockTest extends SpockRollbackTestAbstra
 
     }
 
+    def 'success BookRoom'() {
+        when:
+        this.adventure.process()
+
+        then:
+        activityInterface.reserveActivity(_ as RestActivityBookingData) >> bookingData
+        this.adventure.getState().getValue() == State.BOOK_ROOM
+    }
+
     def 'activityException'() {
         when:
         adventure.process()
@@ -89,7 +98,7 @@ class ReserveActivityStateProcessMethodSpockTest extends SpockRollbackTestAbstra
         adventure.process()
 
         then:
-        activityInterface.reserveActivity(_ as RestActivityBookingData) >> {throw new RemoteAccessException()}
+        activityInterface.reserveActivity(_ as RestActivityBookingData) >> { throw new RemoteAccessException() }
         adventure.getState().getValue() == State.UNDO
     }
 
@@ -101,7 +110,7 @@ class ReserveActivityStateProcessMethodSpockTest extends SpockRollbackTestAbstra
         adventure.process()
 
         then:
-        activityInterface.reserveActivity(_ as RestActivityBookingData) >> {throw new RemoteAccessException()}
+        activityInterface.reserveActivity(_ as RestActivityBookingData) >> { throw new RemoteAccessException() }
         adventure.getState().getValue() == State.RESERVE_ACTIVITY
     }
 
@@ -112,7 +121,9 @@ class ReserveActivityStateProcessMethodSpockTest extends SpockRollbackTestAbstra
         adventure.process()
 
         then:
-        3 * activityInterface.reserveActivity(_ as RestActivityBookingData) >> { throw new RemoteAccessException() } >> {
+        3 * activityInterface.reserveActivity(_ as RestActivityBookingData) >> {
+            throw new RemoteAccessException()
+        } >> {
             throw new RemoteAccessException()
         } >> bookingData
         adventure.getState().getValue() == State.BOOK_ROOM
@@ -124,7 +135,9 @@ class ReserveActivityStateProcessMethodSpockTest extends SpockRollbackTestAbstra
         adventure.process()
 
         then:
-        2 * activityInterface.reserveActivity(_ as RestActivityBookingData) >> { throw new RemoteAccessException() } >> {
+        2 * activityInterface.reserveActivity(_ as RestActivityBookingData) >> {
+            throw new RemoteAccessException()
+        } >> {
             throw new ActivityException()
         }
         adventure.getState().getValue() == State.UNDO
