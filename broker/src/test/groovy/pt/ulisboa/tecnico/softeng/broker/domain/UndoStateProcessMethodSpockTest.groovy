@@ -47,28 +47,39 @@ class UndoStateProcessMethodSpockTest extends SpockRollbackTestAbstractClass {
         adventure.setCarInterface(carInterface)
         adventure.setActivityInterface(activityInterface)
     }
-
-
-    @Unroll("exceçao lancada #label #exception")
-    def 'revert payment'() {
+    
+    def 'success revert payment'() {
         when:
         this.adventure.setPaymentConfirmation(PAYMENT_CONFIRMATION)
         this.adventure.process()
 
         then:
-        bankInterface.cancelPayment(PAYMENT_CONFIRMATION) >> functionReturn
-        this.adventure.getState().getValue() == state
-
-        where:
-        label                                  | functionReturn                        | state
-        "success revert payment"               | PAYMENT_CANCELLATION                  | State.CANCELLED
-        "fail payment bank exception"          | { throw new BankException() }         | State.UNDO
-        "fail payment remote access exception" | { throw new RemoteAccessException() } | State.UNDO
+        bankInterface.cancelPayment(PAYMENT_CONFIRMATION) >> PAYMENT_CANCELLATION
+        this.adventure.getState().getValue() == State.CANCELLED
     }
-    
 
-    @Unroll('#label #state #functionReturn')
-    def 'revert activity'() {
+    def 'fail payment bank exception'() {
+        when:
+        this.adventure.setPaymentConfirmation(PAYMENT_CONFIRMATION)
+        this.adventure.process()
+
+        then:
+        bankInterface.cancelPayment(PAYMENT_CONFIRMATION) >> { throw new BankException() }
+        this.adventure.getState().getValue() == State.UNDO
+    }
+
+    def 'fail payment remote access exception'() {
+        when:
+        this.adventure.setPaymentConfirmation(PAYMENT_CONFIRMATION)
+        this.adventure.process()
+
+        then:
+        bankInterface.cancelPayment(PAYMENT_CONFIRMATION) >> { throw new RemoteAccessException() }
+        this.adventure.getState().getValue() == State.UNDO
+    }
+
+
+    def 'success revert activity'() {
         when:
         this.adventure.setPaymentConfirmation(PAYMENT_CONFIRMATION)
         this.adventure.setPaymentCancellation(PAYMENT_CANCELLATION)
@@ -76,19 +87,36 @@ class UndoStateProcessMethodSpockTest extends SpockRollbackTestAbstractClass {
         this.adventure.process()
 
         then:
-        activityInterface.cancelReservation(ACTIVITY_CONFIRMATION) >> functionReturn
-        this.adventure.getState().getValue() == state
-
-        where:
-        label                                     | functionReturn                        | state
-        "success revert activity"                 | ACTIVITY_CANCELLATION                 | State.CANCELLED
-        "fail revert activity activity Exception" | { throw new ActivityException() }     | State.UNDO
-        "fail revert activity remote Exception"   | { throw new RemoteAccessException() } | State.UNDO
-
+        activityInterface.cancelReservation(ACTIVITY_CONFIRMATION) >> ACTIVITY_CANCELLATION
+        this.adventure.getState().getValue() == State.CANCELLED
     }
 
-    @Unroll('#label #state #functionReturn')
-    def 'revert RoomBooking'() {
+    def 'fail revert activity activity Exception'() {
+        when:
+        this.adventure.setPaymentConfirmation(PAYMENT_CONFIRMATION)
+        this.adventure.setPaymentCancellation(PAYMENT_CANCELLATION)
+        this.adventure.setActivityConfirmation(ACTIVITY_CONFIRMATION)
+        this.adventure.process()
+
+        then:
+        activityInterface.cancelReservation(ACTIVITY_CONFIRMATION) >> { throw new ActivityException() }
+        this.adventure.getState().getValue() == State.UNDO
+    }
+
+    def 'fail revert activity remote Exception'() {
+        when:
+        this.adventure.setPaymentConfirmation(PAYMENT_CONFIRMATION)
+        this.adventure.setPaymentCancellation(PAYMENT_CANCELLATION)
+        this.adventure.setActivityConfirmation(ACTIVITY_CONFIRMATION)
+        this.adventure.process()
+
+        then:
+        activityInterface.cancelReservation(ACTIVITY_CONFIRMATION) >> { throw new RemoteAccessException() }
+        this.adventure.getState().getValue() == State.UNDO
+    }
+
+
+    def 'success RevertRoomBooking'() {
         when:
         this.adventure.setPaymentConfirmation(PAYMENT_CONFIRMATION)
         this.adventure.setPaymentCancellation(PAYMENT_CANCELLATION)
@@ -98,18 +126,40 @@ class UndoStateProcessMethodSpockTest extends SpockRollbackTestAbstractClass {
         this.adventure.process()
 
         then:
-        roomInterface.cancelBooking(ROOM_CONFIRMATION) >> functionReturn
-        this.adventure.getState().getValue() == state
-
-        where:
-        label                                       | functionReturn                        | state
-        "success RevertRoomBooking"                 | ROOM_CANCELLATION                     | State.CANCELLED
-        "success RevertRoomBooking HotelException"  | { throw new HotelException() }        | State.UNDO
-        "success RevertRoomBooking RemoteException" | { throw new RemoteAccessException() } | State.UNDO
+        roomInterface.cancelBooking(ROOM_CONFIRMATION) >> ROOM_CANCELLATION
+        this.adventure.getState().getValue() == State.CANCELLED
     }
 
-    @Unroll('#label #state #functionReturn')
-    def 'revert RentCar'() {
+    def 'success RevertRoomBooking HotelException'() {
+        when:
+        this.adventure.setPaymentConfirmation(PAYMENT_CONFIRMATION)
+        this.adventure.setPaymentCancellation(PAYMENT_CANCELLATION)
+        this.adventure.setActivityConfirmation(ACTIVITY_CONFIRMATION)
+        this.adventure.setActivityCancellation(ACTIVITY_CANCELLATION)
+        this.adventure.setRoomConfirmation(ROOM_CONFIRMATION)
+        this.adventure.process()
+
+        then:
+        roomInterface.cancelBooking(ROOM_CONFIRMATION) >> { throw new HotelException() }
+        this.adventure.getState().getValue() == State.UNDO
+    }
+
+    def 'success RevertRoomBooking RemoteException'() {
+        when:
+        this.adventure.setPaymentConfirmation(PAYMENT_CONFIRMATION)
+        this.adventure.setPaymentCancellation(PAYMENT_CANCELLATION)
+        this.adventure.setActivityConfirmation(ACTIVITY_CONFIRMATION)
+        this.adventure.setActivityCancellation(ACTIVITY_CANCELLATION)
+        this.adventure.setRoomConfirmation(ROOM_CONFIRMATION)
+        this.adventure.process()
+
+        then:
+        roomInterface.cancelBooking(ROOM_CONFIRMATION) >> { throw new RemoteAccessException() }
+        this.adventure.getState().getValue() == State.UNDO
+    }
+
+
+    def 'success Revert RentCar'() {
         when:
         this.adventure.setPaymentConfirmation(PAYMENT_CONFIRMATION)
         this.adventure.setPaymentCancellation(PAYMENT_CANCELLATION)
@@ -121,18 +171,43 @@ class UndoStateProcessMethodSpockTest extends SpockRollbackTestAbstractClass {
         this.adventure.process()
 
         then:
-        carInterface.cancelRenting(RENTING_CONFIRMATION) >> functionReturn
-        this.adventure.getState().getValue() == state
-
-        where:
-        label                                 | functionReturn                        | state
-        "success Revert RentCar"              | RENTING_CANCELLATION                  | State.CANCELLED
-        "fail Revert RentCar CarException"    | { throw new CarException() }          | State.UNDO
-        "fail Revert RentCar RemoteException" | { throw new RemoteAccessException() } | State.UNDO
+        carInterface.cancelRenting(RENTING_CONFIRMATION) >> RENTING_CANCELLATION
+        this.adventure.getState().getValue() == State.CANCELLED
     }
 
-    @Unroll('#label #state #functionReturn')
-    def 'cancel Invoice'() {
+    def 'fail Revert RentCar CarException'() {
+        when:
+        this.adventure.setPaymentConfirmation(PAYMENT_CONFIRMATION)
+        this.adventure.setPaymentCancellation(PAYMENT_CANCELLATION)
+        this.adventure.setActivityConfirmation(ACTIVITY_CONFIRMATION)
+        this.adventure.setActivityCancellation(ACTIVITY_CANCELLATION)
+        this.adventure.setRoomConfirmation(ROOM_CONFIRMATION)
+        this.adventure.setRoomCancellation(ROOM_CANCELLATION)
+        this.adventure.setRentingConfirmation(RENTING_CONFIRMATION)
+        this.adventure.process()
+
+        then:
+        carInterface.cancelRenting(RENTING_CONFIRMATION) >> { throw new CarException() }
+        this.adventure.getState().getValue() == State.UNDO
+    }
+
+    def 'fail Revert RentCar RemoteException'() {
+        when:
+        this.adventure.setPaymentConfirmation(PAYMENT_CONFIRMATION)
+        this.adventure.setPaymentCancellation(PAYMENT_CANCELLATION)
+        this.adventure.setActivityConfirmation(ACTIVITY_CONFIRMATION)
+        this.adventure.setActivityCancellation(ACTIVITY_CANCELLATION)
+        this.adventure.setRoomConfirmation(ROOM_CONFIRMATION)
+        this.adventure.setRoomCancellation(ROOM_CANCELLATION)
+        this.adventure.setRentingConfirmation(RENTING_CONFIRMATION)
+        this.adventure.process()
+
+        then:
+        carInterface.cancelRenting(RENTING_CONFIRMATION) >> { throw new RemoteAccessException() }
+        this.adventure.getState().getValue() == State.UNDO
+    }
+
+    def 'success Cancel Invoice'() {
         when:
         this.adventure.setPaymentConfirmation(PAYMENT_CONFIRMATION)
         this.adventure.setPaymentCancellation(PAYMENT_CANCELLATION)
@@ -146,15 +221,47 @@ class UndoStateProcessMethodSpockTest extends SpockRollbackTestAbstractClass {
         this.adventure.process()
 
         then:
-        taxInterface.cancelInvoice(INVOICE_REFERENCE) >> functionReturn
+        taxInterface.cancelInvoice(INVOICE_REFERENCE) >> _
 
-        this.adventure.getState().getValue() == state
+        this.adventure.getState().getValue() == State.CANCELLED
+    }
 
-        where:
-        label                                 | functionReturn                        | state
-        "success Cancel Invoice"              | _                                     | State.CANCELLED
-        "fail Cancel Invoice TaxException"    | { throw new TaxException() }          | State.UNDO
-        "fail Cancel Invoice RemoteException" | { throw new RemoteAccessException() } | State.UNDO
+    def 'fail Cancel Invoice TaxException'() {
+        when:
+        this.adventure.setPaymentConfirmation(PAYMENT_CONFIRMATION)
+        this.adventure.setPaymentCancellation(PAYMENT_CANCELLATION)
+        this.adventure.setActivityConfirmation(ACTIVITY_CONFIRMATION)
+        this.adventure.setActivityCancellation(ACTIVITY_CANCELLATION)
+        this.adventure.setRoomConfirmation(ROOM_CONFIRMATION)
+        this.adventure.setRoomCancellation(ROOM_CANCELLATION)
+        this.adventure.setRentingConfirmation(RENTING_CONFIRMATION)
+        this.adventure.setRentingCancellation(RENTING_CONFIRMATION)
+        this.adventure.setInvoiceReference(INVOICE_REFERENCE)
+        this.adventure.process()
+
+        then:
+        taxInterface.cancelInvoice(INVOICE_REFERENCE) >> { throw new TaxException() }
+
+        this.adventure.getState().getValue() == State.UNDO
+    }
+
+    def 'fail Cancel Invoice RemoteException'() {
+        when:
+        this.adventure.setPaymentConfirmation(PAYMENT_CONFIRMATION)
+        this.adventure.setPaymentCancellation(PAYMENT_CANCELLATION)
+        this.adventure.setActivityConfirmation(ACTIVITY_CONFIRMATION)
+        this.adventure.setActivityCancellation(ACTIVITY_CANCELLATION)
+        this.adventure.setRoomConfirmation(ROOM_CONFIRMATION)
+        this.adventure.setRoomCancellation(ROOM_CANCELLATION)
+        this.adventure.setRentingConfirmation(RENTING_CONFIRMATION)
+        this.adventure.setRentingCancellation(RENTING_CONFIRMATION)
+        this.adventure.setInvoiceReference(INVOICE_REFERENCE)
+        this.adventure.process()
+
+        then:
+        taxInterface.cancelInvoice(INVOICE_REFERENCE) >> { throw new RemoteAccessException() }
+
+        this.adventure.getState().getValue() == State.UNDO
     }
 
 }
