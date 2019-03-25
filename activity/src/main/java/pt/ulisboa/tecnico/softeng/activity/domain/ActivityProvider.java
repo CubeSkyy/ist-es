@@ -7,9 +7,13 @@ import org.joda.time.LocalDate;
 
 import pt.ist.fenixframework.FenixFramework;
 import pt.ulisboa.tecnico.softeng.activity.exception.ActivityException;
+import pt.ulisboa.tecnico.softeng.activity.services.remote.TaxInterface;
+import pt.ulisboa.tecnico.softeng.activity.services.remote.BankInterface;
 
 public class ActivityProvider extends ActivityProvider_Base {
 	static final int CODE_SIZE = 6;
+	private TaxInterface taxInterface;
+	private BankInterface bankInterface;
 
 	public ActivityProvider(String code, String name, String nif, String iban) {
 		checkArguments(code, name, nif, iban);
@@ -91,4 +95,11 @@ public class ActivityProvider extends ActivityProvider_Base {
 				.orElse(null);
 	}
 
+	public TaxInterface getTaxInterface(){
+		return this.taxInterface;
+	}
+	public void setTaxInterface(TaxInterface ti){this.taxInterface=ti;}
+
+	public BankInterface getBankInterface(){ return this.bankInterface; }
+	public void setBankInterface(BankInterface bi){this.bankInterface=bi;}
 }

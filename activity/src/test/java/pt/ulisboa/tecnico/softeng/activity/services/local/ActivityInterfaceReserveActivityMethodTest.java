@@ -30,19 +30,30 @@ public class ActivityInterfaceReserveActivityMethodTest extends RollbackTestAbst
 	private static ActivityProvider provider1;
 	private static ActivityProvider provider2;
 
+	@Mocked
+	private TaxInterface taxInterface;
+	@Mocked
+	private BankInterface bankInterface;
+
 	@Override
 	public void populate4Test() {
 		provider1 = new ActivityProvider("XtremX", "Adventure++", "NIF", IBAN);
 		provider2 = new ActivityProvider("Walker", "Sky", "NIF2", IBAN);
+
+		this.provider1.setBankInterface(bankInterface);
+		this.provider2.setTaxInterface(taxInterface);
+
+		this.provider2.setBankInterface(bankInterface);
+		this.provider1.setTaxInterface(taxInterface);
 	}
 
 	@Test
-	public void reserveAcitivity(@Mocked final TaxInterface taxInterface, @Mocked final BankInterface bankInterface) {
+	public void reserveAcitivity() {
 		new Expectations() {
 			{
-				BankInterface.processPayment((RestBankOperationData) this.any);
+				bankInterface.processPayment((RestBankOperationData) this.any);
 
-				TaxInterface.submitInvoice((RestInvoiceData) this.any);
+				taxInterface.submitInvoice((RestInvoiceData) this.any);
 			}
 		};
 
