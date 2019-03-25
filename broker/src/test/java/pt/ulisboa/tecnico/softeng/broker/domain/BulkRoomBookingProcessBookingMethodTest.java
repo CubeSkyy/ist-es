@@ -26,14 +26,14 @@ public class BulkRoomBookingProcessBookingMethodTest extends RollbackTestAbstrac
     public void populate4Test() {
         this.broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN);
         this.bulk = new BulkRoomBooking(this.broker, NUMBER_OF_BULK, this.BEGIN, this.END, NIF_AS_BUYER, IBAN_BUYER);
-        this.bulk.setHotelInterface(roomInterface);
+        this.broker.setHotelInterface(roomInterface);
     }
 
     @Test
     public void success() {
         new Expectations() {
             {
-                HotelInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
+                roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
                         BulkRoomBookingProcessBookingMethodTest.this.bulk.getId());
                 this.result = new HashSet<>(Arrays.asList("ref1", "ref2"));
             }
@@ -48,7 +48,7 @@ public class BulkRoomBookingProcessBookingMethodTest extends RollbackTestAbstrac
     public void successTwice() {
         new Expectations() {
             {
-                HotelInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
+                roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
                         BulkRoomBookingProcessBookingMethodTest.this.bulk.getId());
                 this.result = new HashSet<>(Arrays.asList("ref1", "ref2"));
                 this.result = new HashSet<>(Arrays.asList("ref3", "ref4"));
@@ -65,7 +65,7 @@ public class BulkRoomBookingProcessBookingMethodTest extends RollbackTestAbstrac
     public void oneHotelException() {
         new Expectations() {
             {
-                HotelInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
+                roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
                         BulkRoomBookingProcessBookingMethodTest.this.bulk.getId());
                 this.result = new HotelException();
                 this.result = new HashSet<>(Arrays.asList("ref1", "ref2"));
@@ -83,7 +83,7 @@ public class BulkRoomBookingProcessBookingMethodTest extends RollbackTestAbstrac
     public void maxHotelException() {
         new Expectations() {
             {
-                HotelInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
+                roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
                         BulkRoomBookingProcessBookingMethodTest.this.bulk.getId());
                 this.result = new HotelException();
             }
@@ -101,7 +101,7 @@ public class BulkRoomBookingProcessBookingMethodTest extends RollbackTestAbstrac
     public void maxMinusOneHotelException() {
         new Expectations() {
             {
-                HotelInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
+                roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
                         BulkRoomBookingProcessBookingMethodTest.this.bulk.getId());
                 this.result = new Delegate() {
                     int i = 0;
@@ -130,7 +130,7 @@ public class BulkRoomBookingProcessBookingMethodTest extends RollbackTestAbstrac
     public void hotelExceptionValueIsResetByRemoteException() {
         new Expectations() {
             {
-                HotelInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
+                roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
                         BulkRoomBookingProcessBookingMethodTest.this.bulk.getId());
                 this.result = new Delegate() {
                     int i = 0;
@@ -166,7 +166,7 @@ public class BulkRoomBookingProcessBookingMethodTest extends RollbackTestAbstrac
     public void oneRemoteException() {
         new Expectations() {
             {
-                HotelInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
+                roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
                         BulkRoomBookingProcessBookingMethodTest.this.bulk.getId());
                 this.result = new RemoteAccessException();
                 this.result = new HashSet<>(Arrays.asList("ref1", "ref2"));
@@ -184,7 +184,7 @@ public class BulkRoomBookingProcessBookingMethodTest extends RollbackTestAbstrac
     public void maxRemoteException() {
         new Expectations() {
             {
-                HotelInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
+                roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
                         BulkRoomBookingProcessBookingMethodTest.this.bulk.getId());
                 this.result = new RemoteAccessException();
             }
@@ -203,7 +203,7 @@ public class BulkRoomBookingProcessBookingMethodTest extends RollbackTestAbstrac
     public void maxMinusOneRemoteException() {
         new Expectations() {
             {
-                HotelInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
+                roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
                         BulkRoomBookingProcessBookingMethodTest.this.bulk.getId());
                 this.result = new Delegate() {
                     int i = 0;
@@ -220,7 +220,7 @@ public class BulkRoomBookingProcessBookingMethodTest extends RollbackTestAbstrac
                 this.result = new RemoteAccessException();
                 this.times = BulkRoomBooking.MAX_REMOTE_ERRORS - 1;
 
-                HotelInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
+                roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
                         BulkRoomBookingProcessBookingMethodTest.this.bulk.getId());
                 this.result = new HashSet<>(Arrays.asList("ref1", "ref2"));
             }
@@ -239,7 +239,7 @@ public class BulkRoomBookingProcessBookingMethodTest extends RollbackTestAbstrac
     public void remoteExceptionValueIsResetByHotelException() {
         new Expectations() {
             {
-                HotelInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
+                roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
                         BulkRoomBookingProcessBookingMethodTest.this.bulk.getId());
                 this.result = new Delegate() {
                     int i = 0;
