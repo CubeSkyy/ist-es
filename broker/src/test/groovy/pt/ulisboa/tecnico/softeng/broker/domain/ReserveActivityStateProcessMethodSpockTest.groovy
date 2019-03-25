@@ -44,7 +44,7 @@ class ReserveActivityStateProcessMethodSpockTest extends SpockRollbackTestAbstra
         sameDayAdventure.process()
 
         then:
-        activityInterface.reserveActivity(_) >> bookingData
+        activityInterface.reserveActivity(_ as RestActivityBookingData) >> bookingData
         sameDayAdventure.getState().getValue() == State.PROCESS_PAYMENT
     }
 
@@ -57,7 +57,7 @@ class ReserveActivityStateProcessMethodSpockTest extends SpockRollbackTestAbstra
         adv.process()
 
         then:
-        activityInterface.reserveActivity(_) >> bookingData
+        activityInterface.reserveActivity(_ as RestActivityBookingData) >> bookingData
         adv.getState().getValue() == State.RENT_VEHICLE
 
     }
@@ -67,7 +67,7 @@ class ReserveActivityStateProcessMethodSpockTest extends SpockRollbackTestAbstra
         adventure.process()
 
         then:
-        activityInterface.reserveActivity(_) >> { throw new ActivityException() }
+        activityInterface.reserveActivity(_ as RestActivityBookingData) >> { throw new ActivityException() }
         adventure.getState().getValue() == State.UNDO
     }
 
@@ -76,7 +76,7 @@ class ReserveActivityStateProcessMethodSpockTest extends SpockRollbackTestAbstra
         adventure.process()
 
         then:
-        activityInterface.reserveActivity(_) >> { throw new RemoteAccessException() }
+        activityInterface.reserveActivity(_ as RestActivityBookingData) >> { throw new RemoteAccessException() }
         adventure.getState().getValue() == State.RESERVE_ACTIVITY
     }
 
@@ -89,7 +89,7 @@ class ReserveActivityStateProcessMethodSpockTest extends SpockRollbackTestAbstra
         adventure.process()
 
         then:
-        activityInterface.reserveActivity(_) >> {throw new RemoteAccessException()}
+        activityInterface.reserveActivity(_ as RestActivityBookingData) >> {throw new RemoteAccessException()}
         adventure.getState().getValue() == State.UNDO
     }
 
@@ -101,7 +101,7 @@ class ReserveActivityStateProcessMethodSpockTest extends SpockRollbackTestAbstra
         adventure.process()
 
         then:
-        activityInterface.reserveActivity(_) >> {throw new RemoteAccessException()}
+        activityInterface.reserveActivity(_ as RestActivityBookingData) >> {throw new RemoteAccessException()}
         adventure.getState().getValue() == State.RESERVE_ACTIVITY
     }
 
@@ -112,7 +112,7 @@ class ReserveActivityStateProcessMethodSpockTest extends SpockRollbackTestAbstra
         adventure.process()
 
         then:
-        3 * activityInterface.reserveActivity(_) >> { throw new RemoteAccessException() } >> {
+        3 * activityInterface.reserveActivity(_ as RestActivityBookingData) >> { throw new RemoteAccessException() } >> {
             throw new RemoteAccessException()
         } >> bookingData
         adventure.getState().getValue() == State.BOOK_ROOM
@@ -124,7 +124,7 @@ class ReserveActivityStateProcessMethodSpockTest extends SpockRollbackTestAbstra
         adventure.process()
 
         then:
-        2 * activityInterface.reserveActivity(_) >> { throw new RemoteAccessException() } >> {
+        2 * activityInterface.reserveActivity(_ as RestActivityBookingData) >> { throw new RemoteAccessException() } >> {
             throw new ActivityException()
         }
         adventure.getState().getValue() == State.UNDO
