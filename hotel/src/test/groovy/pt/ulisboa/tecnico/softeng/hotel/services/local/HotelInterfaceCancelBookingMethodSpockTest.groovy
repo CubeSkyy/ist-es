@@ -1,5 +1,8 @@
 package pt.ulisboa.tecnico.softeng.hotel.services.local
 
+import pt.ulisboa.tecnico.softeng.hotel.services.remote.BankInterface
+import pt.ulisboa.tecnico.softeng.hotel.services.remote.TaxInterface
+
 import static org.junit.Assert.*
 
 import org.joda.time.LocalDate
@@ -22,7 +25,7 @@ class HotelInterfaceCancelBookingMethodSpockTest extends SpockRollbackTestAbstra
 
 	@Override
 	def populate4Test() {
-		hotel = new Hotel("XPTO123", "Paris", "NIF", "IBAN", 20.0, 30.0);
+		hotel = new Hotel("XPTO123", "Paris", "NIF", "IBAN", 20.0, 30.0, new TaxInterface(), new BankInterface());
 		room = new Room(hotel, "01", Type.DOUBLE);
 		booking = room.reserve(Type.DOUBLE, ARRIVAL, DEPARTURE, NIF_BUYER, IBAN_BUYER);
 	}
