@@ -54,7 +54,7 @@ public class ActivityProvider extends ActivityProvider_Base {
 
 		for (ActivityProvider activityProvider : FenixFramework.getDomainRoot().getActivityProviderSet()) {
 			if (activityProvider.getNif().equals(nif)) {
-				//throw new ActivityException();
+				throw new ActivityException();
 			}
 		}
 	}
