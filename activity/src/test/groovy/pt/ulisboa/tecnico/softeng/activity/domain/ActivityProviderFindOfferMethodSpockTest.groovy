@@ -3,6 +3,8 @@ package pt.ulisboa.tecnico.softeng.activity.domain
 import org.joda.time.LocalDate
 
 import pt.ulisboa.tecnico.softeng.activity.exception.ActivityException
+import pt.ulisboa.tecnico.softeng.activity.services.remote.BankInterface
+import pt.ulisboa.tecnico.softeng.activity.services.remote.TaxInterface
 import spock.lang.Shared
 import spock.lang.Unroll
 
@@ -16,10 +18,16 @@ class ActivityProviderFindOfferMethodSpockTest extends SpockRollbackTestAbstract
 	@Shared def provider
 	@Shared def activity
 	@Shared def offer
+	def processor
 
 	@Override
 	def populate4Test() {
-		provider = new ActivityProvider('XtremX','ExtremeAdventure','NIF','IBAN')
+
+		def taxInterface = new TaxInterface()
+		def bankInterface = new BankInterface()
+
+		processor = new Processor(taxInterface, bankInterface)
+		provider = new ActivityProvider('XtremX','ExtremeAdventure','NIF','IBAN', processor)
 		activity = new Activity(provider,'Bush Walking', MIN_AGE, MAX_AGE, CAPACITY)
 		offer = new ActivityOffer(activity, begin, end,30)
 	}
@@ -71,7 +79,7 @@ class ActivityProviderFindOfferMethodSpockTest extends SpockRollbackTestAbstract
 
 	def 'empty activity set'() {
 		given:
-		def otherProvider = new ActivityProvider('Xtrems','Adventure','NIF2','IBAN')
+		def otherProvider = new ActivityProvider('Xtrems','Adventure','NIF2','IBAN', processor)
 
 		when:
 		def offers = otherProvider.findOffer(begin, end, AGE)
@@ -82,7 +90,7 @@ class ActivityProviderFindOfferMethodSpockTest extends SpockRollbackTestAbstract
 
 	def 'empty activity offer set'() {
 		given:
-		def otherProvider = new ActivityProvider('Xtrems','Adventure','NIF2','IBAN')
+		def otherProvider = new ActivityProvider('Xtrems','Adventure','NIF2','IBAN', processor)
 		new Activity(otherProvider,'Bush Walking',18,80,25)
 
 		when:

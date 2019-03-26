@@ -37,7 +37,11 @@ public class InvoiceProcessorSubmitBookingMethodTest extends RollbackTestAbstrac
 
 	@Override
 	public void populate4Test() {
-		this.provider = new ActivityProvider("XtremX", "ExtremeAdventure", "NIF", IBAN);
+
+		taxInterface = new TaxInterface();
+		bankInterface = new BankInterface();
+		Processor processor = new Processor(taxInterface, bankInterface);
+		this.provider = new ActivityProvider("XtremX", "ExtremeAdventure", "NIF", IBAN, processor);
 		Activity activity = new Activity(this.provider, "Bush Walking", 18, 80, 10);
 
 		LocalDate begin = new LocalDate(2016, 12, 19);

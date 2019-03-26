@@ -6,9 +6,11 @@ import pt.ulisboa.tecnico.softeng.activity.domain.Activity
 import pt.ulisboa.tecnico.softeng.activity.domain.ActivityOffer
 import pt.ulisboa.tecnico.softeng.activity.domain.ActivityProvider
 import pt.ulisboa.tecnico.softeng.activity.domain.Booking
+import pt.ulisboa.tecnico.softeng.activity.domain.Processor
 import pt.ulisboa.tecnico.softeng.activity.domain.SpockRollbackTestAbstractClass
 import pt.ulisboa.tecnico.softeng.activity.exception.ActivityException
 import pt.ulisboa.tecnico.softeng.activity.services.remote.BankInterface
+import pt.ulisboa.tecnico.softeng.activity.services.remote.TaxInterface
 import pt.ulisboa.tecnico.softeng.activity.services.remote.dataobjects.RestActivityBookingData
 import spock.lang.Unroll
 
@@ -23,7 +25,12 @@ class ActivityInterfaceGetActivityReservationDataMethodSpockTest extends SpockRo
 
 	@Override
 	def populate4Test() {
-		provider = new ActivityProvider(CODE,NAME,'NIF','IBAN')
+
+		def taxInterface = Mock(TaxInterface)
+		def bankInterface = Mock(BankInterface)
+
+		def processor = new Processor(taxInterface, bankInterface)
+		provider = new ActivityProvider(CODE,NAME,'NIF','IBAN', processor)
 		def activity = new Activity(provider,'Bush Walking',18,80,3)
 		offer = new ActivityOffer(activity,begin,end,30)
 	}
@@ -31,9 +38,10 @@ class ActivityInterfaceGetActivityReservationDataMethodSpockTest extends SpockRo
 	def 'success'() {
 		given:
 		booking = new Booking(provider,offer,'123456789','IBAN')
+		def activityInterface = new ActivityInterface();
 
 		when:
-		RestActivityBookingData data=ActivityInterface.getActivityReservationData(booking.getReference())
+		RestActivityBookingData data=activityInterface.getActivityReservationData(booking.getReference())
 
 		then:
 		data.getReference() == booking.getReference()
@@ -50,9 +58,10 @@ class ActivityInterfaceGetActivityReservationDataMethodSpockTest extends SpockRo
 		booking = new Booking(provider,offer,'123456789','IBAN')
 		provider.getProcessor().submitBooking(booking)
 		booking.cancel()
+		def activityInterface = new ActivityInterface();
 
 		when: 'get booking data'
-		RestActivityBookingData data=ActivityInterface.getActivityReservationData(booking.getCancel())
+		RestActivityBookingData data=activityInterface.getActivityReservationData(booking.getCancel())
 
 		then: 'the information if OK'
 		data.getReference() == booking.getReference()
@@ -67,7 +76,8 @@ class ActivityInterfaceGetActivityReservationDataMethodSpockTest extends SpockRo
 	@Unroll('exceptions: #label')
 	def 'exceptions'() {
 		when:
-		ActivityInterface.getActivityReservationData(ref)
+		def activityInterface = new ActivityInterface();
+		activityInterface.getActivityReservationData(ref)
 
 		then:
 		thrown(ActivityException)

@@ -2,6 +2,7 @@ package pt.ulisboa.tecnico.softeng.activity.domain
 
 import org.joda.time.LocalDate
 import pt.ulisboa.tecnico.softeng.activity.services.remote.BankInterface
+import pt.ulisboa.tecnico.softeng.activity.services.remote.TaxInterface
 
 class ActivityOfferGetBookingMethodSpockTest extends SpockRollbackTestAbstractClass {
 	def IBAN = 'IBAN'
@@ -12,7 +13,11 @@ class ActivityOfferGetBookingMethodSpockTest extends SpockRollbackTestAbstractCl
 
 	@Override
 	def populate4Test() {
-		provider = new ActivityProvider('XtremX','ExtremeAdventure','NIF',IBAN)
+		def taxInterface = new TaxInterface()
+		def bankInterface = new BankInterface()
+
+		def processor = new Processor(taxInterface, bankInterface)
+		provider = new ActivityProvider('XtremX','ExtremeAdventure','NIF',IBAN, processor)
 
 		def activity = new Activity(this.provider,'Bush Walking',18,80,3)
 		def begin = new LocalDate(2016,12,19)

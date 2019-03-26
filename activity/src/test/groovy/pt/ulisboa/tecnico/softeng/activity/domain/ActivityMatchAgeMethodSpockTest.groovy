@@ -1,5 +1,8 @@
 package pt.ulisboa.tecnico.softeng.activity.domain
 
+import pt.ulisboa.tecnico.softeng.activity.services.remote.BankInterface
+import pt.ulisboa.tecnico.softeng.activity.services.remote.TaxInterface
+
 class ActivityMatchAgeMethodSpockTest extends SpockRollbackTestAbstractClass {
 	private static final int MIN_AGE=25
 	private static final int MAX_AGE=80
@@ -8,7 +11,11 @@ class ActivityMatchAgeMethodSpockTest extends SpockRollbackTestAbstractClass {
 
 	@Override
 	def populate4Test() {
-		def provider = new ActivityProvider('XtremX','ExtremeAdventure','NIF','IBAN')
+		def taxInterface = new TaxInterface()
+		def bankInterface = new BankInterface()
+
+		def processor = new Processor(taxInterface, bankInterface)
+		def provider = new ActivityProvider('XtremX','ExtremeAdventure','NIF','IBAN', processor)
 
 		activity = new Activity(provider,'Bush Walking',MIN_AGE,MAX_AGE,CAPACITY)
 	}

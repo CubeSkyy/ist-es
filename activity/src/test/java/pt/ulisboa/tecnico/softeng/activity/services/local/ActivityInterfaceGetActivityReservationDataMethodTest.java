@@ -10,6 +10,7 @@ import org.junit.Test;
 import pt.ulisboa.tecnico.softeng.activity.domain.*;
 import pt.ulisboa.tecnico.softeng.activity.exception.ActivityException;
 import pt.ulisboa.tecnico.softeng.activity.services.remote.BankInterface;
+import pt.ulisboa.tecnico.softeng.activity.services.remote.TaxInterface;
 import pt.ulisboa.tecnico.softeng.activity.services.remote.dataobjects.RestActivityBookingData;
 
 public class ActivityInterfaceGetActivityReservationDataMethodTest extends RollbackTestAbstractClass {
@@ -21,10 +22,15 @@ public class ActivityInterfaceGetActivityReservationDataMethodTest extends Rollb
 	private ActivityOffer offer;
 	private Booking booking;
 	private RestActivityBookingData data;
+	private ActivityInterface activityInterface;
 
 	@Override
 	public void populate4Test() {
-		this.provider = new ActivityProvider(CODE, NAME, "NIF", "IBAN");
+		activityInterface = new ActivityInterface();
+		TaxInterface taxInterface = new TaxInterface();
+		BankInterface bankInterface = new BankInterface();
+		Processor processor = new Processor(taxInterface, bankInterface);
+		this.provider = new ActivityProvider(CODE, NAME, "NIF", "IBAN", processor);
 		Activity activity = new Activity(this.provider, "Bush Walking", 18, 80, 3);
 
 		this.offer = new ActivityOffer(activity, this.begin, this.end, 30);
@@ -34,7 +40,7 @@ public class ActivityInterfaceGetActivityReservationDataMethodTest extends Rollb
 	public void success() {
 		this.booking = new Booking(this.provider, this.offer, "123456789", "IBAN");
 
-		this.data = ActivityInterface.getActivityReservationData(this.booking.getReference());
+		this.data = activityInterface.getActivityReservationData(this.booking.getReference());
 
 		assertEquals(this.booking.getReference(), data.getReference());
 		assertNull(data.getCancellation());
@@ -50,7 +56,7 @@ public class ActivityInterfaceGetActivityReservationDataMethodTest extends Rollb
 		this.booking = new Booking(this.provider, this.offer, "123456789", "IBAN");
 		this.provider.getProcessor().submitBooking(this.booking);
 		this.booking.cancel();
-		this.data = ActivityInterface.getActivityReservationData(this.booking.getCancel());
+		this.data = activityInterface.getActivityReservationData(this.booking.getCancel());
 
 		assertEquals(this.booking.getReference(), data.getReference());
 		assertEquals(this.booking.getCancel(), data.getCancellation());
@@ -63,17 +69,17 @@ public class ActivityInterfaceGetActivityReservationDataMethodTest extends Rollb
 
 	@Test(expected = ActivityException.class)
 	public void nullReference() {
-		ActivityInterface.getActivityReservationData(null);
+		activityInterface.getActivityReservationData(null);
 	}
 
 	@Test(expected = ActivityException.class)
 	public void emptyReference() {
-		ActivityInterface.getActivityReservationData("");
+		activityInterface.getActivityReservationData("");
 	}
 
 	@Test(expected = ActivityException.class)
 	public void notExistsReference() {
-		ActivityInterface.getActivityReservationData("XPTO");
+		activityInterface.getActivityReservationData("XPTO");
 	}
 
 }

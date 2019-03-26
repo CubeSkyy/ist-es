@@ -2,6 +2,8 @@ package pt.ulisboa.tecnico.softeng.activity.domain
 
 import pt.ist.fenixframework.FenixFramework
 import pt.ulisboa.tecnico.softeng.activity.exception.ActivityException
+import pt.ulisboa.tecnico.softeng.activity.services.remote.BankInterface
+import pt.ulisboa.tecnico.softeng.activity.services.remote.TaxInterface
 import spock.lang.Shared
 import spock.lang.Unroll
 
@@ -10,13 +12,18 @@ class ActivityProviderConstructorMethodSpockTest extends SpockRollbackTestAbstra
 	@Shared def PROVIDER_NAME = 'Adventure++'
 	@Shared def IBAN = 'IBAN'
 	@Shared def NIF = 'NIF'
+	def processor
 
 	@Override
-	def populate4Test() { }
+	def populate4Test() {
+		def taxInterface = new TaxInterface()
+		def	bankInterface = new BankInterface()
+		processor = new Processor(taxInterface, bankInterface)
+	}
 
 	def 'success'() {
 		when:
-		def provider = new ActivityProvider(PROVIDER_CODE,PROVIDER_NAME,NIF,IBAN)
+		def provider = new ActivityProvider(PROVIDER_CODE,PROVIDER_NAME,NIF,IBAN,processor)
 
 		then:
 		provider.getName() == PROVIDER_NAME
@@ -28,7 +35,7 @@ class ActivityProviderConstructorMethodSpockTest extends SpockRollbackTestAbstra
 	@Unroll('exceptions: #code, #prov, #nif, #iban')
 	def 'exceptions'() {
 		when:
-		new ActivityProvider(code, prov, nif, iban)
+		new ActivityProvider(code, prov, nif, iban, processor)
 
 		then:
 		thrown(ActivityException)
@@ -50,10 +57,10 @@ class ActivityProviderConstructorMethodSpockTest extends SpockRollbackTestAbstra
 	@Unroll('uniques: #cd1, #cd2, #n1, #n2, #nif1, #nif2')
 	def 'uniques'() {
 		given: 'an acitivity providr'
-		new ActivityProvider(cd1, n1, nif1, IBAN)
+		new ActivityProvider(cd1, n1, nif1, IBAN, processor)
 
 		when: 'it is created another'
-		new ActivityProvider(cd2, n2, nif2, IBAN)
+		new ActivityProvider(cd2, n2, nif2, IBAN, processor)
 
 		then: 'throws an exception'
 		def error = thrown(ActivityException)

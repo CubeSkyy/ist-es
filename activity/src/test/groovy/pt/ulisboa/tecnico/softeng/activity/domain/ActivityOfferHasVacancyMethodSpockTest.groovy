@@ -16,10 +16,11 @@ class ActivityOfferHasVacancyMethodSpockTest extends SpockRollbackTestAbstractCl
 
 	@Override
 	def populate4Test() {
-		provider = new ActivityProvider("XtremX", "ExtremeAdventure", "NIF", IBAN)
-
 		taxInterface = Mock(TaxInterface)
 		bankInterface = Mock(BankInterface)
+
+		def processor = new Processor(taxInterface, bankInterface)
+		provider = new ActivityProvider("XtremX", "ExtremeAdventure", "NIF", IBAN, processor)
 
 		def activity = new Activity(provider, "Bush Walking", 18, 80, 3)
 

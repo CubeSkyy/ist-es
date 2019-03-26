@@ -29,9 +29,15 @@ public class ActivityInterfaceCancelReservationMethodTest extends RollbackTestAb
 	@Mocked
 	private BankInterface bankInterface;
 
+	private ActivityInterface activityInterface;
+
 	@Override
 	public void populate4Test() {
-		this.provider = new ActivityProvider("XtremX", "ExtremeAdventure", "NIF", IBAN);
+		activityInterface = new ActivityInterface();
+		taxInterface = new TaxInterface();
+		bankInterface = new BankInterface();
+		Processor processor = new Processor(taxInterface, bankInterface);
+		this.provider = new ActivityProvider("XtremX", "ExtremeAdventure", "NIF", IBAN, processor );
 		Activity activity = new Activity(this.provider, "Bush Walking", 18, 80, 3);
 
 		LocalDate begin = new LocalDate(2016, 12, 19);
@@ -51,7 +57,7 @@ public class ActivityInterfaceCancelReservationMethodTest extends RollbackTestAb
 		Booking booking = new Booking(this.provider, this.offer, NIF, IBAN);
 		this.provider.getProcessor().submitBooking(booking);
 
-		String cancel = ActivityInterface.cancelReservation(booking.getReference());
+		String cancel = activityInterface.cancelReservation(booking.getReference());
 
 		assertTrue(booking.isCancelled());
 		assertEquals(cancel, booking.getCancel());
@@ -69,7 +75,7 @@ public class ActivityInterfaceCancelReservationMethodTest extends RollbackTestAb
 
 		this.provider.getProcessor().submitBooking(new Booking(this.provider, this.offer, NIF, IBAN));
 
-		ActivityInterface.cancelReservation("XPTO");
+		activityInterface.cancelReservation("XPTO");
 	}
 
 }
