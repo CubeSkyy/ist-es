@@ -48,8 +48,6 @@ public class ActivityInterfaceGetActivityReservationDataMethodTest extends Rollb
 	@Test
 	public void successCancelled() {
 		this.booking = new Booking(this.provider, this.offer, "123456789", "IBAN");
-		BankInterface bankInterface = new BankInterface();
-		this.provider.setBankInterface(bankInterface);
 		this.provider.getProcessor().submitBooking(this.booking);
 		this.booking.cancel();
 		this.data = ActivityInterface.getActivityReservationData(this.booking.getCancel());

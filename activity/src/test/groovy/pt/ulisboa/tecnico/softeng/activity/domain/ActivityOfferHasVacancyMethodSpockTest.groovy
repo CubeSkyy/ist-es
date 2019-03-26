@@ -21,9 +21,6 @@ class ActivityOfferHasVacancyMethodSpockTest extends SpockRollbackTestAbstractCl
 		taxInterface = Mock(TaxInterface)
 		bankInterface = Mock(BankInterface)
 
-		provider.setBankInterface(bankInterface)
-		provider.setTaxInterface(taxInterface)
-
 		def activity = new Activity(provider, "Bush Walking", 18, 80, 3)
 
 		def begin = new LocalDate(2016, 12, 19)

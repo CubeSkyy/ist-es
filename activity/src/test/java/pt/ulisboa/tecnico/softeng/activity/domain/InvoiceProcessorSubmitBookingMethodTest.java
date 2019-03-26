@@ -44,9 +44,6 @@ public class InvoiceProcessorSubmitBookingMethodTest extends RollbackTestAbstrac
 		LocalDate end = new LocalDate(2016, 12, 21);
 		this.offer = new ActivityOffer(activity, begin, end, AMOUNT);
 		this.booking = new Booking(this.provider, this.offer, NIF, IBAN);
-
-		this.provider.setBankInterface(bankInterface);
-		this.provider.setTaxInterface(taxInterface);
 	}
 
 	@Test

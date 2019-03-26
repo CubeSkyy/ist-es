@@ -37,8 +37,6 @@ public class ActivityInterfaceCancelReservationMethodTest extends RollbackTestAb
 		LocalDate begin = new LocalDate(2016, 12, 19);
 		LocalDate end = new LocalDate(2016, 12, 21);
 		this.offer = new ActivityOffer(activity, begin, end, 30);
-		this.provider.setBankInterface(bankInterface);
-		this.provider.setTaxInterface(taxInterface);
 	}
 
 	public void success() {

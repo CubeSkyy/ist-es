@@ -32,8 +32,6 @@ class ActivityOfferGetBookingMethodSpockTest extends SpockRollbackTestAbstractCl
 	def 'success cancelled'() {
 		given:
 		def booking = new Booking(provider, offer, NIF, IBAN)
-		BankInterface bankInterface = new BankInterface();
-		provider.setBankInterface(bankInterface)
 
 		when:
 		booking.cancel()

@@ -23,7 +23,10 @@ public class ActivityProvider extends ActivityProvider_Base {
 		setNif(nif);
 		setIban(iban);
 
-		setProcessor(new Processor());
+		taxInterface = new TaxInterface();
+		bankInterface = new BankInterface();
+
+		setProcessor(new Processor(taxInterface, bankInterface));
 
 		FenixFramework.getDomainRoot().addActivityProvider(this);
 	}
@@ -94,12 +97,4 @@ public class ActivityProvider extends ActivityProvider_Base {
 				.filter(b -> b.getAdventureId() != null && b.getAdventureId().equals(adventureId)).findFirst()
 				.orElse(null);
 	}
-
-	public TaxInterface getTaxInterface(){
-		return this.taxInterface;
-	}
-	public void setTaxInterface(TaxInterface ti){this.taxInterface=ti;}
-
-	public BankInterface getBankInterface(){ return this.bankInterface; }
-	public void setBankInterface(BankInterface bi){this.bankInterface=bi;}
 }

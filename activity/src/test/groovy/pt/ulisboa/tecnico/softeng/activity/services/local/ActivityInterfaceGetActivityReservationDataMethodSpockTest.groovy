@@ -48,8 +48,6 @@ class ActivityInterfaceGetActivityReservationDataMethodSpockTest extends SpockRo
 	def 'success cancelled'() {
 		given: 'a cancelled booking'
 		booking = new Booking(provider,offer,'123456789','IBAN')
-        BankInterface bankInterface = new BankInterface()
-        provider.setBankInterface(bankInterface)
 		provider.getProcessor().submitBooking(booking)
 		booking.cancel()
 

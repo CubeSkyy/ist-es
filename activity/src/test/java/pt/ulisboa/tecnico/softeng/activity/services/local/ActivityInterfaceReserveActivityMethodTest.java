@@ -39,12 +39,6 @@ public class ActivityInterfaceReserveActivityMethodTest extends RollbackTestAbst
 	public void populate4Test() {
 		provider1 = new ActivityProvider("XtremX", "Adventure++", "NIF", IBAN);
 		provider2 = new ActivityProvider("Walker", "Sky", "NIF2", IBAN);
-
-		this.provider1.setBankInterface(bankInterface);
-		this.provider2.setTaxInterface(taxInterface);
-
-		this.provider2.setBankInterface(bankInterface);
-		this.provider1.setTaxInterface(taxInterface);
 	}
 
 	@Test
