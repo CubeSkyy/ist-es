@@ -40,14 +40,14 @@ public class HotelInterfaceBulkBookingMethodTest extends RollbackTestAbstractCla
 
 	@Override
 	public void populate4Test() {
-		this.hotel = new Hotel("XPTO123", "Paris", "NIF", "IBAN", 20.0, 30.0);
+		this.hotel = new Hotel("XPTO123", "Paris", "NIF", "IBAN", 20.0, 30.0, taxInterface, bankInterface);
 
 		new Room(this.hotel, "01", Type.DOUBLE);
 		new Room(this.hotel, "02", Type.SINGLE);
 		new Room(this.hotel, "03", Type.DOUBLE);
 		new Room(this.hotel, "04", Type.SINGLE);
 
-		this.hotel = new Hotel("XPTO124", "Paris", "NIF2", "IBAN2", 25.0, 35.0);
+		this.hotel = new Hotel("XPTO124", "Paris", "NIF2", "IBAN2", 25.0, 35.0, taxInterface, bankInterface);
 		new Room(this.hotel, "01", Type.DOUBLE);
 		new Room(this.hotel, "02", Type.SINGLE);
 		new Room(this.hotel, "03", Type.DOUBLE);
@@ -58,9 +58,9 @@ public class HotelInterfaceBulkBookingMethodTest extends RollbackTestAbstractCla
 	public void success() {
 		new Expectations() {
 			{
-				BankInterface.processPayment((RestBankOperationData) this.any);
+				bankInterface.processPayment((RestBankOperationData) this.any);
 
-				TaxInterface.submitInvoice((RestInvoiceData) this.any);
+				taxInterface.submitInvoice((RestInvoiceData) this.any);
 			}
 		};
 
@@ -81,7 +81,7 @@ public class HotelInterfaceBulkBookingMethodTest extends RollbackTestAbstractCla
 			hotel.delete();
 		}
 
-		this.hotel = new Hotel("XPTO124", "Paris", "NIF", "IBAN", 27.0, 37.0);
+		this.hotel = new Hotel("XPTO124", "Paris", "NIF", "IBAN", 27.0, 37.0, taxInterface, bankInterface);
 
 		HotelInterface.bulkBooking(3, this.arrival, this.departure, this.NIF_BUYER, this.IBAN_BUYER, this.BULK_ID);
 	}
@@ -126,9 +126,9 @@ public class HotelInterfaceBulkBookingMethodTest extends RollbackTestAbstractCla
 	public void idempotentBulkBooking() {
 		new Expectations() {
 			{
-				BankInterface.processPayment((RestBankOperationData) this.any);
+				bankInterface.processPayment((RestBankOperationData) this.any);
 
-				TaxInterface.submitInvoice((RestInvoiceData) this.any);
+				taxInterface.submitInvoice((RestInvoiceData) this.any);
 			}
 		};
 

@@ -15,6 +15,7 @@ import pt.ulisboa.tecnico.softeng.broker.services.local.dataobjects.BrokerData;
 import pt.ulisboa.tecnico.softeng.broker.services.local.dataobjects.BrokerData.CopyDepth;
 import pt.ulisboa.tecnico.softeng.broker.services.local.dataobjects.BulkData;
 import pt.ulisboa.tecnico.softeng.broker.services.local.dataobjects.ClientData;
+import pt.ulisboa.tecnico.softeng.broker.services.remote.*;
 
 public class BrokerInterface {
 
@@ -30,7 +31,7 @@ public class BrokerInterface {
 	@Atomic(mode = TxMode.WRITE)
 	public static void createBroker(BrokerData brokerData) {
 		new Broker(brokerData.getCode(), brokerData.getName(), brokerData.getNifAsSeller(), brokerData.getNifAsBuyer(),
-				brokerData.getIban());
+				brokerData.getIban(), new HotelInterface(), new TaxInterface(), new ActivityInterface(), new CarInterface(), new BankInterface());
 	}
 
 	@Atomic(mode = TxMode.READ)

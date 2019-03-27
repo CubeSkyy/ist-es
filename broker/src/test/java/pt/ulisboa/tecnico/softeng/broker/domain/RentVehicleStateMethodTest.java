@@ -9,8 +9,7 @@ import mockit.Expectations;
 import mockit.Mocked;
 import mockit.integration.junit4.JMockit;
 import pt.ulisboa.tecnico.softeng.broker.domain.Adventure.State;
-import pt.ulisboa.tecnico.softeng.broker.services.remote.CarInterface;
-import pt.ulisboa.tecnico.softeng.broker.services.remote.TaxInterface;
+import pt.ulisboa.tecnico.softeng.broker.services.remote.*;
 import pt.ulisboa.tecnico.softeng.broker.services.remote.dataobjects.RestRentingData;
 import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.CarException;
 import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.RemoteAccessException;
@@ -27,7 +26,8 @@ public class RentVehicleStateMethodTest extends RollbackTestAbstractClass {
 
     @Override
     public void populate4Test() {
-        this.broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN);
+        this.broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN,
+                new HotelInterface(), taxInterface, new ActivityInterface(), carInterface, new BankInterface());
         this.client = new Client(this.broker, CLIENT_IBAN, CLIENT_NIF, DRIVING_LICENSE, AGE);
         this.adventure = new Adventure(this.broker, BEGIN, END, this.client, MARGIN);
 
@@ -36,8 +36,7 @@ public class RentVehicleStateMethodTest extends RollbackTestAbstractClass {
         this.rentingData.setPrice(76.78);
 
         this.adventure.setState(State.RENT_VEHICLE);
-        adventure.setTaxInterface(taxInterface);
-        adventure.setCarInterface(carInterface);
+
 
     }
 

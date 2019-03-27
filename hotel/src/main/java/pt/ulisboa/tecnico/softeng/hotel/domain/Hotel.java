@@ -9,11 +9,16 @@ import org.joda.time.LocalDate;
 
 import pt.ist.fenixframework.FenixFramework;
 import pt.ulisboa.tecnico.softeng.hotel.exception.HotelException;
+import pt.ulisboa.tecnico.softeng.hotel.services.remote.BankInterface;
+import pt.ulisboa.tecnico.softeng.hotel.services.remote.TaxInterface;
 
 public class Hotel extends Hotel_Base {
 	static final int CODE_SIZE = 7;
+	private final TaxInterface taxInterface;
+	private final BankInterface bankInterface;
 
-	public Hotel(String code, String name, String nif, String iban, double priceSingle, double priceDouble) {
+
+	public Hotel(String code, String name, String nif, String iban, double priceSingle, double priceDouble, TaxInterface taxInterface, BankInterface bankInterface ) {
 		checkArguments(code, name, nif, iban, priceSingle, priceDouble);
 
 		setCode(code);
@@ -25,7 +30,19 @@ public class Hotel extends Hotel_Base {
 
 		setProcessor(new Processor());
 
+		this.bankInterface = bankInterface;
+		this.taxInterface = taxInterface;
+
 		FenixFramework.getDomainRoot().addHotel(this);
+	}
+
+
+	public BankInterface getBankInterface() {
+		return bankInterface;
+	}
+
+	public TaxInterface getTaxInterface() {
+		return taxInterface;
 	}
 
 	public void delete() {

@@ -9,116 +9,116 @@ import pt.ulisboa.tecnico.softeng.broker.exception.BrokerException;
 import pt.ulisboa.tecnico.softeng.broker.services.remote.*;
 
 public class Broker extends Broker_Base {
-	private static Logger logger = LoggerFactory.getLogger(Broker.class);
-	private TaxInterface taxInterface;
-	private HotelInterface hotelInterface;
-	private ActivityInterface activityInterface;
-	private CarInterface carInterface;
-	private BankInterface bankInterface;
-	public Broker(String code, String name, String nifAsSeller, String nifAsBuyer, String iban) {
-		checkArguments(code, name, nifAsSeller, nifAsBuyer, iban);
+    private static Logger logger = LoggerFactory.getLogger(Broker.class);
+    private final TaxInterface taxInterface;
+    private final ActivityInterface activityInterface;
+    private final CarInterface carInterface;
+    private final HotelInterface hotelInterface;
+    private final BankInterface bankInterface;
 
-		setCode(code);
-		setName(name);
-		setNifAsSeller(nifAsSeller);
-		setNifAsBuyer(nifAsBuyer);
-		setIban(iban);
+    public Broker(String code, String name, String nifAsSeller, String nifAsBuyer,
+                  String iban, HotelInterface hotelInterface, TaxInterface taxInterface,
+                  ActivityInterface activityInterface, CarInterface carInterface, BankInterface bankInterface) {
+        checkArguments(code, name, nifAsSeller, nifAsBuyer, iban);
 
-
-
-		FenixFramework.getDomainRoot().addBroker(this);
-	}
-
-
-	public TaxInterface getTaxInterface() {
-		return this.taxInterface;
-	}
-	public void setTaxInterface(TaxInterface ti){this.taxInterface = ti; }
-
-
-	public HotelInterface getHotelInterface() {
-		return this.hotelInterface;
-	}
-	public void setHotelInterface(HotelInterface hi){this.hotelInterface = hi; }
+        setCode(code);
+        setName(name);
+        setNifAsSeller(nifAsSeller);
+        setNifAsBuyer(nifAsBuyer);
+        setIban(iban);
+        this.hotelInterface = hotelInterface;
+        this.taxInterface = taxInterface;
+        this.activityInterface = activityInterface;
+        this.carInterface = carInterface;
+        this.bankInterface = bankInterface;
+        FenixFramework.getDomainRoot().addBroker(this);
+    }
 
 
-	public ActivityInterface getActivityInterface() {
-		return this.activityInterface;
-	}
-	public void setActivityInterface(ActivityInterface ai){this.activityInterface = ai; }
+    public TaxInterface getTaxInterface() {
+        return this.taxInterface;
+    }
 
+    public HotelInterface getHotelInterface() {
+        return this.hotelInterface;
+    }
 
-	public CarInterface getCarInterface() {
-		return this.carInterface;
-	}
-	public void setCarInterface(CarInterface ci){this.carInterface = ci; }
+    public ActivityInterface getActivityInterface() {
+        return this.activityInterface;
+    }
 
-	public void delete() {
-		setRoot(null);
+    public CarInterface getCarInterface() {
+        return this.carInterface;
+    }
 
-		for (Adventure adventure : getAdventureSet()) {
-			adventure.delete();
-		}
+    public BankInterface getBankInterface() {return this.bankInterface;}
 
-		for (BulkRoomBooking bulkRoomBooking : getRoomBulkBookingSet()) {
-			bulkRoomBooking.delete();
-		}
+    public void delete() {
+        setRoot(null);
 
-		for (Client client : getClientSet()) {
-			client.delete();
-		}
+        for (Adventure adventure : getAdventureSet()) {
+            adventure.delete();
+        }
 
-		deleteDomainObject();
-	}
+        for (BulkRoomBooking bulkRoomBooking : getRoomBulkBookingSet()) {
+            bulkRoomBooking.delete();
+        }
 
-	private void checkArguments(String code, String name, String nifAsSeller, String nifAsBuyer, String iban) {
-		if (code == null || code.trim().length() == 0 || name == null || name.trim().length() == 0
-				|| nifAsSeller == null || nifAsSeller.trim().length() == 0 || nifAsBuyer == null
-				|| nifAsBuyer.trim().length() == 0 || iban == null || iban.trim().length() == 0) {
-			throw new BrokerException();
-		}
+        for (Client client : getClientSet()) {
+            client.delete();
+        }
 
-		if (nifAsSeller.equals(nifAsBuyer)) {
-			throw new BrokerException();
-		}
+        deleteDomainObject();
+    }
 
-		for (Broker broker : FenixFramework.getDomainRoot().getBrokerSet()) {
-			if (broker.getCode().equals(code)) {
-				throw new BrokerException();
-			}
-		}
+    private void checkArguments(String code, String name, String nifAsSeller, String nifAsBuyer, String iban) {
+        if (code == null || code.trim().length() == 0 || name == null || name.trim().length() == 0
+                || nifAsSeller == null || nifAsSeller.trim().length() == 0 || nifAsBuyer == null
+                || nifAsBuyer.trim().length() == 0 || iban == null || iban.trim().length() == 0) {
+            throw new BrokerException();
+        }
 
-		for (Broker broker : FenixFramework.getDomainRoot().getBrokerSet()) {
-			if (broker.getNifAsSeller().equals(nifAsSeller) || broker.getNifAsSeller().equals(nifAsBuyer)
-					|| broker.getNifAsBuyer().equals(nifAsSeller) || broker.getNifAsBuyer().equals(nifAsBuyer)) {
-				throw new BrokerException();
-			}
-		}
+        if (nifAsSeller.equals(nifAsBuyer)) {
+            throw new BrokerException();
+        }
 
-	}
+        for (Broker broker : FenixFramework.getDomainRoot().getBrokerSet()) {
+            if (broker.getCode().equals(code)) {
+                throw new BrokerException();
+            }
+        }
 
-	public Client getClientByNIF(String NIF) {
-		for (Client client : getClientSet()) {
-			if (client.getNif().equals(NIF)) {
-				return client;
-			}
-		}
-		return null;
-	}
+        for (Broker broker : FenixFramework.getDomainRoot().getBrokerSet()) {
+            if (broker.getNifAsSeller().equals(nifAsSeller) || broker.getNifAsSeller().equals(nifAsBuyer)
+                    || broker.getNifAsBuyer().equals(nifAsSeller) || broker.getNifAsBuyer().equals(nifAsBuyer)) {
+                throw new BrokerException();
+            }
+        }
 
-	public boolean drivingLicenseIsRegistered(String drivingLicense) {
-		return getClientSet().stream().anyMatch(client -> client.getDrivingLicense().equals(drivingLicense));
-	}
+    }
 
-	public void bulkBooking(int number, LocalDate arrival, LocalDate departure) {
-		BulkRoomBooking bulkBooking = new BulkRoomBooking(this, number, arrival, departure, getNifAsBuyer(), getIban());
-		bulkBooking.processBooking();
-	}
+    public Client getClientByNIF(String NIF) {
+        for (Client client : getClientSet()) {
+            if (client.getNif().equals(NIF)) {
+                return client;
+            }
+        }
+        return null;
+    }
 
-	@Override
-	public int getCounter() {
-		int counter = super.getCounter() + 1;
-		setCounter(counter);
-		return counter;
-	}
+    public boolean drivingLicenseIsRegistered(String drivingLicense) {
+        return getClientSet().stream().anyMatch(client -> client.getDrivingLicense().equals(drivingLicense));
+    }
+
+    public void bulkBooking(int number, LocalDate arrival, LocalDate departure) {
+        BulkRoomBooking bulkBooking = new BulkRoomBooking(this, number, arrival, departure, getNifAsBuyer(), getIban());
+        bulkBooking.processBooking();
+    }
+
+    @Override
+    public int getCounter() {
+        int counter = super.getCounter() + 1;
+        setCounter(counter);
+        return counter;
+    }
 }

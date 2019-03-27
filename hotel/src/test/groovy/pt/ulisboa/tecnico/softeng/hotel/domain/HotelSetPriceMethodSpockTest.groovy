@@ -1,5 +1,8 @@
 package pt.ulisboa.tecnico.softeng.hotel.domain
 
+import pt.ulisboa.tecnico.softeng.hotel.services.remote.BankInterface
+import pt.ulisboa.tecnico.softeng.hotel.services.remote.TaxInterface
+
 import static org.junit.Assert.*
 
 import pt.ulisboa.tecnico.softeng.hotel.exception.HotelException
@@ -13,7 +16,7 @@ class HotelSetPriceMethodSpockTest extends SpockRollbackTestAbstractClass {
 
 	@Override
 	def populate4Test() {
-		hotel = new Hotel('XPTO123', 'Lisboa', 'NIF', 'IBAN', PRICE + 5.0, PRICE + 10.0)
+		hotel = new Hotel('XPTO123', 'Lisboa', 'NIF', 'IBAN', PRICE + 5.0, PRICE + 10.0, new TaxInterface(), new BankInterface())
 	}
 
 	def 'success single'() {
