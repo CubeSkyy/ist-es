@@ -34,7 +34,7 @@ public class HotelInterfaceCancelBookingMethodTest extends RollbackTestAbstractC
 
 	@Override
 	public void populate4Test() {
-		this.hotel = new Hotel("XPTO123", "Paris", "NIF", "IBAN", 20.0, 30.0);
+		this.hotel = new Hotel("XPTO123", "Paris", "NIF", "IBAN", 20.0, 30.0, taxInterface, bankInterface);
 		this.room = new Room(this.hotel, "01", Type.DOUBLE);
 		this.booking = this.room.reserve(Type.DOUBLE, this.arrival, this.departure, this.NIF_BUYER, this.IBAN_BUYER);
 	}
@@ -66,7 +66,7 @@ public class HotelInterfaceCancelBookingMethodTest extends RollbackTestAbstractC
 	public void successIntegration() {
 		new Expectations() {
 			{
-				TaxInterface.cancelInvoice(this.anyString);
+				taxInterface.cancelInvoice(this.anyString);
 			}
 		};
 		String cancel = HotelInterface.cancelBooking(this.booking.getReference());
@@ -79,7 +79,7 @@ public class HotelInterfaceCancelBookingMethodTest extends RollbackTestAbstractC
 	public void doesNotExistIntegration() {
 		new Expectations() {
 			{
-				TaxInterface.cancelInvoice(this.anyString);
+				taxInterface.cancelInvoice(this.anyString);
 				this.times = 0;
 			}
 		};

@@ -26,15 +26,13 @@ public class CancelledState extends CancelledState_Base {
 	public void process() {
 		if (getAdventure().getPaymentCancellation() != null) {
 			try {
-				String a = getAdventure().getPaymentConfirmation();
-				BankInterface b = getAdventure().getBankInterface();
-				getAdventure().getBankInterface().getOperationData(getAdventure().getPaymentConfirmation());
+				getAdventure().getBroker().getBankInterface().getOperationData(getAdventure().getPaymentConfirmation());
 			} catch (BankException | RemoteAccessException e) {
 				return;
 			}
 
 			try {
-				getAdventure().getBankInterface().getOperationData(getAdventure().getPaymentCancellation());
+				getAdventure().getBroker().getBankInterface().getOperationData(getAdventure().getPaymentCancellation());
 			} catch (BankException | RemoteAccessException e) {
 				return;
 			}
@@ -42,7 +40,7 @@ public class CancelledState extends CancelledState_Base {
 
 		if (getAdventure().getActivityCancellation() != null) {
 			try {
-				getAdventure().getActivityInterface().getActivityReservationData(getAdventure().getActivityCancellation());
+				getAdventure().getBroker().getActivityInterface().getActivityReservationData(getAdventure().getActivityCancellation());
 			} catch (ActivityException | RemoteAccessException e) {
 				return;
 			}
@@ -50,7 +48,7 @@ public class CancelledState extends CancelledState_Base {
 
 		if (getAdventure().getRoomCancellation() != null) {
 			try {
-				getAdventure().getHotelInterface().getRoomBookingData(getAdventure().getRoomCancellation());
+				getAdventure().getBroker().getHotelInterface().getRoomBookingData(getAdventure().getRoomCancellation());
 			} catch (HotelException | RemoteAccessException e) {
 				return;
 			}
@@ -58,7 +56,7 @@ public class CancelledState extends CancelledState_Base {
 
 		if (getAdventure().getRentingCancellation() != null) {
 			try {
-				getAdventure().getCarInterface().getRentingData(getAdventure().getRentingCancellation());
+				getAdventure().getBroker().getCarInterface().getRentingData(getAdventure().getRentingCancellation());
 			} catch (CarException | RemoteAccessException e) {
 				return;
 			}

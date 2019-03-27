@@ -34,16 +34,12 @@ public class CancelledStateProcessMethodTest extends RollbackTestAbstractClass {
 
 	@Override
 	public void populate4Test() {
-		this.broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN);
+		this.broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN,
+				hotelInterface, taxInterface, activityInterface, carInterface, bankInterface);
 		this.client = new Client(this.broker, CLIENT_IBAN, CLIENT_NIF, DRIVING_LICENSE, AGE);
 		this.adventure = new Adventure(this.broker, this.BEGIN, this.END, this.client, MARGIN);
 
 		this.adventure.setState(State.CANCELLED);
-		adventure.setActivityInterface(activityInterface);
-		adventure.setCarInterface(carInterface);
-		adventure.setHotelInterface(hotelInterface);
-		adventure.setBankInterface(bankInterface);
-		adventure.setTaxInterface(taxInterface);
 
 	}
 

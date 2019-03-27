@@ -1,5 +1,8 @@
 package pt.ulisboa.tecnico.softeng.hotel.domain
 
+import pt.ulisboa.tecnico.softeng.hotel.services.remote.BankInterface
+import pt.ulisboa.tecnico.softeng.hotel.services.remote.TaxInterface
+
 import static org.junit.Assert.*
 
 import pt.ist.fenixframework.FenixFramework
@@ -21,7 +24,7 @@ class HotelConstructorSpockTest extends SpockRollbackTestAbstractClass {
 
 	def 'success'() {
 		when: 'an hotel is created'
-		def hotel = new Hotel(HOTEL_CODE, HOTEL_NAME, NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE)
+		def hotel = new Hotel(HOTEL_CODE, HOTEL_NAME, NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE, new TaxInterface(), new BankInterface())
 
 		then: 'all information is correctly set'
 		hotel.getName().equals(HOTEL_NAME)
@@ -35,7 +38,7 @@ class HotelConstructorSpockTest extends SpockRollbackTestAbstractClass {
 	@Unroll('one of the following arguments is not allowed: #code | #name | #nif | #iban | #priceSingle| #priceDouble')
 	def 'incorrect input parameters'() {
 		when: 'an hotel is created with an incorrect input parameter'
-		new Hotel(code, name, nif, iban, priceSingle, priceDouble)
+		new Hotel(code, name, nif, iban, priceSingle, priceDouble, new TaxInterface(), new BankInterface())
 
 		then: 'an HotelException is thrown'
 		def error = thrown(HotelException)
@@ -56,10 +59,10 @@ class HotelConstructorSpockTest extends SpockRollbackTestAbstractClass {
 
 	def 'code not unique'() {
 		given: 'an hotel'
-		new Hotel(HOTEL_CODE, HOTEL_NAME, NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE)
+		new Hotel(HOTEL_CODE, HOTEL_NAME, NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE, new TaxInterface(), new BankInterface())
 
 		when: 'another hotel is created with the same code'
-		new Hotel(HOTEL_CODE, HOTEL_NAME + ' City', NIF+ '1', IBAN, PRICE_SINGLE, PRICE_DOUBLE)
+		new Hotel(HOTEL_CODE, HOTEL_NAME + ' City', NIF+ '1', IBAN, PRICE_SINGLE, PRICE_DOUBLE, new TaxInterface(), new BankInterface())
 
 		then: 'an HotelException is thrown'
 		def error = thrown(HotelException)
@@ -68,10 +71,10 @@ class HotelConstructorSpockTest extends SpockRollbackTestAbstractClass {
 
 	def 'nif not unique'() {
 		given: 'an hotel'
-		new Hotel(HOTEL_CODE, HOTEL_NAME, NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE)
+		new Hotel(HOTEL_CODE, HOTEL_NAME, NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE, new TaxInterface(), new BankInterface())
 
 		when: 'another hotel is created with the same nif'
-		new Hotel('XPTO124', HOTEL_NAME + '_New', NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE)
+		new Hotel('XPTO124', HOTEL_NAME + '_New', NIF, IBAN, PRICE_SINGLE, PRICE_DOUBLE, new TaxInterface(), new BankInterface())
 
 		then: 'an HotelException is thrown'
 		def error = thrown(HotelException)
