@@ -2,6 +2,9 @@ package pt.ulisboa.tecnico.softeng.broker.domain
 
 import pt.ulisboa.tecnico.softeng.broker.domain.Adventure.State
 import pt.ulisboa.tecnico.softeng.broker.services.remote.ActivityInterface
+import pt.ulisboa.tecnico.softeng.broker.services.remote.BankInterface
+import pt.ulisboa.tecnico.softeng.broker.services.remote.CarInterface
+import pt.ulisboa.tecnico.softeng.broker.services.remote.HotelInterface
 import pt.ulisboa.tecnico.softeng.broker.services.remote.TaxInterface
 import pt.ulisboa.tecnico.softeng.broker.services.remote.dataobjects.RestActivityBookingData
 import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.ActivityException
@@ -20,27 +23,24 @@ class ReserveActivityStateProcessMethodSpockTest extends SpockRollbackTestAbstra
 
     @Override
     def populate4Test() {
-        broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN)
+        taxInterface = Mock(TaxInterface)
+        activityInterface = Mock(ActivityInterface)
+
+        broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN,
+                new HotelInterface(), taxInterface, activityInterface, new CarInterface(), new BankInterface())
         client = new Client(broker, CLIENT_IBAN, CLIENT_NIF, DRIVING_LICENSE, AGE)
         adventure = new Adventure(broker, BEGIN, END, client, MARGIN)
         bookingData = new RestActivityBookingData()
         bookingData.setReference(ACTIVITY_CONFIRMATION)
         bookingData.setPrice(76.78)
 
-        taxInterface = Mock(TaxInterface)
-        activityInterface = Mock(ActivityInterface)
-
         adventure.setState(Adventure.State.RESERVE_ACTIVITY)
-        adventure.setTaxInterface(taxInterface)
-        adventure.setActivityInterface(activityInterface)
     }
 
     def 'success no BookRoom'() {
         when:
         Adventure sameDayAdventure = new Adventure(broker, BEGIN, BEGIN, client, MARGIN)
         sameDayAdventure.setState(State.RESERVE_ACTIVITY)
-        sameDayAdventure.setTaxInterface(taxInterface)
-        sameDayAdventure.setActivityInterface(activityInterface)
         sameDayAdventure.process()
 
         then:
@@ -52,8 +52,6 @@ class ReserveActivityStateProcessMethodSpockTest extends SpockRollbackTestAbstra
         when:
         Adventure adv = new Adventure(broker, BEGIN, BEGIN, client, MARGIN, true)
         adv.setState(State.RESERVE_ACTIVITY)
-        adv.setTaxInterface(taxInterface)
-        adv.setActivityInterface(activityInterface)
         adv.process()
 
         then:
