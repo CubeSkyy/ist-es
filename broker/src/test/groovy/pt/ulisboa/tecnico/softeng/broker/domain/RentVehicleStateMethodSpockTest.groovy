@@ -1,6 +1,9 @@
 package pt.ulisboa.tecnico.softeng.broker.domain
 
+import pt.ulisboa.tecnico.softeng.broker.services.remote.ActivityInterface
+import pt.ulisboa.tecnico.softeng.broker.services.remote.BankInterface
 import pt.ulisboa.tecnico.softeng.broker.services.remote.CarInterface
+import pt.ulisboa.tecnico.softeng.broker.services.remote.HotelInterface
 import pt.ulisboa.tecnico.softeng.broker.services.remote.TaxInterface
 import pt.ulisboa.tecnico.softeng.broker.services.remote.dataobjects.RestRentingData
 import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.CarException
@@ -17,7 +20,10 @@ class RentVehicleStateMethodSpockTest extends SpockRollbackTestAbstractClass {
 
     @Override
     def populate4Test() {
-        broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN)
+        taxInterface = Mock(TaxInterface)
+        carInterface = Mock(CarInterface)
+        broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN,
+                new HotelInterface(), taxInterface, new ActivityInterface(), carInterface, new BankInterface())
         client = new Client(this.broker, CLIENT_IBAN, CLIENT_NIF, DRIVING_LICENSE, AGE)
         adventure = new Adventure(this.broker, BEGIN, END, this.client, MARGIN)
 
@@ -25,12 +31,10 @@ class RentVehicleStateMethodSpockTest extends SpockRollbackTestAbstractClass {
         rentingData.setReference(RENTING_CONFIRMATION)
         rentingData.setPrice(76.78)
 
-        taxInterface = Mock(TaxInterface)
-        carInterface = Mock(CarInterface)
+
 
         adventure.setState(Adventure.State.RENT_VEHICLE)
-        adventure.setTaxInterface(taxInterface)
-        adventure.setCarInterface(carInterface)
+
 
     }
 

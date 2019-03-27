@@ -11,7 +11,7 @@ import mockit.Expectations;
 import mockit.Mocked;
 import mockit.integration.junit4.JMockit;
 import pt.ulisboa.tecnico.softeng.broker.domain.Adventure.State;
-import pt.ulisboa.tecnico.softeng.broker.services.remote.HotelInterface;
+import pt.ulisboa.tecnico.softeng.broker.services.remote.*;
 import pt.ulisboa.tecnico.softeng.broker.services.remote.dataobjects.RestRoomBookingData;
 import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.HotelException;
 import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.RemoteAccessException;
@@ -24,14 +24,14 @@ public class BookRoomStateMethodTest extends RollbackTestAbstractClass {
 
 	@Override
 	public void populate4Test() {
-		this.broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN);
+		this.broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN,
+				hotelInterface, new TaxInterface(), new ActivityInterface(), new CarInterface(), new BankInterface());
 		this.client = new Client(this.broker, CLIENT_IBAN, CLIENT_NIF, DRIVING_LICENSE, AGE);
 		this.adventure = new Adventure(this.broker, this.BEGIN, this.END, this.client, MARGIN);
 
 		this.bookingData = new RestRoomBookingData();
 		this.bookingData.setReference(ROOM_CONFIRMATION);
 		this.bookingData.setPrice(80.0);
-		this.adventure.setHotelInterface(hotelInterface);
 		this.adventure.setState(State.BOOK_ROOM);
 	}
 
@@ -53,7 +53,6 @@ public class BookRoomStateMethodTest extends RollbackTestAbstractClass {
 	public void successBookRoomToRenting() {
 		Adventure adv = new Adventure(this.broker, this.BEGIN, this.END, this.client, MARGIN, true);
 		adv.setState(State.BOOK_ROOM);
-		adv.setHotelInterface(hotelInterface);
 		new Expectations() {
 			{
 				hotelInterface.reserveRoom((RestRoomBookingData) this.any);

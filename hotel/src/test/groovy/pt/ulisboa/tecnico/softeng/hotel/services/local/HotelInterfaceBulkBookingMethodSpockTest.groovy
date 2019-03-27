@@ -1,5 +1,8 @@
 package pt.ulisboa.tecnico.softeng.hotel.services.local
 
+import pt.ulisboa.tecnico.softeng.hotel.services.remote.BankInterface
+import pt.ulisboa.tecnico.softeng.hotel.services.remote.TaxInterface
+
 import static org.junit.Assert.*
 
 import java.util.stream.Collectors
@@ -26,13 +29,13 @@ class HotelInterfaceBulkBookingMethodSpockTest extends SpockRollbackTestAbstract
 
 	@Override
 	def populate4Test() {
-		hotel = new Hotel('XPTO123', 'Paris', 'NIF', 'IBAN', 20.0, 30.0)
+		hotel = new Hotel('XPTO123', 'Paris', 'NIF', 'IBAN', 20.0, 30.0, new TaxInterface(), new BankInterface())
 		new Room(hotel, '01', Type.DOUBLE)
 		new Room(hotel, '02', Type.SINGLE)
 		new Room(hotel, '03', Type.DOUBLE)
 		new Room(hotel, '04', Type.SINGLE)
 
-		hotel = new Hotel('XPTO124', 'Paris', 'NIF2', 'IBAN2', 25.0, 35.0)
+		hotel = new Hotel('XPTO124', 'Paris', 'NIF2', 'IBAN2', 25.0, 35.0, new TaxInterface(), new BankInterface())
 		new Room(hotel, '01', Type.DOUBLE)
 		new Room(hotel, '02', Type.SINGLE)
 		new Room(hotel, '03', Type.DOUBLE)
@@ -71,7 +74,7 @@ class HotelInterfaceBulkBookingMethodSpockTest extends SpockRollbackTestAbstract
 		for (def hotel : FenixFramework.getDomainRoot().getHotelSet()) {
 			hotel.delete()
 		}
-		hotel = new Hotel('XPTO124', 'Paris', 'NIF', 'IBAN', 27.0, 37.0)
+		hotel = new Hotel('XPTO124', 'Paris', 'NIF', 'IBAN', 27.0, 37.0, new TaxInterface(), new BankInterface())
 
 		when: 'a bulkbooking is done'
 		HotelInterface.bulkBooking(3, ARRIVAL, DEPARTURE, NIF_BUYER, IBAN_BUYER, BULK_ID)
