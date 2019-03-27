@@ -103,7 +103,7 @@ class InvoiceProcessorSubmitBookingMethodSpockTest extends SpockRollbackTestAbst
         provider.getProcessor().submitBooking(new Booking(provider, offer, NIF, IBAN))
 
         then:
-        2 * bankInterface.cancelPayment(_ as String) >> new BankException() >> CANCEL_PAYMENT_REFERENCE
+        1 * bankInterface.cancelPayment(_) >> new BankException() >> CANCEL_PAYMENT_REFERENCE
     }
 
 
@@ -114,7 +114,7 @@ class InvoiceProcessorSubmitBookingMethodSpockTest extends SpockRollbackTestAbst
         provider.getProcessor().submitBooking(new Booking(provider, offer, NIF, IBAN))
 
         then:
-        2 * bankInterface.cancelPayment(_ as String) >> new RemoteAccessException() >> CANCEL_PAYMENT_REFERENCE
+        1 * bankInterface.cancelPayment(_) >> new RemoteAccessException() >> CANCEL_PAYMENT_REFERENCE
     }
 
 
@@ -129,7 +129,7 @@ class InvoiceProcessorSubmitBookingMethodSpockTest extends SpockRollbackTestAbst
 
         then:
         bankInterface.cancelPayment(_ as String) >> CANCEL_PAYMENT_REFERENCE
-        2 * taxInterface.cancelInvoice(_ as String) >> {
+        2 * taxInterface.cancelInvoice(_) >> {
             if (i < 1) {
                 i++
                 throw new TaxException()
@@ -149,7 +149,7 @@ class InvoiceProcessorSubmitBookingMethodSpockTest extends SpockRollbackTestAbst
 
         then:
         bankInterface.cancelPayment(_ as String) >> CANCEL_PAYMENT_REFERENCE
-        2 * taxInterface.cancelInvoice(_ as String) >> {
+        2 * taxInterface.cancelInvoice(_) >> {
             if (i < 1) {
                 i++
                 throw new RemoteAccessException()
