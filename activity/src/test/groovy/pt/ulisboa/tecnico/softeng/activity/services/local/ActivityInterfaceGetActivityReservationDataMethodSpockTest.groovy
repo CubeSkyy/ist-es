@@ -12,7 +12,7 @@ import pt.ulisboa.tecnico.softeng.activity.exception.ActivityException
 import pt.ulisboa.tecnico.softeng.activity.services.remote.BankInterface
 import pt.ulisboa.tecnico.softeng.activity.services.remote.TaxInterface
 import pt.ulisboa.tecnico.softeng.activity.services.remote.dataobjects.RestActivityBookingData
-import spock.lang.Unroll
+import spock.lang.*
 
 class ActivityInterfaceGetActivityReservationDataMethodSpockTest extends SpockRollbackTestAbstractClass {
 	def NAME = 'ExtremeAdventure'
