@@ -28,23 +28,18 @@ class UndoStateProcessMethodSpockTest extends SpockRollbackTestAbstractClass {
 
     @Override
     def populate4Test() {
-        broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN)
-        client = new Client(broker, CLIENT_IBAN, CLIENT_NIF, DRIVING_LICENSE, AGE)
-        adventure = new Adventure(broker, BEGIN, END, client, MARGIN)
-
         taxInterface = Mock(TaxInterface)
         bankInterface = Mock(BankInterface)
         roomInterface = Mock(HotelInterface)
         carInterface = Mock(CarInterface)
         activityInterface = Mock(ActivityInterface)
 
+        broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN,
+                roomInterface, taxInterface, activityInterface, carInterface, bankInterface)
+        client = new Client(broker, CLIENT_IBAN, CLIENT_NIF, DRIVING_LICENSE, AGE)
+        adventure = new Adventure(broker, BEGIN, END, client, MARGIN)
 
         adventure.setState(State.UNDO)
-        adventure.setTaxInterface(taxInterface)
-        adventure.setBankInterface(bankInterface)
-        adventure.setHotelInterface(roomInterface)
-        adventure.setCarInterface(carInterface)
-        adventure.setActivityInterface(activityInterface)
     }
 
     def 'success revert payment'() {
