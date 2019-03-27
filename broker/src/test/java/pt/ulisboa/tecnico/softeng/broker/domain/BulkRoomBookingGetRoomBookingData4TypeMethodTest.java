@@ -6,7 +6,7 @@ import mockit.Mocked;
 import mockit.integration.junit4.JMockit;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import pt.ulisboa.tecnico.softeng.broker.services.remote.HotelInterface;
+import pt.ulisboa.tecnico.softeng.broker.services.remote.*;
 import pt.ulisboa.tecnico.softeng.broker.services.remote.dataobjects.RestRoomBookingData;
 import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.HotelException;
 import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.RemoteAccessException;
@@ -21,9 +21,9 @@ public class BulkRoomBookingGetRoomBookingData4TypeMethodTest extends RollbackTe
     
     @Override
     public void populate4Test() {
-        this.broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN);
+        this.broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN,roomInterface,
+                new TaxInterface(), new ActivityInterface(), new CarInterface(), new BankInterface());
         this.bulk = new BulkRoomBooking(this.broker, NUMBER_OF_BULK, this.BEGIN, this.END, NIF_AS_BUYER, CLIENT_IBAN);
-        this.broker.setHotelInterface(roomInterface);
         new Reference(this.bulk, REF_ONE);
         new Reference(this.bulk, REF_TWO);
     }

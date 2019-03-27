@@ -1,12 +1,18 @@
 package pt.ulisboa.tecnico.softeng.broker.domain
 
 import pt.ist.fenixframework.FenixFramework
+import pt.ulisboa.tecnico.softeng.broker.services.remote.ActivityInterface
+import pt.ulisboa.tecnico.softeng.broker.services.remote.BankInterface
+import pt.ulisboa.tecnico.softeng.broker.services.remote.CarInterface
+import pt.ulisboa.tecnico.softeng.broker.services.remote.HotelInterface
+import pt.ulisboa.tecnico.softeng.broker.services.remote.TaxInterface
 
 class BrokerPersistenceSpockTest extends SpockPersistenceTestAbstractClass implements SharedDefinitions {
 
 	@Override
 	def whenCreateInDatabase() {
-		def broker = new Broker(BROKER_CODE, BROKER_NAME, BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN)
+		def broker = new Broker(BROKER_CODE, BROKER_NAME, BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN,
+				new HotelInterface(), new TaxInterface(), new ActivityInterface(), new CarInterface(), new BankInterface())
 		def client = new Client(broker, CLIENT_IBAN, CLIENT_NIF, DRIVING_LICENSE, AGE)
 		new Adventure(broker, this.BEGIN, this.END, client, MARGIN, true)
 

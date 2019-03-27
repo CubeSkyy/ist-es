@@ -1,6 +1,9 @@
 package pt.ulisboa.tecnico.softeng.broker.domain
 
+import pt.ulisboa.tecnico.softeng.broker.services.remote.ActivityInterface
 import pt.ulisboa.tecnico.softeng.broker.services.remote.BankInterface
+import pt.ulisboa.tecnico.softeng.broker.services.remote.CarInterface
+import pt.ulisboa.tecnico.softeng.broker.services.remote.HotelInterface
 import pt.ulisboa.tecnico.softeng.broker.services.remote.TaxInterface
 import pt.ulisboa.tecnico.softeng.broker.services.remote.dataobjects.RestBankOperationData
 import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.BankException
@@ -20,16 +23,13 @@ class ProcessPaymentStateProcessMethodSpockTest extends SpockRollbackTestAbstrac
     def adventure
 
     def "populate4Test"(){
-        broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN)
-        client = new Client(broker, CLIENT_IBAN, CLIENT_NIF, DRIVING_LICENSE, AGE)
-        adventure = new Adventure(broker, BEGIN, END, client, MARGIN)
-
         taxInterface = Mock(TaxInterface)
         bankInterface = Mock(BankInterface)
-
+        broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN, new HotelInterface(),
+                taxInterface, new ActivityInterface(), new CarInterface(), bankInterface);
+        client = new Client(broker, CLIENT_IBAN, CLIENT_NIF, DRIVING_LICENSE, AGE)
+        adventure = new Adventure(broker, BEGIN, END, client, MARGIN)
         adventure.setState(Adventure.State.PROCESS_PAYMENT)
-        adventure.setTaxInterface(taxInterface)
-        adventure.setBankInterface(bankInterface)
     }
 
     def "success"(){
