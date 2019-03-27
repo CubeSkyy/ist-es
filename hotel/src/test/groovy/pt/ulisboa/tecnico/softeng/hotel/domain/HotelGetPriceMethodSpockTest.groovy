@@ -1,5 +1,8 @@
 package pt.ulisboa.tecnico.softeng.hotel.domain
 
+import pt.ulisboa.tecnico.softeng.hotel.services.remote.BankInterface
+import pt.ulisboa.tecnico.softeng.hotel.services.remote.TaxInterface
+
 import static org.junit.Assert.*
 
 import pt.ulisboa.tecnico.softeng.hotel.exception.HotelException
@@ -15,7 +18,7 @@ class HotelGetPriceMethodSpockTest extends SpockRollbackTestAbstractClass {
 
 	def 'price single'() {
 		given: 'a hotel'
-		hotel = new Hotel('XPTO123', 'Lisboa', 'NIF', 'IBAN', PRICE_SINGLE, PRICE_DOUBLE)
+		hotel = new Hotel('XPTO123', 'Lisboa', 'NIF', 'IBAN', PRICE_SINGLE, PRICE_DOUBLE, new TaxInterface(), new BankInterface())
 
 		expect:
 		hotel.getPrice(Room.Type.SINGLE) == PRICE_SINGLE
@@ -23,7 +26,7 @@ class HotelGetPriceMethodSpockTest extends SpockRollbackTestAbstractClass {
 
 	def 'price double'() {
 		given: 'a hotel'
-		hotel = new Hotel('XPTO123', 'Lisboa', 'NIF', 'IBAN', PRICE_SINGLE, PRICE_DOUBLE)
+		hotel = new Hotel('XPTO123', 'Lisboa', 'NIF', 'IBAN', PRICE_SINGLE, PRICE_DOUBLE, new TaxInterface(), new BankInterface())
 
 		expect:
 		hotel.getPrice(Room.Type.DOUBLE) == PRICE_DOUBLE
@@ -31,7 +34,7 @@ class HotelGetPriceMethodSpockTest extends SpockRollbackTestAbstractClass {
 
 	def 'incorrect input'() {
 		given: 'a hotel'
-		hotel = new Hotel('XPTO123', 'Lisboa', 'NIF', 'IBAN', PRICE_SINGLE, PRICE_DOUBLE)
+		hotel = new Hotel('XPTO123', 'Lisboa', 'NIF', 'IBAN', PRICE_SINGLE, PRICE_DOUBLE, new TaxInterface(), new BankInterface())
 
 		when:
 		hotel.getPrice(null)

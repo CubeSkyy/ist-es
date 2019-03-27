@@ -9,8 +9,7 @@ import mockit.Expectations;
 import mockit.Mocked;
 import mockit.integration.junit4.JMockit;
 import pt.ulisboa.tecnico.softeng.broker.domain.Adventure.State;
-import pt.ulisboa.tecnico.softeng.broker.services.remote.ActivityInterface;
-import pt.ulisboa.tecnico.softeng.broker.services.remote.TaxInterface;
+import pt.ulisboa.tecnico.softeng.broker.services.remote.*;
 import pt.ulisboa.tecnico.softeng.broker.services.remote.dataobjects.RestActivityBookingData;
 import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.ActivityException;
 import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.RemoteAccessException;
@@ -27,7 +26,8 @@ public class ReserveActivityStateProcessMethodTest extends RollbackTestAbstractC
 
 	@Override
 	public void populate4Test() {
-		this.broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN);
+		this.broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN,
+				new HotelInterface(), taxInterface, activityInterface, new CarInterface(), new BankInterface());
 		this.client = new Client(this.broker, CLIENT_IBAN, CLIENT_NIF, DRIVING_LICENSE, AGE);
 		this.adventure = new Adventure(this.broker, this.BEGIN, this.END, this.client, MARGIN);
 		this.bookingData = new RestActivityBookingData();
@@ -35,8 +35,8 @@ public class ReserveActivityStateProcessMethodTest extends RollbackTestAbstractC
 		this.bookingData.setPrice(76.78);
 
 		this.adventure.setState(State.RESERVE_ACTIVITY);
-        adventure.setTaxInterface(taxInterface);
-        adventure.setActivityInterface(activityInterface);
+        
+
 
 	}
 
@@ -44,8 +44,7 @@ public class ReserveActivityStateProcessMethodTest extends RollbackTestAbstractC
 	public void successNoBookRoom() {
 		Adventure sameDayAdventure = new Adventure(this.broker, this.BEGIN, this.BEGIN, this.client, MARGIN);
 		sameDayAdventure.setState(State.RESERVE_ACTIVITY);
-        sameDayAdventure.setTaxInterface(taxInterface);
-        sameDayAdventure.setActivityInterface(activityInterface);
+
 		new Expectations() {
 			{
 				activityInterface.reserveActivity((RestActivityBookingData) this.any);
@@ -62,8 +61,7 @@ public class ReserveActivityStateProcessMethodTest extends RollbackTestAbstractC
 	public void successToRentVehicle() {
 		Adventure adv = new Adventure(this.broker, this.BEGIN, this.BEGIN, this.client, MARGIN, true);
 		adv.setState(State.RESERVE_ACTIVITY);
-        adv.setTaxInterface(taxInterface);
-        adv.setActivityInterface(activityInterface);
+
 		new Expectations() {
 			{
 				activityInterface.reserveActivity((RestActivityBookingData) this.any);

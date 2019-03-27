@@ -1,5 +1,8 @@
 package pt.ulisboa.tecnico.softeng.hotel.domain
 
+import pt.ulisboa.tecnico.softeng.hotel.services.remote.BankInterface
+import pt.ulisboa.tecnico.softeng.hotel.services.remote.TaxInterface
+
 import static org.junit.Assert.*
 
 import org.joda.time.LocalDate
@@ -22,7 +25,7 @@ class HotelPersistenceSpockTest extends SpockPersistenceTestAbstractClass {
 
 	@Override
 	def whenCreateInDatabase() {
-		def hotel = new Hotel(HOTEL_CODE, HOTEL_NAME, HOTEL_NIF, HOTEL_IBAN, 10.0, 20.0)
+		def hotel = new Hotel(HOTEL_CODE, HOTEL_NAME, HOTEL_NIF, HOTEL_IBAN, 10.0, 20.0, new TaxInterface(), new BankInterface())
 		new Room(hotel, ROOM_NUMBER, Type.DOUBLE)
 		hotel.reserveRoom(Type.DOUBLE, arrival, departure, CLIENT_NIF, CLIENT_IBAN, ADVENTURE_ID)
 	}

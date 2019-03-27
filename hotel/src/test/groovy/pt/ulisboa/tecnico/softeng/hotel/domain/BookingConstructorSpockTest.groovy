@@ -3,6 +3,8 @@ package pt.ulisboa.tecnico.softeng.hotel.domain
 import org.joda.time.LocalDate
 
 import pt.ulisboa.tecnico.softeng.hotel.exception.HotelException
+import pt.ulisboa.tecnico.softeng.hotel.services.remote.BankInterface
+import pt.ulisboa.tecnico.softeng.hotel.services.remote.TaxInterface
 import spock.lang.Shared
 import spock.lang.Unroll
 
@@ -16,7 +18,7 @@ class BookingConstructorSpockTest extends SpockRollbackTestAbstractClass {
 
 	@Override
 	def populate4Test() {
-		def hotel = new Hotel('XPTO123', 'Londres', 'NIF', 'IBAN', 20.0, 30.0)
+		def hotel = new Hotel('XPTO123', 'Londres', 'NIF', 'IBAN', 20.0, 30.0, new TaxInterface(), new BankInterface())
 		this.room = new Room(hotel, '01', Room.Type.SINGLE)
 	}
 
