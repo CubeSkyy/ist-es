@@ -38,13 +38,10 @@ public class ActivityInterfaceReserveActivityMethodTest extends RollbackTestAbst
 	@Override
 	public void populate4Test() {
 		activityInterface = new ActivityInterface();
-		taxInterface = new TaxInterface();
-		bankInterface = new BankInterface();
+
 		processor = new Processor(taxInterface, bankInterface);
 		provider1 = new ActivityProvider("XtremX", "Adventure++", "NIF", IBAN, processor);
 
-		taxInterface = new TaxInterface();
-		bankInterface = new BankInterface();
 		processor = new Processor(taxInterface, bankInterface);
 		provider2 = new ActivityProvider("Walker", "Sky", "NIF2", IBAN, processor);
 	}
