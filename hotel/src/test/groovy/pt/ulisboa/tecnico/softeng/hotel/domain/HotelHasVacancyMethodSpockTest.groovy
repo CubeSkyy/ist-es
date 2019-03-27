@@ -1,5 +1,8 @@
 package pt.ulisboa.tecnico.softeng.hotel.domain
 
+import pt.ulisboa.tecnico.softeng.hotel.services.remote.BankInterface
+import pt.ulisboa.tecnico.softeng.hotel.services.remote.TaxInterface
+
 import static org.junit.Assert.*
 
 import org.joda.time.LocalDate
@@ -21,7 +24,7 @@ class HotelHasVacancyMethodSpockTest extends SpockRollbackTestAbstractClass {
 
 	@Override
 	def populate4Test() {
-		hotel = new Hotel("XPTO123", "Paris", NIF_HOTEL, "IBAN", 20.0, 30.0)
+		hotel = new Hotel("XPTO123", "Paris", NIF_HOTEL, "IBAN", 20.0, 30.0, new TaxInterface(), new BankInterface())
 		room = new Room(hotel, "01", Type.DOUBLE)
 	}
 
@@ -47,7 +50,7 @@ class HotelHasVacancyMethodSpockTest extends SpockRollbackTestAbstractClass {
 
 	def "no vacancy empty room set"() {
 		given: "an hotel without rooms"
-		def otherHotel = new Hotel("XPTO124", "Paris Germain", "NIF2", "IBAN", 25.0, 35.0)
+		def otherHotel = new Hotel("XPTO124", "Paris Germain", "NIF2", "IBAN", 25.0, 35.0, new TaxInterface(), new BankInterface())
 
 		when: "looking for a vancancy"
 		room = otherHotel.hasVacancy(Type.DOUBLE, ARRIVAL, DEPARTURE)
