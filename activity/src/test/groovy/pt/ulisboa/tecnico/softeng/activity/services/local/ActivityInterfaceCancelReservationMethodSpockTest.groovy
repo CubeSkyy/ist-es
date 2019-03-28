@@ -1,6 +1,7 @@
 package pt.ulisboa.tecnico.softeng.activity.services.local;
 
 import org.joda.time.LocalDate
+import spock.lang.*
 
 import pt.ulisboa.tecnico.softeng.activity.domain.*
 import pt.ulisboa.tecnico.softeng.activity.exception.ActivityException
@@ -16,28 +17,29 @@ class ActivityInterfaceCancelReservationMethodSpockTest extends SpockRollbackTes
     def offer
     def taxInterface
     def bankInterface
+    def activityInterface
+    def processor
 
     @Override
     def populate4Test() {
-        provider = new ActivityProvider("XtremX", "ExtremeAdventure", "NIF", IBAN)
+        activityInterface = new ActivityInterface()
+        taxInterface = Mock(TaxInterface)
+        bankInterface = Mock(BankInterface)
+        processor = new Processor(taxInterface, bankInterface)
+        provider = new ActivityProvider("XtremX", "ExtremeAdventure", "NIF", IBAN, processor)
         def activity = new Activity(provider, "Bush Walking", 18, 80, 3)
 
         def begin = new LocalDate(2016, 12, 19)
         def end = new LocalDate(2016, 12, 21)
         offer = new ActivityOffer(activity, begin, end, 30)
 
-        taxInterface = Mock(TaxInterface)
-        bankInterface = Mock(BankInterface)
-
-        provider.setBankInterface(bankInterface)
-        provider.setTaxInterface(taxInterface)
     }
 
     def 'success'() {
         when:
         def booking = new Booking(provider, offer, NIF, IBAN)
         provider.getProcessor().submitBooking(booking)
-        def cancel = ActivityInterface.cancelReservation(booking.getReference())
+        def cancel = activityInterface.cancelReservation(booking.getReference())
 
         then:
         booking.isCancelled()
@@ -47,7 +49,7 @@ class ActivityInterfaceCancelReservationMethodSpockTest extends SpockRollbackTes
     def 'doesNotExist'() {
         when:
         provider.getProcessor().submitBooking(new Booking(provider, offer, NIF, IBAN))
-        ActivityInterface.cancelReservation("XPTO")
+        activityInterface.cancelReservation("XPTO")
 
         then:
         thrown(ActivityException)
