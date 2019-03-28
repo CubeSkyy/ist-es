@@ -20,6 +20,11 @@ public class ActivityOfferHasVacancyMethodTest extends RollbackTestAbstractClass
 	private ActivityProvider provider;
 	private ActivityOffer offer;
 
+	@Mocked
+	private TaxInterface taxInterface;
+	@Mocked
+	private BankInterface bankInterface;
+
 	@Override
 	public void populate4Test() {
 		this.provider = new ActivityProvider("XtremX", "ExtremeAdventure", "NIF", IBAN);
@@ -29,6 +34,9 @@ public class ActivityOfferHasVacancyMethodTest extends RollbackTestAbstractClass
 		LocalDate end = new LocalDate(2016, 12, 21);
 
 		this.offer = new ActivityOffer(activity, begin, end, 30);
+
+		this.provider.setBankInterface(bankInterface);
+		this.provider.setTaxInterface(taxInterface);
 	}
 
 	@Test
@@ -56,13 +64,12 @@ public class ActivityOfferHasVacancyMethodTest extends RollbackTestAbstractClass
 	}
 
 	@Test
-	public void hasCancelledBookings(@Mocked final TaxInterface taxInterface,
-			@Mocked final BankInterface bankInterface) {
+	public void hasCancelledBookings() {
 		new Expectations() {
 			{
-				BankInterface.processPayment((RestBankOperationData) this.any);
+				bankInterface.processPayment((RestBankOperationData) this.any);
 
-				TaxInterface.submitInvoice((RestInvoiceData) this.any);
+				taxInterface.submitInvoice((RestInvoiceData) this.any);
 			}
 		};
 		this.provider.getProcessor().submitBooking(new Booking(this.provider, this.offer, NIF, IBAN));
@@ -75,13 +82,12 @@ public class ActivityOfferHasVacancyMethodTest extends RollbackTestAbstractClass
 		Assert.assertTrue(this.offer.hasVacancy());
 	}
 
-	public void hasCancelledBookingsButFull(@Mocked final TaxInterface taxInterface,
-			@Mocked final BankInterface bankInterface) {
+	public void hasCancelledBookingsButFull() {
 		new Expectations() {
 			{
-				BankInterface.processPayment((RestBankOperationData) this.any);
+				bankInterface.processPayment((RestBankOperationData) this.any);
 
-				TaxInterface.submitInvoice((RestInvoiceData) this.any);
+				taxInterface.submitInvoice((RestInvoiceData) this.any);
 			}
 		};
 		this.provider.getProcessor().submitBooking(new Booking(this.provider, this.offer, NIF, IBAN));

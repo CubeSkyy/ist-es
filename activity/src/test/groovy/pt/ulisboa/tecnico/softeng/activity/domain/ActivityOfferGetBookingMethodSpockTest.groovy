@@ -1,12 +1,14 @@
 package pt.ulisboa.tecnico.softeng.activity.domain
 
 import org.joda.time.LocalDate
+import pt.ulisboa.tecnico.softeng.activity.services.remote.BankInterface
 
 class ActivityOfferGetBookingMethodSpockTest extends SpockRollbackTestAbstractClass {
 	def IBAN = 'IBAN'
 	def NIF = '123456789'
 	def provider
 	def offer
+
 
 	@Override
 	def populate4Test() {
@@ -30,6 +32,8 @@ class ActivityOfferGetBookingMethodSpockTest extends SpockRollbackTestAbstractCl
 	def 'success cancelled'() {
 		given:
 		def booking = new Booking(provider, offer, NIF, IBAN)
+		BankInterface bankInterface = new BankInterface();
+		provider.setBankInterface(bankInterface)
 
 		when:
 		booking.cancel()

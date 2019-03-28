@@ -10,10 +10,6 @@ import pt.ulisboa.tecnico.softeng.broker.services.remote.*;
 
 public class Adventure extends Adventure_Base {
 	private static Logger logger = LoggerFactory.getLogger(Adventure.class);
-	private TaxInterface taxInterface;
-	private HotelInterface hotelInterface;
-	private ActivityInterface activityInterface;
-	private CarInterface carInterface;
 	private BankInterface bankInterface;
 
 	public enum State {
@@ -44,35 +40,6 @@ public class Adventure extends Adventure_Base {
 	}
 
 
-	public TaxInterface getTaxInterface() {
-		return this.taxInterface;
-	}
-	public void setTaxInterface(TaxInterface ti){this.taxInterface = ti; }
-
-
-	public HotelInterface getHotelInterface() {
-		return this.hotelInterface;
-	}
-	public void setHotelInterface(HotelInterface hi){this.hotelInterface = hi; }
-
-
-	public ActivityInterface getActivityInterface() {
-		return this.activityInterface;
-	}
-	public void setActivityInterface(ActivityInterface ai){this.activityInterface = ai; }
-
-
-	public CarInterface getCarInterface() {
-		return this.carInterface;
-	}
-	public void setCarInterface(CarInterface ci){this.carInterface = ci; }
-
-
-
-	public pt.ulisboa.tecnico.softeng.broker.services.remote.BankInterface getBankInterface() {
-		return this.bankInterface;
-	}
-	public void setBankInterface(BankInterface bi){this.bankInterface = bi; }
 
 	public void delete() {
 		setBroker(null);
