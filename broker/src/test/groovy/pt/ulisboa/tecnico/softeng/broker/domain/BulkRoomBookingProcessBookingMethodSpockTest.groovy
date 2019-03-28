@@ -1,8 +1,12 @@
 package pt.ulisboa.tecnico.softeng.broker.domain
 
-import pt.ulisboa.tecnico.softeng.broker.services.remote.HotelInterface;
-import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.HotelException;
-import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.RemoteAccessException;
+import pt.ulisboa.tecnico.softeng.broker.services.remote.ActivityInterface
+import pt.ulisboa.tecnico.softeng.broker.services.remote.BankInterface
+import pt.ulisboa.tecnico.softeng.broker.services.remote.CarInterface
+import pt.ulisboa.tecnico.softeng.broker.services.remote.HotelInterface
+import pt.ulisboa.tecnico.softeng.broker.services.remote.TaxInterface
+import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.HotelException
+import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.RemoteAccessException
 
 class BulkRoomBookingProcessBookingMethodSpockTest extends SpockRollbackTestAbstractClass {
 
@@ -12,10 +16,8 @@ class BulkRoomBookingProcessBookingMethodSpockTest extends SpockRollbackTestAbst
 
     def "populate4Test"(){
         roomInterface = Mock(HotelInterface)
-
-        broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN)
-        bulk = new BulkRoomBooking(this.broker, NUMBER_OF_BULK, this.BEGIN, this.END, NIF_AS_BUYER, IBAN_BUYER)
-        broker.setHotelInterface(roomInterface)
+        broker =  new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN, roomInterface, new TaxInterface(), new ActivityInterface(), new CarInterface(), new BankInterface())
+        bulk = new BulkRoomBooking(broker, NUMBER_OF_BULK, BEGIN, END, NIF_AS_BUYER, IBAN_BUYER)
     }
 
     def "success"(){
