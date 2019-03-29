@@ -37,7 +37,8 @@ public class HotelRestController {
 	public ResponseEntity<String> cancel(@RequestParam String reference) {
 		logger.info("cancel reference:{}", reference);
 		try {
-			return new ResponseEntity<>(HotelInterface.cancelBooking(reference), HttpStatus.OK);
+			HotelInterface hotelInterface = new HotelInterface();
+			return new ResponseEntity<>(hotelInterface.cancelBooking(reference), HttpStatus.OK);
 		} catch (HotelException be) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
@@ -61,7 +62,8 @@ public class HotelRestController {
 		logger.info("bulk number:{}, arrival:{}, departure:{}, nif:{}, iban:{}, bulkId:{}", number, arrival, departure,
 				nif, iban, bulkId);
 		try {
-			return new ResponseEntity<>(HotelInterface.bulkBooking(number, arrival, departure, nif, iban, bulkId)
+			HotelInterface hotelInterface = new HotelInterface();
+			return new ResponseEntity<>(hotelInterface.bulkBooking(number, arrival, departure, nif, iban, bulkId)
 					.stream().toArray(size -> new String[size]), HttpStatus.OK);
 		} catch (HotelException be) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

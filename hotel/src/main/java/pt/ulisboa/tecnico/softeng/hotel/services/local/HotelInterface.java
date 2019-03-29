@@ -90,7 +90,7 @@ public class HotelInterface {
 	}
 
 	@Atomic(mode = TxMode.WRITE)
-	public static String cancelBooking(String reference) {
+	public String cancelBooking(String reference) {
 		for (Hotel hotel : FenixFramework.getDomainRoot().getHotelSet()) {
 			Booking booking = hotel.getBooking(reference);
 			if (booking != null && booking.getCancellation() != null) {
@@ -116,7 +116,7 @@ public class HotelInterface {
 	}
 
 	@Atomic(mode = TxMode.WRITE)
-	public static Set<String> bulkBooking(int number, LocalDate arrival, LocalDate departure, String buyerNif,
+	public Set<String> bulkBooking(int number, LocalDate arrival, LocalDate departure, String buyerNif,
 			String buyerIban, String bulkId) {
 		Set<Booking> bookings = getBookings4BulkId(bulkId);
 		if (!bookings.isEmpty()) {
@@ -147,7 +147,7 @@ public class HotelInterface {
 		FenixFramework.getDomainRoot().getHotelSet().stream().forEach(h -> h.delete());
 	}
 
-	static List<Room> getAvailableRooms(int number, LocalDate arrival, LocalDate departure) {
+	List<Room> getAvailableRooms(int number, LocalDate arrival, LocalDate departure) {
 		List<Room> availableRooms = new ArrayList<>();
 		for (Hotel hotel : FenixFramework.getDomainRoot().getHotelSet()) {
 			availableRooms.addAll(hotel.getAvailableRooms(arrival, departure));

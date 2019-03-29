@@ -25,17 +25,21 @@ class HotelInterfaceBulkBookingMethodSpockTest extends SpockRollbackTestAbstract
 	@Shared def ARRIVAL = new LocalDate(2016, 12, 19)
 	@Shared def DEPARTURE = new LocalDate(2016, 12, 21)
 
+	@Shared def hotelInterface = new HotelInterface()
+	@Shared def taxInterface = Mock(TaxInterface)
+	@Shared def bankInterface = Mock(BankInterface)
+
 	def hotel;
 
 	@Override
 	def populate4Test() {
-		hotel = new Hotel('XPTO123', 'Paris', 'NIF', 'IBAN', 20.0, 30.0, new TaxInterface(), new BankInterface())
+		hotel = new Hotel('XPTO123', 'Paris', 'NIF', 'IBAN', 20.0, 30.0, taxInterface, bankInterface)
 		new Room(hotel, '01', Type.DOUBLE)
 		new Room(hotel, '02', Type.SINGLE)
 		new Room(hotel, '03', Type.DOUBLE)
 		new Room(hotel, '04', Type.SINGLE)
 
-		hotel = new Hotel('XPTO124', 'Paris', 'NIF2', 'IBAN2', 25.0, 35.0, new TaxInterface(), new BankInterface())
+		hotel = new Hotel('XPTO124', 'Paris', 'NIF2', 'IBAN2', 25.0, 35.0, taxInterface, bankInterface)
 		new Room(hotel, '01', Type.DOUBLE)
 		new Room(hotel, '02', Type.SINGLE)
 		new Room(hotel, '03', Type.DOUBLE)
@@ -45,7 +49,7 @@ class HotelInterfaceBulkBookingMethodSpockTest extends SpockRollbackTestAbstract
 	@Unroll('bulkbooking #number rooms and the reference size is #refSize')
 	def 'success'() {
 		when: 'bulkbooking rooms'
-		def references = HotelInterface.bulkBooking(number, ARRIVAL, DEPARTURE, NIF_BUYER,
+		def references = hotelInterface.bulkBooking(number, ARRIVAL, DEPARTURE, NIF_BUYER,
 				IBAN_BUYER, BULK_ID)
 
 		then: 'references are returned'
@@ -60,13 +64,13 @@ class HotelInterfaceBulkBookingMethodSpockTest extends SpockRollbackTestAbstract
 
 	def 'unsuccess'() {
 		when: 'bulkbooking rooms'
-		def references = HotelInterface.bulkBooking(9, ARRIVAL, DEPARTURE, NIF_BUYER,
+		def references = hotelInterface.bulkBooking(9, ARRIVAL, DEPARTURE, NIF_BUYER,
 				IBAN_BUYER, BULK_ID)
 
 		then: 'references are returned'
 		thrown(HotelException)
 		and: 'no rooms are booked'
-		HotelInterface.getAvailableRooms(8, ARRIVAL, DEPARTURE).size() == 8
+		hotelInterface.getAvailableRooms(8, ARRIVAL, DEPARTURE).size() == 8
 	}
 
 	def 'no rooms'() {
@@ -74,10 +78,10 @@ class HotelInterfaceBulkBookingMethodSpockTest extends SpockRollbackTestAbstract
 		for (def hotel : FenixFramework.getDomainRoot().getHotelSet()) {
 			hotel.delete()
 		}
-		hotel = new Hotel('XPTO124', 'Paris', 'NIF', 'IBAN', 27.0, 37.0, new TaxInterface(), new BankInterface())
+		hotel = new Hotel('XPTO124', 'Paris', 'NIF', 'IBAN', 27.0, 37.0, taxInterface, bankInterface)
 
 		when: 'a bulkbooking is done'
-		HotelInterface.bulkBooking(3, ARRIVAL, DEPARTURE, NIF_BUYER, IBAN_BUYER, BULK_ID)
+		hotelInterface.bulkBooking(3, ARRIVAL, DEPARTURE, NIF_BUYER, IBAN_BUYER, BULK_ID)
 
 		then: 'a HotelException is thrown'
 		thrown(HotelException)
@@ -86,7 +90,7 @@ class HotelInterfaceBulkBookingMethodSpockTest extends SpockRollbackTestAbstract
 	@Unroll('invalid arguments: #number | #arrival | #departure | #nif | #iban')
 	def 'invalid arguments'() {
 		when: 'a bulkbooking is done with an invalid argument'
-		HotelInterface.bulkBooking(number, arrival, departure, nif, iban, BULK_ID)
+		hotelInterface.bulkBooking(number, arrival, departure, nif, iban, BULK_ID)
 
 		then: 'a HotelException is thrown'
 		thrown(HotelException)
@@ -105,15 +109,15 @@ class HotelInterfaceBulkBookingMethodSpockTest extends SpockRollbackTestAbstract
 
 	def 'idempotent bulk booking'() {
 		given: 'a bulkboooking of 4 rooms'
-		def references = HotelInterface.bulkBooking(4, ARRIVAL, DEPARTURE, NIF_BUYER,
+		def references = hotelInterface.bulkBooking(4, ARRIVAL, DEPARTURE, NIF_BUYER,
 				IBAN_BUYER, BULK_ID)
 
 		when: 'do a bulkboooking with the same id'
-		def equalReferences = HotelInterface.bulkBooking(4, ARRIVAL, DEPARTURE, NIF_BUYER,
+		def equalReferences = hotelInterface.bulkBooking(4, ARRIVAL, DEPARTURE, NIF_BUYER,
 				IBAN_BUYER, BULK_ID)
 
 		then: 'returns the same references'
-		HotelInterface.getAvailableRooms(4, ARRIVAL, DEPARTURE).size() == 4
+		hotelInterface.getAvailableRooms(4, ARRIVAL, DEPARTURE).size() == 4
 		references.stream().sorted().collect(Collectors.toList()).equals(
 				equalReferences.stream().sorted().collect(Collectors.toList()))
 	}

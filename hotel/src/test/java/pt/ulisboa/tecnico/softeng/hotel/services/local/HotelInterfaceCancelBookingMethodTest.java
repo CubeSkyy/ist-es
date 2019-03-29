@@ -32,6 +32,8 @@ public class HotelInterfaceCancelBookingMethodTest extends RollbackTestAbstractC
 	@Mocked
 	private BankInterface bankInterface;
 
+	private HotelInterface hotelInterface = new HotelInterface();
+
 	@Override
 	public void populate4Test() {
 		this.hotel = new Hotel("XPTO123", "Paris", "NIF", "IBAN", 20.0, 30.0, taxInterface, bankInterface);
@@ -41,7 +43,7 @@ public class HotelInterfaceCancelBookingMethodTest extends RollbackTestAbstractC
 
 	@Test
 	public void success() {
-		String cancel = HotelInterface.cancelBooking(this.booking.getReference());
+		String cancel = hotelInterface.cancelBooking(this.booking.getReference());
 
 		Assert.assertTrue(this.booking.isCancelled());
 		Assert.assertEquals(cancel, this.booking.getCancellation());
@@ -49,17 +51,17 @@ public class HotelInterfaceCancelBookingMethodTest extends RollbackTestAbstractC
 
 	@Test(expected = HotelException.class)
 	public void doesNotExist() {
-		HotelInterface.cancelBooking("XPTO");
+		hotelInterface.cancelBooking("XPTO");
 	}
 
 	@Test(expected = HotelException.class)
 	public void nullReference() {
-		HotelInterface.cancelBooking(null);
+		hotelInterface.cancelBooking(null);
 	}
 
 	@Test(expected = HotelException.class)
 	public void emptyReference() {
-		HotelInterface.cancelBooking("");
+		hotelInterface.cancelBooking("");
 	}
 
 	@Test
@@ -69,7 +71,7 @@ public class HotelInterfaceCancelBookingMethodTest extends RollbackTestAbstractC
 				taxInterface.cancelInvoice(this.anyString);
 			}
 		};
-		String cancel = HotelInterface.cancelBooking(this.booking.getReference());
+		String cancel = hotelInterface.cancelBooking(this.booking.getReference());
 
 		Assert.assertTrue(this.booking.isCancelled());
 		Assert.assertEquals(cancel, this.booking.getCancellation());
@@ -83,6 +85,6 @@ public class HotelInterfaceCancelBookingMethodTest extends RollbackTestAbstractC
 				this.times = 0;
 			}
 		};
-		HotelInterface.cancelBooking("XPTO");
+		hotelInterface.cancelBooking("XPTO");
 	}
 }
