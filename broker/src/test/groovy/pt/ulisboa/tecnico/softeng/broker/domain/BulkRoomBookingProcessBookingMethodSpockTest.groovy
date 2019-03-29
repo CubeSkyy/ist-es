@@ -1,7 +1,8 @@
 package pt.ulisboa.tecnico.softeng.broker.domain;
 
 import mockit.Delegate;
-import mockit.Expectations;
+import mockit.Expectations
+import mockit.Mock;
 import mockit.Mocked;
 import mockit.integration.junit4.JMockit;
 import org.junit.Test;
@@ -16,13 +17,16 @@ import java.util.Set;
 
 import static org.junit.Assert.*
 
-class BulkRoomBookingProcessBookingMethodTest extends SpockRollbackTestAbstractClass {
+class BulkRoomBookingProcessBookingMethodSpockTest extends SpockRollbackTestAbstractClass {
     def bulk
     def broker
     def roomInterface
-    
+
+    def MAX_HOTEL_EXCEPTIONS = BulkRoomBooking.MAX_HOTEL_EXCEPTIONS
+
     @Override
     def populate4Test() {
+        roomInterface = Mock(HotelInterface)
         broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN,
                 roomInterface, new TaxInterface(), new ActivityInterface(), new CarInterface(), new BankInterface())
         bulk = new BulkRoomBooking(broker, NUMBER_OF_BULK, this.BEGIN, this.END, NIF_AS_BUYER, IBAN_BUYER);
@@ -30,239 +34,192 @@ class BulkRoomBookingProcessBookingMethodTest extends SpockRollbackTestAbstractC
 
     def 'success'() {
         given:
-        roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,bulk.getId()) >> bulkBooking
-        bulkBooking = new HashSet<>(Arrays.asList("ref1", "ref2"))
+        roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,bulk.getId()) >> new HashSet<>(Arrays.asList("ref1", "ref2"))
 
+        when:
         bulk.processBooking()
+
+        then:
         bulk.getReferences().size() == 2
     }
 
-    @Test
-    public void successTwice() {
-        new Expectations() {
-            {
-                roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
-                        BulkRoomBookingProcessBookingMethodTest.this.bulk.getId());
-                this.result = new HashSet<>(Arrays.asList("ref1", "ref2"));
-                this.result = new HashSet<>(Arrays.asList("ref3", "ref4"));
-            }
-        };
+    def 'successTwice'() {
+        given:
+        roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER, bulk.getId()) >>
+            new HashSet<>(Arrays.asList("ref1", "ref2")) >> new HashSet<>(Arrays.asList("ref3", "ref4"))
 
-        this.bulk.processBooking();
-        this.bulk.processBooking();
+        when:
+        bulk.processBooking()
+        bulk.processBooking()
 
-        assertEquals(2, this.bulk.getReferences().size());
+        then:
+        bulk.getReferences().size() == 2
     }
 
-    @Test
-    public void oneHotelException() {
-        new Expectations() {
-            {
-                roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
-                        BulkRoomBookingProcessBookingMethodTest.this.bulk.getId());
-                this.result = new HotelException();
-                this.result = new HashSet<>(Arrays.asList("ref1", "ref2"));
-            }
-        };
 
-        this.bulk.processBooking();
-        this.bulk.processBooking();
+    def 'oneHotelException'() {
+        given:
+        roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER, bulk.getId()) >> { throw new HotelException()} >> new HashSet<>(Arrays.asList("ref1", "ref2"))
 
-        assertEquals(2, this.bulk.getReferences().size());
-        assertFalse(this.bulk.getCancelled());
+        when:
+        bulk.processBooking()
+        bulk.processBooking()
+
+        then:
+        bulk.getReferences().size() == 2
+        !bulk.getCancelled()
     }
 
-    @Test
-    public void maxHotelException() {
-        new Expectations() {
-            {
-                roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
-                        BulkRoomBookingProcessBookingMethodTest.this.bulk.getId());
-                this.result = new HotelException();
-            }
-        };
+    def 'maxHotelException'() {
+        given:
+        roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER, bulk.getId()) >> { throw new HotelException()}
 
-        this.bulk.processBooking();
-        this.bulk.processBooking();
-        this.bulk.processBooking();
+        when:
+        bulk.processBooking()
+        bulk.processBooking()
+        bulk.processBooking()
 
-        assertEquals(0, this.bulk.getReferences().size());
-        assertTrue(this.bulk.getCancelled());
+        then:
+        bulk.getReferences().size() == 0
+        bulk.getCancelled()
     }
 
-    @Test
-    public void maxMinusOneHotelException() {
-        new Expectations() {
-            {
-                roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
-                        BulkRoomBookingProcessBookingMethodTest.this.bulk.getId());
-                this.result = new Delegate() {
-                    int i = 0;
-
-                    Set<String> delegate() {
-                        this.i++;
-                        if (this.i < BulkRoomBooking.MAX_HOTEL_EXCEPTIONS - 1) {
-                            throw new HotelException();
-                        } else {
-                            return new HashSet<>(Arrays.asList("ref1", "ref2"));
-                        }
-                    }
-                };
+    def 'maxMinusOneHotelException'() {
+        given:
+        def i = 0
+        roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER, bulk.getId()) >> {
+            i++
+            if (i < BulkRoomBooking.MAX_HOTEL_EXCEPTIONS - 1) {
+                throw new HotelException()
+            } else {
+                return new HashSet<>(Arrays.asList("ref1", "ref2"))
             }
-        };
-
-        this.bulk.processBooking();
-        this.bulk.processBooking();
-        this.bulk.processBooking();
-
-        assertEquals(2, this.bulk.getReferences().size());
-        assertFalse(this.bulk.getCancelled());
-    }
-
-    @Test
-    public void hotelExceptionValueIsResetByRemoteException() {
-        new Expectations() {
-            {
-                roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
-                        BulkRoomBookingProcessBookingMethodTest.this.bulk.getId());
-                this.result = new Delegate() {
-                    int i = 0;
-
-                    Set<String> delegate() {
-                        this.i++;
-                        if (this.i < BulkRoomBooking.MAX_HOTEL_EXCEPTIONS - 1) {
-                            throw new HotelException();
-                        } else if (this.i == BulkRoomBooking.MAX_HOTEL_EXCEPTIONS - 1) {
-                            throw new RemoteAccessException();
-                        } else if (this.i < 2 * BulkRoomBooking.MAX_HOTEL_EXCEPTIONS - 1) {
-                            throw new HotelException();
-                        } else {
-                            return new HashSet<>(Arrays.asList("ref1", "ref2"));
-                        }
-                    }
-                };
-            }
-        };
-
-        this.bulk.processBooking()
-        this.bulk.processBooking()
-        this.bulk.processBooking()
-        this.bulk.processBooking()
-        this.bulk.processBooking()
-        this.bulk.processBooking()
-
-        assertEquals(2, bulk.getReferences().size())
-        assertFalse(bulk.getCancelled())
-    }
-
-    @Test
-    public void oneRemoteException() {
-        new Expectations() {
-            {
-                roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
-                        BulkRoomBookingProcessBookingMethodTest.this.bulk.getId());
-                this.result = new RemoteAccessException();
-                this.result = new HashSet<>(Arrays.asList("ref1", "ref2"));
-            }
-        };
-
-        this.bulk.processBooking();
-        this.bulk.processBooking();
-
-        assertEquals(2, this.bulk.getReferences().size());
-        assertFalse(this.bulk.getCancelled());
-    }
-
-    @Test
-    public void maxRemoteException() {
-        new Expectations() {
-            {
-                roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
-                        BulkRoomBookingProcessBookingMethodTest.this.bulk.getId());
-                this.result = new RemoteAccessException();
-            }
-        };
-
-        for (int i = 0; i < BulkRoomBooking.MAX_REMOTE_ERRORS; i++) {
-            this.bulk.processBooking();
         }
-        this.bulk.processBooking();
 
-        assertEquals(0, this.bulk.getReferences().size());
-        assertTrue(this.bulk.getCancelled());
+        when:
+        bulk.processBooking()
+        bulk.processBooking()
+        bulk.processBooking()
+
+        then:
+        bulk.getReferences().size() == 2
+        !bulk.getCancelled()
     }
 
-    @Test
+    def 'hotelExceptionValueIsResetByRemoteException'() {
+        given:
+        def i = 0
+        roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER, bulk.getId()) >> {
+            i++
+            if (i < MAX_HOTEL_EXCEPTIONS - 1) {
+                throw new HotelException()
+            } else if (i == MAX_HOTEL_EXCEPTIONS - 1) {
+                throw new RemoteAccessException()
+            } else if (i < 2 * MAX_HOTEL_EXCEPTIONS - 1) {
+                throw new HotelException()
+            } else {
+                return new HashSet<>(Arrays.asList("ref1", "ref2"));
+            }
+        }
+
+
+        when:
+        bulk.processBooking()
+        bulk.processBooking()
+        bulk.processBooking()
+        bulk.processBooking()
+        bulk.processBooking()
+        bulk.processBooking()
+
+        then:
+        bulk.getReferences().size() == 2
+        !bulk.getCancelled()
+    }
+
+    def 'oneRemoteException'() {
+        given:
+        roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER, bulk.getId()) >> { throw new RemoteAccessException() } >> new HashSet<>(Arrays.asList("ref1", "ref2"))
+
+        when:
+        bulk.processBooking()
+        then:
+        bulk.getReferences().size() == 2
+        !bulk.getCancelled()
+    }
+
+    def 'maxRemoteException'() {
+        given:
+        def i
+        roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER, bulk.getId()) >> { throw new RemoteAccessException() }
+
+        when:
+        for (i = 0; i < BulkRoomBooking.MAX_REMOTE_ERRORS; i++) {
+            bulk.processBooking()
+        }
+        bulk.processBooking()
+
+        then:
+        bulk.getReferences().size() == 0
+        bulk.getCancelled()
+    }
+
     def 'maxMinusOneRemoteException'() {
-        new Expectations() {
-            {
-                roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
-                        BulkRoomBookingProcessBookingMethodTest.this.bulk.getId());
-                this.result = new Delegate() {
-                    int i = 0;
-
-                    Set<String> delegate() {
-                        this.i++;
-                        if (this.i < BulkRoomBooking.MAX_REMOTE_ERRORS - 1) {
-                            throw new RemoteAccessException();
-                        } else {
-                            return new HashSet<>(Arrays.asList("ref1", "ref2"));
-                        }
-                    }
-                };
-                this.result = new RemoteAccessException();
-                this.times = BulkRoomBooking.MAX_REMOTE_ERRORS - 1;
-
-                roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
-                        BulkRoomBookingProcessBookingMethodTest.this.bulk.getId());
-                this.result = new HashSet<>(Arrays.asList("ref1", "ref2"));
+        given:
+        def i = 0
+        (BulkRoomBooking.MAX_REMOTE_ERRORS - 1)*roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER, bulk.getId()) >> {
+            i++
+            if (i < BulkRoomBooking.MAX_REMOTE_ERRORS - 1) {
+                throw new RemoteAccessException()
+            } else {
+                return new HashSet<>(Arrays.asList("ref1", "ref2"));
             }
-        };
-
-        for (int i = 0; i < BulkRoomBooking.MAX_REMOTE_ERRORS - 1; i++) {
-            this.bulk.processBooking();
+        } >> {
+             throw new RemoteAccessException()
         }
-        this.bulk.processBooking();
+        roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER, bulk.getId()) >>
+                new HashSet<>(Arrays.asList("ref1", "ref2"))
 
-        assertEquals(2, this.bulk.getReferences().size());
-        assertFalse(this.bulk.getCancelled());
+
+        when:
+        for (i = 0; i < BulkRoomBooking.MAX_REMOTE_ERRORS - 1; i++) {
+            bulk.processBooking()
+        }
+        bulk.processBooking()
+        then:
+        bulk.getReferences().size() == 2
+        !bulk.getCancelled()
     }
 
-    @Test
     def 'remoteExceptionValueIsResetByHotelException'() {
-        new Expectations() {
-            {
-                roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
-                        BulkRoomBookingProcessBookingMethodTest.this.bulk.getId());
-                this.result = new Delegate() {
-                    int i = 0;
-
-                    Set<String> delegate() {
-                        this.i++;
-                        if (this.i < BulkRoomBooking.MAX_REMOTE_ERRORS - 1) {
-                            throw new RemoteAccessException();
-                        } else if (this.i == BulkRoomBooking.MAX_REMOTE_ERRORS - 1) {
-                            throw new HotelException();
-                        } else if (this.i < 2 * BulkRoomBooking.MAX_REMOTE_ERRORS - 1) {
-                            throw new RemoteAccessException();
-                        } else {
-                            return new HashSet<>(Arrays.asList("ref1", "ref2"));
-                        }
-                    }
-                };
+        given:
+        def i = 0
+        roomInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER, bulk.getId()) >> {
+            i++
+            if (i < BulkRoomBooking.MAX_REMOTE_ERRORS - 1) {
+                throw new RemoteAccessException();
+            } else if (i == BulkRoomBooking.MAX_REMOTE_ERRORS - 1) {
+                throw new HotelException();
+            } else if (i < 2 * BulkRoomBooking.MAX_REMOTE_ERRORS - 1) {
+                throw new RemoteAccessException();
+            } else {
+                return new HashSet<>(Arrays.asList("ref1", "ref2"))
             }
-        };
-
-        for (int i = 0; i < BulkRoomBooking.MAX_REMOTE_ERRORS - 1; i++) {
-            this.bulk.processBooking();
         }
-        this.bulk.processBooking();
-        for (int i = 0; i < BulkRoomBooking.MAX_REMOTE_ERRORS - 1; i++) {
-            this.bulk.processBooking();
-        }
-        this.bulk.processBooking();
 
-        assertEquals(2, this.bulk.getReferences().size());
-        assertFalse(this.bulk.getCancelled());
+        when:
+        for (i = 0; i < BulkRoomBooking.MAX_REMOTE_ERRORS - 1; i++) {
+            bulk.processBooking()
+        }
+        bulk.processBooking()
+
+        and:
+        for (i = 0; i < BulkRoomBooking.MAX_REMOTE_ERRORS - 1; i++) {
+            bulk.processBooking()
+        }
+        bulk.processBooking()
+
+        then:
+        bulk.getReferences().size() == 2
+        !bulk.getCancelled()
     }
 }
