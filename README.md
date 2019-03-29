@@ -17,16 +17,25 @@ To see the coverage reports, go to <module name>/target/site/jacoco/index.html.
 | ist187700 | Ricardo Silva    | ricardo.f.oliveira.da.silva@tecnico.ulisboa.pt | genlike         | 2     |
 
 
-- **Group 1:**
-- **Group 2:**
 
 **Nome:** Bernardo Carreira dos Santos **Número:** ist187635 **Email:** bernardo.d.santos@tecnico.ulisboa.pt **Github Username:** BSantosCoding
 
-| Class    | Package             | Issue |
+| Class/Task    | Package             | Issue |
 | -------- | ------------------- | ------|
 | ActivityOfferHasVacancyMethodSpockTest | activity.domain | #61 |
 | InvoiceProcessorSubmitBookingMethodSpockTest | activity.domain | #62 |
 | ActivityInterfaceCancelReservationMethodSpockTest | activity.services.local | #60 |
+
+**Nome:** Miguel Coelho **Numero:** ist187687 **Email:** miguelmendescoelho@tecnico.ulisboa.pt  **Github Username:** CubeSkyy
+
+| Class/Task                                   | Package             | Issue |
+| -------------------------------------------- | ------------------- | ----- |
+| RentVehicleStateMethodSpockTest              | broker.domain       | #63   |
+| ConfirmedStateProcessMethodSpockTest         | bank.domain         | #65   |
+| Changed Static Method to non Static          | broker              | #70/#90 |
+| Changed Static Method to non Static          | hotel              | #92 |
+
+
 
 ### Infrastructure
 
