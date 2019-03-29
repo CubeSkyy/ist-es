@@ -13,7 +13,7 @@ import pt.ulisboa.tecnico.softeng.activity.services.remote.dataobjects.RestActiv
 import pt.ulisboa.tecnico.softeng.activity.services.remote.dataobjects.RestBankOperationData
 import pt.ulisboa.tecnico.softeng.activity.services.remote.dataobjects.RestInvoiceData
 
-class activityInterfaceReserveActivityMethodSpockTest extends SpockRollbackTestAbstractClass {
+class ActivityInterfaceReserveActivityMethodSpockTest extends SpockRollbackTestAbstractClass {
     def IBAN = "IBAN"
     def NIF = "123456789"
     def MIN_AGE = 18
