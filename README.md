@@ -20,7 +20,7 @@ To see the coverage reports, go to <module name>/target/site/jacoco/index.html.
 
 **Nome:** Bernardo Carreira dos Santos **Número:** ist187635 **Email:** bernardo.d.santos@tecnico.ulisboa.pt **Github Username:** BSantosCoding
 
-| Class/Task                                        | Package                 | Issue |
+| Class                                             | Package                 | Issue |
 | ------------------------------------------------- | ----------------------- | ----- |
 | ActivityOfferHasVacancyMethodSpockTest            | activity.domain         | #61   |
 | InvoiceProcessorSubmitBookingMethodSpockTest      | activity.domain         | #62   |
@@ -60,6 +60,16 @@ To see the coverage reports, go to <module name>/target/site/jacoco/index.html.
 | BulkRoomBookingProcessBookingMethodSpockTest    | broker.domain           | #79   |
 | ProcessPaymentStateProcessMethodSpockTest       | broker.domain           | #77   |
 | BookRoomStateMethodSpockTest	                  | broker.domain           | #78   |
+
+
+**Nome:** Bernardo Faria **Numero:** ist187636 **Email:** bernardo.faria@tecnico.ulisboa.pt  **Github Username:** BernardoFaria
+
+| Class                                      | Package      | Issue |
+| ------------------------------------------ | ------------ | ----- |
+| AdventureSequenceSpockTest                 | broker.domain  | #68   |
+| ProcessorSubmitBookingMethodSpockTest      | hotel.domain | #66   |
+| Changed Static Method to non Static        | hotel        | #112   |
+| Changed text syntax for non Static methods             | hotel | #112   |
 
 
 ### Infrastructure
