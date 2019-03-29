@@ -44,6 +44,15 @@ To see the coverage reports, go to <module name>/target/site/jacoco/index.html.
 | ReserveActivityStateProcessMethodSpockTest      | broker.domain           | #74   |
 | UndoStateProcessMethodSpockTest                 | broker.domain           | #75   |
 
+**Nome:** André Patrício **Número:** ist187631 **Email:** andrepatricio98@tecnico.ulisboa.pt **Github Username:** Andrempp
+
+| Class                                           | Package                 | Issue |
+| ----------------------------------------------- | ----------------------- | ----- |
+| TaxPaymentStateMethodSpockTest 				  | broker.domain           | #99   |
+| BulkRoomBookingProcessBookingMethodSpockTest    | broker.domain           | #79   |
+| ProcessPaymentStateProcessMethodSpockTest       | broker.domain           | #77   |
+| BookRoomStateMethodSpockTest	                  | broker.domain           | #78   |
+
 
 ### Infrastructure
 
