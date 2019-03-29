@@ -18,6 +18,8 @@ import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.CarException
 import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.HotelException
 import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.TaxException
 
+import java.time.LocalDate
+
 class AdventureSequenceSpockTest extends SpockRollbackTestAbstractClass {
 
     def bookingActivityData
@@ -38,7 +40,7 @@ class AdventureSequenceSpockTest extends SpockRollbackTestAbstractClass {
     @Override
     def populate4Test() {
         broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, BROKER_NIF_AS_BUYER, BROKER_IBAN,
-                roomInterface, taxInterface, new ActivityInterface(), new CarInterface(), new BankInterface())
+                roomInterface, taxInterface, activityInterface, carInterface, bankInterface)
         client = new Client(broker, CLIENT_IBAN, CLIENT_NIF, DRIVING_LICENSE, AGE)
 
         bookingActivityData = new RestActivityBookingData()
@@ -63,18 +65,17 @@ class AdventureSequenceSpockTest extends SpockRollbackTestAbstractClass {
     }
 
 
-
-    /*def 'success sequence' () {
+    def 'success sequence'() {
         given:
-        activityInterface.reserveActivity() >> bookingActivityData
+        activityInterface.reserveActivity(_ as RestActivityBookingData) >> bookingActivityData
 
-        roomInterface.reserveRoom() >> bookingRoomData
+        roomInterface.reserveRoom(_ as RestRoomBookingData) >> bookingRoomData
 
-        carInterface.rentCar() >> rentingData
+        carInterface.rentCar(* _) >> rentingData
 
-        bankInterface.processPayment() >> PAYMENT_CONFIRMATION
+        bankInterface.processPayment(_ as RestBankOperationData) >> PAYMENT_CONFIRMATION
 
-        taxInterface.submitInvoice() >> INVOICE_DATA
+        taxInterface.submitInvoice(_ as RestInvoiceData) >> INVOICE_DATA
 
         bankInterface.getOperationData(PAYMENT_CONFIRMATION) >> bankData
 
@@ -99,16 +100,15 @@ class AdventureSequenceSpockTest extends SpockRollbackTestAbstractClass {
         then:
         adventure.getState().getValue() == State.CONFIRMED
 
-    }*/
+    }
 
 
-
-    /*def 'success sequence one no car' () {
+    def 'success sequence one no car' () {
         given:
-        activityInterface.reserveActivity() >> bookingActivityData
-        roomInterface.reserveRoom() >> bookingRoomData
-        bankInterface.processPayment() >> PAYMENT_CONFIRMATION
-        taxInterface.submitInvoice() >> INVOICE_DATA
+        activityInterface.reserveActivity(_ as RestActivityBookingData) >> bookingActivityData
+        roomInterface.reserveRoom(_ as RestRoomBookingData) >> bookingRoomData
+        bankInterface.processPayment(_ as RestBankOperationData) >> PAYMENT_CONFIRMATION
+        taxInterface.submitInvoice(_ as RestInvoiceData) >> INVOICE_DATA
         bankInterface.getOperationData(PAYMENT_CONFIRMATION) >> bankData
         activityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION) >> bookingActivityData
         roomInterface.getRoomBookingData(ROOM_CONFIRMATION) >> bookingRoomData
@@ -125,16 +125,15 @@ class AdventureSequenceSpockTest extends SpockRollbackTestAbstractClass {
 
         then:
         State.CONFIRMED == adventure.getState().getValue()
-    }*/
+    }
 
 
-
-    /*def 'success sequence no hotel' () {
+    def 'success sequence no hotel' () {
         given:
-        activityInterface.reserveActivity() >> bookingRoomData
-        carInterface.rentCar() >> rentingData
-        bankInterface.processPayment() >> PAYMENT_CONFIRMATION
-        taxInterface.submitInvoice() >> INVOICE_DATA
+        activityInterface.reserveActivity(_ as RestActivityBookingData) >> bookingActivityData
+        carInterface.rentCar(* _) >> rentingData
+        bankInterface.processPayment(_ as RestBankOperationData) >> PAYMENT_CONFIRMATION
+        taxInterface.submitInvoice(_ as RestInvoiceData) >> INVOICE_DATA
         bankInterface.getOperationData(PAYMENT_CONFIRMATION) >> bankData
         activityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION) >> bookingActivityData
         carInterface.getRentingData(RENTING_CONFIRMATION) >> rentingData
@@ -152,15 +151,14 @@ class AdventureSequenceSpockTest extends SpockRollbackTestAbstractClass {
         then:
         adventure.getState().getValue() == State.CONFIRMED
 
-    }*/
+    }
 
 
-
-    /*def 'success sequence no hotel no car' () {
+    def 'success sequence no hotel no car' () {
         given:
-        activityInterface.reserveActivity() >> bookingActivityData
-        bankInterface.processPayment() >> PAYMENT_CONFIRMATION
-        taxInterface.submitInvoice() >> INVOICE_DATA
+        activityInterface.reserveActivity(_ as RestActivityBookingData) >> bookingActivityData
+        bankInterface.processPayment(_ as RestBankOperationData) >> PAYMENT_CONFIRMATION
+        taxInterface.submitInvoice(_ as RestInvoiceData) >> INVOICE_DATA
         bankInterface.getOperationData(PAYMENT_CONFIRMATION) >> bankData
         activityInterface.getActivityReservationData(ACTIVITY_CONFIRMATION) >> bookingActivityData
 
@@ -175,13 +173,12 @@ class AdventureSequenceSpockTest extends SpockRollbackTestAbstractClass {
 
         then:
         adventure.getState().getValue() == State.CONFIRMED
-    }*/
+    }
 
 
-
-    /*def 'unsuccess sequence fail activity' () {
+    def 'unsuccess sequence fail activity' () {
         given:
-        activityInterface.reserveActivity() >> new ActivityException()
+        activityInterface.reserveActivity(_ as RestActivityBookingData) >> {throw new ActivityException()}
 
         and:
         def adventure = new Adventure(broker, ARRIVAL, DEPARTURE, client, MARGIN)
@@ -192,14 +189,13 @@ class AdventureSequenceSpockTest extends SpockRollbackTestAbstractClass {
 
         then:
         adventure.getState().getValue() == State.CANCELLED
-    }*/
+    }
 
 
-
-    /*def 'unsuccess sequence fail hotel' () {
+    def 'unsuccess sequence fail hotel' () {
         given:
-        activityInterface.reserveActivity() >> bookingActivityData
-        roomInterface.reserveRoom() >> new HotelException()
+        activityInterface.reserveActivity(_ as RestActivityBookingData) >> bookingActivityData
+        roomInterface.reserveRoom(_ as RestRoomBookingData) >> {throw new HotelException()}
 
         activityInterface.cancelReservation(ACTIVITY_CONFIRMATION) >> ACTIVITY_CANCELLATION
 
@@ -214,14 +210,13 @@ class AdventureSequenceSpockTest extends SpockRollbackTestAbstractClass {
 
         then:
         adventure.getState().getValue() == State.CANCELLED
-    }*/
+    }
 
 
-
-    /*def 'unsucess sequence fail car' () {
+    def 'unsucess sequence fail car' () {
         given:
-        activityInterface.reserveActivity() >> bookingActivityData
-        carInterface.rentCar() >> new CarException()
+        activityInterface.reserveActivity(_ as RestActivityBookingData) >> bookingActivityData
+        carInterface.rentCar(* _) >> {throw new CarException()}
         activityInterface.cancelReservation(ACTIVITY_CONFIRMATION) >> ACTIVITY_CANCELLATION
 
         and:
@@ -235,19 +230,23 @@ class AdventureSequenceSpockTest extends SpockRollbackTestAbstractClass {
 
         then:
         adventure.getState().getValue() == State.CANCELLED
-    }*/
-
-
+    }
 
 
     def 'unsucess sequence fail payment' () {
         given:
-        activityInterface.reserveActivity() >> bookingActivityData
-        roomInterface.reserveRoom() >> bookingRoomData
-        carInterface.rentCar() >> rentingData
-        bankInterface.processPayment() >> new BankException()
-        activityInterface.cancelReservation() >> ACTIVITY_CANCELLATION
+        activityInterface.reserveActivity(_ as RestActivityBookingData) >> bookingActivityData
+
+        roomInterface.reserveRoom(_ as RestRoomBookingData) >> bookingRoomData
+
+        carInterface.rentCar(* _) >> rentingData
+
+        bankInterface.processPayment(_ as RestBankOperationData) >> {throw new BankException()}
+
+        activityInterface.cancelReservation(_ as String) >> ACTIVITY_CANCELLATION
+
         roomInterface.cancelBooking(ROOM_CONFIRMATION) >> ROOM_CANCELLATION
+
         carInterface.cancelRenting(RENTING_CONFIRMATION) >> RENTING_CANCELLATION
 
         and:
@@ -266,14 +265,13 @@ class AdventureSequenceSpockTest extends SpockRollbackTestAbstractClass {
     }
 
 
-
     def 'unsucess sequence fail tax' () {
         given:
-        activityInterface.reserveActivity() >> bookingActivityData
-        roomInterface.reserveRoom() >> bookingRoomData
-        carInterface.rentCar() >>rentingData
-        bankInterface.processPayment() >> PAYMENT_CONFIRMATION
-        taxInterface.submitInvoice() >> new TaxException()
+        activityInterface.reserveActivity(_ as RestActivityBookingData) >> bookingActivityData
+        roomInterface.reserveRoom(_ as RestRoomBookingData) >> bookingRoomData
+        carInterface.rentCar(* _) >>rentingData
+        bankInterface.processPayment(_ as RestBankOperationData) >> PAYMENT_CONFIRMATION
+        taxInterface.submitInvoice(_ as RestInvoiceData) >> {throw new TaxException()}
         activityInterface.cancelReservation(ACTIVITY_CONFIRMATION) >> ACTIVITY_CANCELLATION
         roomInterface.cancelBooking(ROOM_CONFIRMATION) >> ROOM_CANCELLATION
         carInterface.cancelRenting(RENTING_CONFIRMATION) >> RENTING_CANCELLATION
@@ -293,7 +291,6 @@ class AdventureSequenceSpockTest extends SpockRollbackTestAbstractClass {
         then:
         adventure.getState().getValue() == State.CANCELLED
     }
-
 
 
 }
