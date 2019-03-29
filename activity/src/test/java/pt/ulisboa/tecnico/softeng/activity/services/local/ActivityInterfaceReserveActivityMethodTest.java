@@ -8,10 +8,7 @@ import org.junit.runner.RunWith;
 import mockit.Expectations;
 import mockit.Mocked;
 import mockit.integration.junit4.JMockit;
-import pt.ulisboa.tecnico.softeng.activity.domain.Activity;
-import pt.ulisboa.tecnico.softeng.activity.domain.ActivityOffer;
-import pt.ulisboa.tecnico.softeng.activity.domain.ActivityProvider;
-import pt.ulisboa.tecnico.softeng.activity.domain.RollbackTestAbstractClass;
+import pt.ulisboa.tecnico.softeng.activity.domain.*;
 import pt.ulisboa.tecnico.softeng.activity.exception.ActivityException;
 import pt.ulisboa.tecnico.softeng.activity.services.remote.BankInterface;
 import pt.ulisboa.tecnico.softeng.activity.services.remote.TaxInterface;
@@ -35,16 +32,18 @@ public class ActivityInterfaceReserveActivityMethodTest extends RollbackTestAbst
 	@Mocked
 	private BankInterface bankInterface;
 
+	private ActivityInterface activityInterface;
+	private Processor processor;
+
 	@Override
 	public void populate4Test() {
-		provider1 = new ActivityProvider("XtremX", "Adventure++", "NIF", IBAN);
-		provider2 = new ActivityProvider("Walker", "Sky", "NIF2", IBAN);
+		activityInterface = new ActivityInterface();
 
-		this.provider1.setBankInterface(bankInterface);
-		this.provider2.setTaxInterface(taxInterface);
+		processor = new Processor(taxInterface, bankInterface);
+		provider1 = new ActivityProvider("XtremX", "Adventure++", "NIF", IBAN, processor);
 
-		this.provider2.setBankInterface(bankInterface);
-		this.provider1.setTaxInterface(taxInterface);
+		processor = new Processor(taxInterface, bankInterface);
+		provider2 = new ActivityProvider("Walker", "Sky", "NIF2", IBAN, processor);
 	}
 
 	@Test
@@ -67,7 +66,7 @@ public class ActivityInterfaceReserveActivityMethodTest extends RollbackTestAbst
 		activityBookingData.setIban(IBAN);
 		activityBookingData.setNif(NIF);
 
-		RestActivityBookingData bookingData = ActivityInterface.reserveActivity(activityBookingData);
+		RestActivityBookingData bookingData = activityInterface.reserveActivity(activityBookingData);
 
 		Assert.assertTrue(bookingData != null);
 		Assert.assertTrue(bookingData.getReference().startsWith("XtremX"));
@@ -82,7 +81,7 @@ public class ActivityInterfaceReserveActivityMethodTest extends RollbackTestAbst
 		activityBookingData.setIban(IBAN);
 		activityBookingData.setNif(NIF);
 
-		RestActivityBookingData bookingData = ActivityInterface.reserveActivity(activityBookingData);
+		RestActivityBookingData bookingData = activityInterface.reserveActivity(activityBookingData);
 	}
 
 }

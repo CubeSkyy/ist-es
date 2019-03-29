@@ -7,15 +7,11 @@ import org.joda.time.LocalDate;
 
 import pt.ist.fenixframework.FenixFramework;
 import pt.ulisboa.tecnico.softeng.activity.exception.ActivityException;
-import pt.ulisboa.tecnico.softeng.activity.services.remote.TaxInterface;
-import pt.ulisboa.tecnico.softeng.activity.services.remote.BankInterface;
 
 public class ActivityProvider extends ActivityProvider_Base {
 	static final int CODE_SIZE = 6;
-	private TaxInterface taxInterface;
-	private BankInterface bankInterface;
 
-	public ActivityProvider(String code, String name, String nif, String iban) {
+	public ActivityProvider(final String code,final String name,final String nif,final String iban,final Processor processor) {
 		checkArguments(code, name, nif, iban);
 
 		setCode(code);
@@ -23,7 +19,7 @@ public class ActivityProvider extends ActivityProvider_Base {
 		setNif(nif);
 		setIban(iban);
 
-		setProcessor(new Processor());
+		setProcessor(processor);
 
 		FenixFramework.getDomainRoot().addActivityProvider(this);
 	}
@@ -40,7 +36,7 @@ public class ActivityProvider extends ActivityProvider_Base {
 		deleteDomainObject();
 	}
 
-	private void checkArguments(String code, String name, String nif, String iban) {
+	private void checkArguments(final String code,final String name,final String nif,final String iban) {
 		if (code == null || name == null || code.trim().equals("") || name.trim().equals("") || nif == null
 				|| nif.trim().length() == 0 || iban == null || iban.trim().length() == 0) {
 			throw new ActivityException();
@@ -94,12 +90,4 @@ public class ActivityProvider extends ActivityProvider_Base {
 				.filter(b -> b.getAdventureId() != null && b.getAdventureId().equals(adventureId)).findFirst()
 				.orElse(null);
 	}
-
-	public TaxInterface getTaxInterface(){
-		return this.taxInterface;
-	}
-	public void setTaxInterface(TaxInterface ti){this.taxInterface=ti;}
-
-	public BankInterface getBankInterface(){ return this.bankInterface; }
-	public void setBankInterface(BankInterface bi){this.bankInterface=bi;}
 }

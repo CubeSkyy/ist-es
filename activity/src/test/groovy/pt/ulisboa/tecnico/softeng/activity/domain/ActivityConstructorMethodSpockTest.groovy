@@ -1,6 +1,8 @@
 package pt.ulisboa.tecnico.softeng.activity.domain
 
 import pt.ulisboa.tecnico.softeng.activity.exception.ActivityException
+import pt.ulisboa.tecnico.softeng.activity.services.remote.BankInterface
+import pt.ulisboa.tecnico.softeng.activity.services.remote.TaxInterface
 import spock.lang.Shared
 import spock.lang.Unroll
 
@@ -12,10 +14,17 @@ class ActivityConstructorMethodSpockTest extends SpockRollbackTestAbstractClass 
 	@Shared def MAX_AGE = 50
 	@Shared def CAPACITY = 30
 	@Shared def provider
+	def taxInterface
+	def bankInterface
+	def processor
 
 	@Override
 	def populate4Test() {
-		provider = new ActivityProvider('XtremX','ExtremeAdventure',NIF,IBAN)
+		taxInterface = new TaxInterface()
+		bankInterface = new BankInterface()
+
+		processor = new Processor(taxInterface, bankInterface)
+		provider = new ActivityProvider('XtremX','ExtremeAdventure',NIF,IBAN, processor)
 	}
 
 	@Unroll('success: #prov, #name, #min, #max, #cap')
