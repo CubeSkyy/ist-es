@@ -40,8 +40,12 @@ class InvoiceProcessorSubmitBookingMethodSpockTest extends SpockRollbackTestAbst
 
 
     def 'success'() {
-        expect:
+        when:
         provider.getProcessor().submitBooking(booking)
+
+        then:
+        bankInterface.processPayment(_ as RestBankOperationData) >> null
+        taxInterface.submitInvoice(_ as RestInvoiceData) >> null
     }
 
 
@@ -90,9 +94,15 @@ class InvoiceProcessorSubmitBookingMethodSpockTest extends SpockRollbackTestAbst
 
 
     def 'successCancel'() {
-        expect:
+        when:
         provider.getProcessor().submitBooking(booking)
         booking.cancel()
+
+        then:
+        bankInterface.processPayment(_ as RestBankOperationData) >> null
+        taxInterface.submitInvoice(_ as RestInvoiceData) >> null
+        taxInterface.cancelInvoice(_ as String) >> null
+        bankInterface.cancelPayment(_ as String) >> null
     }
 
 
@@ -103,6 +113,9 @@ class InvoiceProcessorSubmitBookingMethodSpockTest extends SpockRollbackTestAbst
         provider.getProcessor().submitBooking(new Booking(provider, offer, NIF, IBAN))
 
         then:
+        bankInterface.processPayment(_ as RestBankOperationData) >> null
+        taxInterface.submitInvoice(_ as RestInvoiceData) >> null
+        taxInterface.cancelInvoice(_ as String) >> null
         1 * bankInterface.cancelPayment(_) >> new BankException() >> CANCEL_PAYMENT_REFERENCE
     }
 
@@ -114,6 +127,9 @@ class InvoiceProcessorSubmitBookingMethodSpockTest extends SpockRollbackTestAbst
         provider.getProcessor().submitBooking(new Booking(provider, offer, NIF, IBAN))
 
         then:
+        bankInterface.processPayment(_ as RestBankOperationData) >> null
+        taxInterface.submitInvoice(_ as RestInvoiceData) >> null
+        taxInterface.cancelInvoice(_ as String) >> null
         1 * bankInterface.cancelPayment(_) >> new RemoteAccessException() >> CANCEL_PAYMENT_REFERENCE
     }
 
@@ -128,6 +144,8 @@ class InvoiceProcessorSubmitBookingMethodSpockTest extends SpockRollbackTestAbst
         provider.getProcessor().submitBooking(new Booking(provider, offer, NIF, IBAN))
 
         then:
+        bankInterface.processPayment(_ as RestBankOperationData) >> null
+        taxInterface.submitInvoice(_ as RestInvoiceData) >> null
         bankInterface.cancelPayment(_ as String) >> CANCEL_PAYMENT_REFERENCE
         2 * taxInterface.cancelInvoice(_) >> {
             if (i < 1) {
@@ -148,6 +166,8 @@ class InvoiceProcessorSubmitBookingMethodSpockTest extends SpockRollbackTestAbst
         provider.getProcessor().submitBooking(new Booking(provider, offer, NIF, IBAN))
 
         then:
+        bankInterface.processPayment(_ as RestBankOperationData) >> null
+        taxInterface.submitInvoice(_ as RestInvoiceData) >> null
         bankInterface.cancelPayment(_ as String) >> CANCEL_PAYMENT_REFERENCE
         2 * taxInterface.cancelInvoice(_) >> {
             if (i < 1) {
