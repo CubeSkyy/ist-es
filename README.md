@@ -20,6 +20,14 @@ To see the coverage reports, go to <module name>/target/site/jacoco/index.html.
 - **Group 1:**
 - **Group 2:**
 
+**Nome:** Bernardo Carreira dos Santos **Número:** ist187635 **Email:** bernardo.d.santos@tecnico.ulisboa.pt **Github Username:** BSantosCoding
+
+| Class    | Package             | Issue |
+| -------- | ------------------- | ------|
+| ActivityOfferHasVacancyMethodSpockTest | activity.domain | #61 |
+| InvoiceProcessorSubmitBookingMethodSpockTest | activity.domain | #62 |
+| ActivityInterfaceCancelReservationMethodSpockTest | activity.services.local | #60 |
+
 ### Infrastructure
 
 This project includes the persistent layer, as offered by the FénixFramework.
