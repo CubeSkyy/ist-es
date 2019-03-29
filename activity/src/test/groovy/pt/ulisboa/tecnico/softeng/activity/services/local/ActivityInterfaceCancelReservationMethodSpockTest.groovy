@@ -42,6 +42,8 @@ class ActivityInterfaceCancelReservationMethodSpockTest extends SpockRollbackTes
         def cancel = activityInterface.cancelReservation(booking.getReference())
 
         then:
+        bankInterface.processPayment(_ as RestBankOperationData) >> null
+        taxInterface.submitInvoice(_ as RestInvoiceData) >> null
         booking.isCancelled()
         cancel == booking.getCancel()
     }
@@ -52,6 +54,8 @@ class ActivityInterfaceCancelReservationMethodSpockTest extends SpockRollbackTes
         activityInterface.cancelReservation("XPTO")
 
         then:
+        bankInterface.processPayment(_ as RestBankOperationData) >> null
+        taxInterface.submitInvoice(_ as RestInvoiceData) >> null
         thrown(ActivityException)
     }
 

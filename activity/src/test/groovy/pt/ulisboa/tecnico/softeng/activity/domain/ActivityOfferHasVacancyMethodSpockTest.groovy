@@ -67,6 +67,8 @@ class ActivityOfferHasVacancyMethodSpockTest extends SpockRollbackTestAbstractCl
 		booking.cancel()
 
 		then:
+		bankInterface.processPayment(_ as RestBankOperationData) >> null
+		taxInterface.submitInvoice(_ as RestInvoiceData) >> null
 		offer.hasVacancy()
 	}
 
@@ -81,6 +83,8 @@ class ActivityOfferHasVacancyMethodSpockTest extends SpockRollbackTestAbstractCl
 		provider.getProcessor().submitBooking(booking)
 
 		then:
+		bankInterface.processPayment(_ as RestBankOperationData) >> null
+		taxInterface.submitInvoice(_ as RestInvoiceData) >> null
 		!offer.hasVacancy()
 	}
 

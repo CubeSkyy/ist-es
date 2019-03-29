@@ -17,8 +17,60 @@ To see the coverage reports, go to <module name>/target/site/jacoco/index.html.
 | ist187700 | Ricardo Silva    | ricardo.f.oliveira.da.silva@tecnico.ulisboa.pt | genlike         | 2     |
 
 
-- **Group 1:**
-- **Group 2:**
+
+**Nome:** Bernardo Carreira dos Santos **Número:** ist187635 **Email:** bernardo.d.santos@tecnico.ulisboa.pt **Github Username:** BSantosCoding
+
+| Class                                             | Package                 | Issue |
+| ------------------------------------------------- | ----------------------- | ----- |
+| ActivityOfferHasVacancyMethodSpockTest            | activity.domain         | #61   |
+| InvoiceProcessorSubmitBookingMethodSpockTest      | activity.domain         | #62   |
+| ActivityInterfaceCancelReservationMethodSpockTest | activity.services.local | #60   |
+
+**Nome:** Miguel Coelho **Numero:** ist187687 **Email:** miguelmendescoelho@tecnico.ulisboa.pt  **Github Username:** CubeSkyy
+
+| Class/Task                                   | Package             | Issue |
+| -------------------------------------------- | ------------------- | ----- |
+| RentVehicleStateMethodSpockTest              | broker.domain       | #63   |
+| ConfirmedStateProcessMethodSpockTest         | bank.domain         | #65   |
+| Changed Static Method to non Static          | broker              | #70/#90 |
+| Changed Static Method to non Static          | hotel              | #92 |
+
+**Nome:** Bernardo Esteves **Número:** ist187633 **Email:** bernardo.esteves@tecnico.ulisboa.pt **Github Username:** esteveste
+
+| Class                                           | Package                 | Issue |
+| ----------------------------------------------- | ----------------------- | ----- |
+| ActivityInterfaceReserveActivityMethodSpockTest | activity.services.local | #72   |
+| CancelledStateProcessMethodSpockTest            | broker.domain           | #64   |
+| ReserveActivityStateProcessMethodSpockTest      | broker.domain           | #74   |
+| UndoStateProcessMethodSpockTest                 | broker.domain           | #75   |
+
+**Nome:** Ricardo Silva **Número:** ist187700 **Email:** ricardofsilva@live.com **Github Username:** genlike
+
+| Class/Task                                        | Package                 | Issue |
+| ------------------------------------------------- | ----------------------- | ----- |
+| BookRoomState	(added functionality )				| broker.domain			  | #94   |
+| BulkRoomBookingGetRoomBookingData4TypeMethodTest	| broker.domain			  | #104  |
+| BookRoomStateMethodTest (added functionality )	| broker.domain			  | #115  |
+
+**Nome:** André Patrício **Número:** ist187631 **Email:** andrepatricio98@tecnico.ulisboa.pt **Github Username:** Andrempp
+
+| Class                                           | Package                 | Issue |
+| ----------------------------------------------- | ----------------------- | ----- |
+| TaxPaymentStateMethodSpockTest 				  | broker.domain           | #99   |
+| BulkRoomBookingProcessBookingMethodSpockTest    | broker.domain           | #79   |
+| ProcessPaymentStateProcessMethodSpockTest       | broker.domain           | #77   |
+| BookRoomStateMethodSpockTest	                  | broker.domain           | #78   |
+
+
+**Nome:** Bernardo Faria **Numero:** ist187636 **Email:** bernardo.faria@tecnico.ulisboa.pt  **Github Username:** BernardoFaria
+
+| Class                                      | Package      | Issue |
+| ------------------------------------------ | ------------ | ----- |
+| AdventureSequenceSpockTest                 | broker.domain  | #68   |
+| ProcessorSubmitBookingMethodSpockTest      | hotel.domain | #66   |
+| Changed Static Method to non Static        | hotel        | #112   |
+| Changed text syntax for non Static methods             | hotel | #112   |
+
 
 ### Infrastructure
 
