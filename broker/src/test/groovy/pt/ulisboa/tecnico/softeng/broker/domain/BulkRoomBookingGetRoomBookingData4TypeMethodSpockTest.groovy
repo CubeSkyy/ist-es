@@ -95,12 +95,12 @@ class BulkRoomBookingGetRoomBookingData4TypeMethodSpockTest extends SpockRollbac
 
     def 'maxMinusOneRemoteException'() {
         given:
-        def i
+        def j = 0
 
         when:
         roomInterface.getRoomBookingData(_ as String) >> {
-             i++
-             if (i < BulkRoomBooking.MAX_REMOTE_ERRORS - 1) {
+             j++
+             if (j < BulkRoomBooking.MAX_REMOTE_ERRORS - 1) {
                  throw new RemoteAccessException()
              } else {
                  def roomBookingData = new RestRoomBookingData()
@@ -111,7 +111,7 @@ class BulkRoomBookingGetRoomBookingData4TypeMethodSpockTest extends SpockRollbac
 
 
         then:
-        for (i = 0; i < BulkRoomBooking.MAX_REMOTE_ERRORS / 2 - 1; i++) {
+        for (int i = 0; i < BulkRoomBooking.MAX_REMOTE_ERRORS / 2 - 1; i++) {
             bulk.getRoomBookingData4Type(DOUBLE) == null
         }
 
@@ -124,14 +124,14 @@ class BulkRoomBookingGetRoomBookingData4TypeMethodSpockTest extends SpockRollbac
 
     def 'remoteExceptionValueIsResetBySuccess'() {
         given:
-        def i = 0
+        def j = 0
 
         when:
             roomInterface.getRoomBookingData(_ as String) >> {
-                i++
-            if (i < BulkRoomBooking.MAX_REMOTE_ERRORS - 1) {
+                j++
+            if (j < BulkRoomBooking.MAX_REMOTE_ERRORS - 1) {
                 throw new RemoteAccessException()
-            } else if (this.i == BulkRoomBooking.MAX_REMOTE_ERRORS - 1) {
+            } else if (j == BulkRoomBooking.MAX_REMOTE_ERRORS - 1) {
                 def roomBookingData = new RestRoomBookingData()
                 roomBookingData.setRoomType(DOUBLE)
                 return roomBookingData
@@ -141,7 +141,7 @@ class BulkRoomBookingGetRoomBookingData4TypeMethodSpockTest extends SpockRollbac
         }
 
         then:
-        for (i = 0; i < BulkRoomBooking.MAX_REMOTE_ERRORS / 2 - 1; i++) {
+        for (int i = 0; i < BulkRoomBooking.MAX_REMOTE_ERRORS / 2 - 1; i++) {
             bulk.getRoomBookingData4Type(DOUBLE) == null
         }
 
@@ -151,7 +151,7 @@ class BulkRoomBookingGetRoomBookingData4TypeMethodSpockTest extends SpockRollbac
         then:
         bulk.getReferences().size() == 1
 
-        for (i = 0; i < BulkRoomBooking.MAX_REMOTE_ERRORS / 2 - 1; i++) {
+        for (int i = 0; i < BulkRoomBooking.MAX_REMOTE_ERRORS / 2 - 1; i++) {
             bulk.getRoomBookingData4Type(DOUBLE) == null
         }
         !bulk.getCancelled()
@@ -159,14 +159,14 @@ class BulkRoomBookingGetRoomBookingData4TypeMethodSpockTest extends SpockRollbac
 
     def 'remoteExceptionValueIsResetByHotelException'(){
         given:
-        def i = 0
+        def j = 0
 
         when:
         roomInterface.getRoomBookingData(_ as String) >> {
-            i++
-            if (i < MAX_REMOTE_ERRORS - 1) {
+            j++
+            if (j < MAX_REMOTE_ERRORS - 1) {
                 throw new RemoteAccessException()
-            } else if (i == MAX_REMOTE_ERRORS - 1) {
+            } else if (j == MAX_REMOTE_ERRORS - 1) {
                 throw new HotelException()
             } else {
                 throw new RemoteAccessException()
@@ -174,7 +174,7 @@ class BulkRoomBookingGetRoomBookingData4TypeMethodSpockTest extends SpockRollbac
         }
 
         then:
-        for (i = 0; i < MAX_REMOTE_ERRORS / 2 - 1; i++) {
+        for (int i = 0; i < MAX_REMOTE_ERRORS / 2 - 1; i++) {
             bulk.getRoomBookingData4Type(DOUBLE) == null
         }
         when:
