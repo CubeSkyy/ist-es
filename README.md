@@ -44,6 +44,15 @@ To see the coverage reports, go to <module name>/target/site/jacoco/index.html.
 | ReserveActivityStateProcessMethodSpockTest      | broker.domain           | #74   |
 | UndoStateProcessMethodSpockTest                 | broker.domain           | #75   |
 
+**Nome:** Bernardo Carreira dos Santos **Número:** ist187635 **Email:** bernardo.d.santos@tecnico.ulisboa.pt **Github Username:** BSantosCoding
+
+| Class/Task                                        | Package                 | Issue |
+| ------------------------------------------------- | ----------------------- | ----- |
+| BookRoomState	(added functionality )				| broker.domain			  | #94   |
+| BulkRoomBookingGetRoomBookingData4TypeMethodTest	| broker.domain			  | #104  |
+| BookRoomStateMethodTest (added functionality )	| broker.domain			  | #115  |
+
+
 
 ### Infrastructure
 
