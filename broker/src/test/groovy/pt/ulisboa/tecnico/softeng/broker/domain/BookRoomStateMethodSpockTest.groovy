@@ -122,7 +122,7 @@ class BookRoomStateMethodSpockTest extends SpockRollbackTestAbstractClass {
     def 'oneRemoteAccessExceptionOneHotelException'(){
         when:
         for (int i = 0; i<2; i++) {
-            adventure.process()
+            a dventure.process()
         }
 
         then:
