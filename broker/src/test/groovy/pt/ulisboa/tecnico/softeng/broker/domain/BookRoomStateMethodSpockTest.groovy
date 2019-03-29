@@ -7,7 +7,7 @@ import pt.ulisboa.tecnico.softeng.broker.services.remote.HotelInterface
 import pt.ulisboa.tecnico.softeng.broker.services.remote.TaxInterface;
 import pt.ulisboa.tecnico.softeng.broker.services.remote.dataobjects.RestRoomBookingData;
 import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.HotelException;
-import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.RemoteAccessException;
+import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.RemoteAccessException
 
 class BookRoomStateMethodSpockTest extends SpockRollbackTestAbstractClass {
 
@@ -16,6 +16,8 @@ class BookRoomStateMethodSpockTest extends SpockRollbackTestAbstractClass {
     def broker
     def client
     def adventure
+
+    def bulk
 
     @Override
     def populate4Test(){
@@ -28,9 +30,9 @@ class BookRoomStateMethodSpockTest extends SpockRollbackTestAbstractClass {
 
 
         bookingData = new RestRoomBookingData()
-        bookingData.setReference(ROOM_CONFIRMATION);
-        bookingData.setPrice(80.0);
-        adventure.setState(Adventure.State.BOOK_ROOM);
+        bookingData.setReference(ROOM_CONFIRMATION)
+        bookingData.setPrice(80.0)
+        adventure.setState(Adventure.State.BOOK_ROOM)
     }
 
     def 'successBookRoom'(){
@@ -40,6 +42,26 @@ class BookRoomStateMethodSpockTest extends SpockRollbackTestAbstractClass {
         then: 'adventure is now in the "Process Payment" stage'
         hotelInterface.reserveRoom(_ as RestRoomBookingData) >> bookingData
         adventure.getState().getValue() == Adventure.State.PROCESS_PAYMENT
+    }
+
+    def 'successBookedByBulk'(){
+        given:
+        def bulk = new BulkRoomBooking(broker, NUMBER_OF_BULK, BEGIN, END, NIF_AS_BUYER, CLIENT_IBAN)
+        def adv =  new Adventure(broker, BEGIN, END, client, MARGIN, true)
+        adv.setState(Adventure.State.BOOK_ROOM)
+        new Reference(bulk, REF_ONE)
+        hotelInterface.getRoomBookingData(_ as String) >> {
+            def roomBookingData = new RestRoomBookingData()
+            roomBookingData.setRoomType(SINGLE)
+            return roomBookingData
+        }
+
+        when: 'processing an adventure where booking a room succeeded'
+        adv.process()
+
+        then: 'adventure is now in the "Process Payment" stage'
+        bulk.getReferences().size() == 0
+        adv.getState().getValue() == Adventure.State.RENT_VEHICLE
     }
 
     def 'successBookRoomToRenting'(){
@@ -130,7 +152,6 @@ class BookRoomStateMethodSpockTest extends SpockRollbackTestAbstractClass {
                                                                     {throw new HotelException()}
         adventure.getState().getValue() == Adventure.State.UNDO
     }
-
 
 }
 
