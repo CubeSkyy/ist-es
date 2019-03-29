@@ -4,6 +4,7 @@ import org.joda.time.LocalDate
 import pt.ulisboa.tecnico.softeng.activity.domain.Activity
 import pt.ulisboa.tecnico.softeng.activity.domain.ActivityOffer
 import pt.ulisboa.tecnico.softeng.activity.domain.ActivityProvider
+import pt.ulisboa.tecnico.softeng.activity.domain.Processor
 import pt.ulisboa.tecnico.softeng.activity.domain.SpockRollbackTestAbstractClass
 import pt.ulisboa.tecnico.softeng.activity.exception.ActivityException
 import pt.ulisboa.tecnico.softeng.activity.services.remote.BankInterface
@@ -12,7 +13,7 @@ import pt.ulisboa.tecnico.softeng.activity.services.remote.dataobjects.RestActiv
 import pt.ulisboa.tecnico.softeng.activity.services.remote.dataobjects.RestBankOperationData
 import pt.ulisboa.tecnico.softeng.activity.services.remote.dataobjects.RestInvoiceData
 
-class ActivityInterfaceReserveActivityMethodSpockTest extends SpockRollbackTestAbstractClass {
+class activityInterfaceReserveActivityMethodSpockTest extends SpockRollbackTestAbstractClass {
     def IBAN = "IBAN"
     def NIF = "123456789"
     def MIN_AGE = 18
@@ -26,16 +27,15 @@ class ActivityInterfaceReserveActivityMethodSpockTest extends SpockRollbackTestA
     def taxInterface = Mock(TaxInterface)
     def bankInterface = Mock(BankInterface)
 
+    def activityInterface = new ActivityInterface()
+
     @Override
     def populate4Test() {
-        provider1 = new ActivityProvider("XtremX", "Adventure++", "NIF", IBAN)
-        provider2 = new ActivityProvider("Walker", "Sky", "NIF2", IBAN)
+        def processor1 = new Processor(taxInterface, bankInterface)
+        def processor2 = new Processor(taxInterface, bankInterface)
 
-        provider1.setBankInterface(bankInterface)
-        provider2.setTaxInterface(taxInterface)
-
-        provider2.setBankInterface(bankInterface)
-        provider1.setTaxInterface(taxInterface)
+        provider1 = new ActivityProvider("XtremX", "Adventure++", "NIF", IBAN, processor1)
+        provider2 = new ActivityProvider("Walker", "Sky", "NIF2", IBAN, processor2)
     }
 
     def 'reserve activity'() {
@@ -51,7 +51,7 @@ class ActivityInterfaceReserveActivityMethodSpockTest extends SpockRollbackTestA
         activityBookingData.setIban(IBAN)
         activityBookingData.setNif(NIF)
 
-        def bookingData = ActivityInterface.reserveActivity(activityBookingData)
+        def bookingData = activityInterface.reserveActivity(activityBookingData)
 
         then:
         bankInterface.processPayment(_ as RestBankOperationData) >> _
@@ -72,7 +72,7 @@ class ActivityInterfaceReserveActivityMethodSpockTest extends SpockRollbackTestA
         activityBookingData.setIban(IBAN)
         activityBookingData.setNif(NIF)
 
-        def bookingData = ActivityInterface.reserveActivity(activityBookingData)
+        def bookingData = activityInterface.reserveActivity(activityBookingData)
 
         then:
         thrown(ActivityException)
