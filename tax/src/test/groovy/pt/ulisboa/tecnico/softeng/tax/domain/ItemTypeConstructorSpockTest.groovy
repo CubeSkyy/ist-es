@@ -56,6 +56,7 @@ class ItemTypeConstructorSpockTest extends SpockRollbackTestAbstractClass {
         CAR  | -34
     }
 
+	// this was not a test. could be removed
     def 'zero tax'() {
         given:
         new ItemType(this.irs, CAR, 0)
