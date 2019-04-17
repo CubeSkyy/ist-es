@@ -44,7 +44,7 @@ public class VehicleData {
     }
 
     public Long getPrice() {
-        long l = (new Double(this.price)).longValue();
+        long l = (new Double(this.price)).longValue() * 1000;
         return l;
     }
 
