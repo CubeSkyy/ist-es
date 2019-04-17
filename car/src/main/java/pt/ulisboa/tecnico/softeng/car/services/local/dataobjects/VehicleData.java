@@ -43,8 +43,9 @@ public class VehicleData {
         this.kilometers = kilometers;
     }
 
-    public Double getPrice() {
-        return price;
+    public Long getPrice() {
+        long l = (new Double(this.price)).longValue();
+        return l;
     }
 
     public void setPrice(Double price) {

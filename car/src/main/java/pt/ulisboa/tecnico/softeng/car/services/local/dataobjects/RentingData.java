@@ -39,7 +39,7 @@ public class RentingData {
 		this.paymentReference = renting.getPaymentReference();
 		this.invoiceReference = renting.getInvoiceReference();
 		this.cancellationReference = renting.getCancellationReference();
-		this.price = renting.getPrice();
+		this.price = (double)renting.getPrice();
 		this.adventureId = renting.getAdventureId();
 	}
 
@@ -93,8 +93,9 @@ public class RentingData {
 		return this.invoiceReference;
 	}
 
-	public Double getPrice() {
-		return this.price;
+	public Long getPrice() {
+		long l = (new Double(this.price)).longValue();
+		return l;
 	}
 
 	public String getBuyerNIF() {
