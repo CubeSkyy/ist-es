@@ -9,7 +9,8 @@ import com.fasterxml.jackson.datatype.joda.deser.DateTimeDeserializer;
 public class RestBankOperationData {
 	private String reference;
 	private String type;
-	private String iban;
+	private String sourceIban;
+	private String targetIban;
 	private Double value;
 	@JsonDeserialize(using = DateTimeDeserializer.class)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
@@ -21,7 +22,16 @@ public class RestBankOperationData {
 	}
 
 	public RestBankOperationData(String iban, double value, String transactionSource, String transactionReference) {
-		this.iban = iban;
+		this.sourceIban = iban;
+		this.targetIban = null;
+		this.value = value;
+		this.transactionSource = transactionSource;
+		this.transactionReference = transactionReference;
+	}
+
+	public RestBankOperationData(String sourceIban, String targetIban, double value, String transactionSource, String transactionReference) {
+		this.sourceIban = sourceIban;
+		this.targetIban = targetIban;
 		this.value = value;
 		this.transactionSource = transactionSource;
 		this.transactionReference = transactionReference;
@@ -43,12 +53,20 @@ public class RestBankOperationData {
 		this.type = type;
 	}
 
-	public String getIban() {
-		return this.iban;
+	public String getSourceIban() {
+		return this.sourceIban;
 	}
 
-	public void setIban(String iban) {
-		this.iban = iban;
+	public void setSourceIban(String iban) {
+		this.sourceIban = iban;
+	}
+
+	public String getTargetIban() {
+		return this.targetIban;
+	}
+
+	public void setTargetIban(String iban) {
+		this.targetIban = iban;
 	}
 
 	public Double getValue() {
