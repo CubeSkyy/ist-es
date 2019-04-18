@@ -94,7 +94,7 @@ public class RentingData {
 	}
 
 	public Long getPrice() {
-		long l = (new Double(this.price)).longValue() * 1000;
+		long l = (new Double(this.price* 1000)).longValue() ;
 		return l;
 	}
 
