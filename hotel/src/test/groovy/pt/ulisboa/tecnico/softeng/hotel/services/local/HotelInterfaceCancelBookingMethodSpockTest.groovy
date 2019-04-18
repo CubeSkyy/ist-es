@@ -59,4 +59,6 @@ class hotelInterfaceCancelBookingMethodSpockTest extends SpockRollbackTestAbstra
 		''        | 'empty reference'
 		'   '     | 'bank reference'
 	}
+
+	// what about doesNotExistIntegration?
 }

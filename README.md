@@ -6,6 +6,11 @@ To run tests execute: mvn clean install
 
 To see the coverage reports, go to <module name>/target/site/jacoco/index.html.
 
+# Feedback
+- codeconv is configured for master
+- Not migrated: hotel.ProcessorSubmitBookingMethodTest
+- functionality does not check dates; missing some tests; see solution
+- comments in portuguese
 
 | Number    | Name             | Email                                          | GitHub Username | Group |
 | --------- | ---------------- | ---------------------------------------------- | --------------- | ----- |

@@ -12,6 +12,7 @@ import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.RemoteAccessE
 
 class CancelledStateProcessMethodSpockTest extends SpockRollbackTestAbstractClass {
 
+	// no need to mock TaxInterface
     def taxInterface = Mock(TaxInterface)
     def bankInterface = Mock(BankInterface)
     def activityInterface = Mock(ActivityInterface)

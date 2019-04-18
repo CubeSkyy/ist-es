@@ -23,6 +23,7 @@ class ReserveActivityStateProcessMethodSpockTest extends SpockRollbackTestAbstra
 
     @Override
     def populate4Test() {
+    	// only needed to migrate ActivityInterface
         taxInterface = Mock(TaxInterface)
         activityInterface = Mock(ActivityInterface)
 
