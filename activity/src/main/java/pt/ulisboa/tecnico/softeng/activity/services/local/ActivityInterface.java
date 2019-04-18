@@ -168,7 +168,7 @@ public class ActivityInterface {
 
 	public ActivityProvider getProviderByCode(String code) {
 		ActivityProvider provider = FenixFramework.getDomainRoot().getActivityProviderSet().stream().filter(p -> p.getCode().equals(code))
-				.findFirst().orElse(null);
+				.findFirst().orElseThrow(() -> new ActivityException());
 		provider.getProcessor().checkPersistency();
 		return provider;
 	}
