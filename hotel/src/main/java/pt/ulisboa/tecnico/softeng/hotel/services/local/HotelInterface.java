@@ -44,7 +44,6 @@ public class HotelInterface {
 		if (hotel != null) {
 			return new HotelData(hotel);
 		}
-
 		return null;
 	}
 
