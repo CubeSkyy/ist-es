@@ -18,19 +18,18 @@ public class Processor extends Processor_Base {
 	private TaxInterface taxInterface;
 
 	public Processor(BankInterface bankInterface, TaxInterface taxInterface) {
-		checkArguments(bankInterface, taxInterface);
+		this.bankInterface = bankInterface;
+		this.taxInterface = taxInterface;
 	}
 
-	private void checkArguments(BankInterface bankInterface, TaxInterface taxInterface){
-		if (bankInterface == null) {
+	public void checkPersistency(){
+		if (this.bankInterface == null) {
 			this.bankInterface = new BankInterface();
 		}
-		else this.bankInterface = bankInterface;
 
-		if (taxInterface == null) {
+		if (this.taxInterface == null) {
 			this.taxInterface = new TaxInterface();
 		}
-		else this.taxInterface = taxInterface;
 	}
 
 	public void delete() {
