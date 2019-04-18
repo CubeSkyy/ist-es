@@ -50,7 +50,7 @@ class Invoice {
     String id;
 	String reference;
 	long value;
-	double iva;
+	long iva;
 	LocalDate date;
 	boolean cancelled;
 	DateTime time;
