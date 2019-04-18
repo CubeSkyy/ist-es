@@ -83,6 +83,7 @@ public class HotelInterface {
 		Room.Type type = roomBookingData.getRoomType().equals("SINGLE") ? Room.Type.SINGLE : Room.Type.DOUBLE;
 
 		for (Hotel hotel : FenixFramework.getDomainRoot().getHotelSet()) {
+			hotel.getProcessor().checkPersistency();
 			return new RestRoomBookingData(hotel.reserveRoom(type, roomBookingData.getArrival(),
 					roomBookingData.getDeparture(), roomBookingData.getBuyerNif(), roomBookingData.getBuyerIban(),
 					roomBookingData.getAdventureId()));
@@ -93,6 +94,7 @@ public class HotelInterface {
 	@Atomic(mode = TxMode.WRITE)
 	public static String cancelBooking(String reference) {
 		for (Hotel hotel : FenixFramework.getDomainRoot().getHotelSet()) {
+			hotel.getProcessor().checkPersistency();
 			Booking booking = hotel.getBooking(reference);
 			if (booking != null && booking.getCancellation() != null) {
 				return booking.getCancellation();
@@ -106,6 +108,7 @@ public class HotelInterface {
 	@Atomic(mode = TxMode.READ)
 	public static RestRoomBookingData getRoomBookingData(String reference) {
 		for (Hotel hotel : FenixFramework.getDomainRoot().getHotelSet()) {
+			hotel.getProcessor().checkPersistency();
 			for (Room room : hotel.getRoomSet()) {
 				Booking booking = room.getBooking(reference);
 				if (booking != null) {
@@ -151,6 +154,7 @@ public class HotelInterface {
 	static List<Room> getAvailableRooms(int number, LocalDate arrival, LocalDate departure) {
 		List<Room> availableRooms = new ArrayList<>();
 		for (Hotel hotel : FenixFramework.getDomainRoot().getHotelSet()) {
+			hotel.getProcessor().checkPersistency();
 			availableRooms.addAll(hotel.getAvailableRooms(arrival, departure));
 			if (availableRooms.size() >= number) {
 				return availableRooms;
@@ -181,6 +185,7 @@ public class HotelInterface {
 
 	private static Booking getBooking4AdventureId(String adventureId) {
 		for (Hotel hotel : FenixFramework.getDomainRoot().getHotelSet()) {
+			hotel.getProcessor().checkPersistency();
 			Booking booking = hotel.getBooking4AdventureId(adventureId);
 			if (booking != null) {
 				return booking;
@@ -192,6 +197,7 @@ public class HotelInterface {
 	private static Set<Booking> getBookings4BulkId(String bulkId) {
 		Set<Booking> bookings = new HashSet<>();
 		for (Hotel hotel : FenixFramework.getDomainRoot().getHotelSet()) {
+			hotel.getProcessor().checkPersistency();
 			bookings.addAll(hotel.getBookings4BulkId(bulkId));
 		}
 		return bookings;
