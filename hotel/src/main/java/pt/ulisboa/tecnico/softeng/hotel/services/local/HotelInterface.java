@@ -160,8 +160,10 @@ public class HotelInterface {
 	}
 
 	private static Hotel getHotelByCode(String code) {
-		return FenixFramework.getDomainRoot().getHotelSet().stream().filter(h -> h.getCode().equals(code)).findFirst()
-				.orElse(null);
+		Hotel hotel = FenixFramework.getDomainRoot().getHotelSet().stream().filter(h -> h.getCode().equals(code)).findFirst()
+				.orElseThrow(() -> new HotelException());
+		hotel.getProcessor().checkPersistency();
+		return hotel;
 	}
 
 	private static Room getRoomByNumber(String code, String number) {
