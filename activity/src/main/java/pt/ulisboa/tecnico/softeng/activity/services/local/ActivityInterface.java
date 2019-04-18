@@ -94,6 +94,7 @@ public class ActivityInterface {
 
 		List<ActivityOffer> offers;
 		for (ActivityProvider provider : FenixFramework.getDomainRoot().getActivityProviderSet()) {
+			provider.getProcessor().checkPersistency();
 			offers = provider.findOffer(activityBookingData.getBegin(), activityBookingData.getEnd(),
 					activityBookingData.getAge());
 			if (!offers.isEmpty()) {
@@ -129,6 +130,7 @@ public class ActivityInterface {
 	@Atomic(mode = TxMode.READ)
 	public RestActivityBookingData getActivityReservationData(String reference) {
 		for (ActivityProvider provider : FenixFramework.getDomainRoot().getActivityProviderSet()) {
+			provider.getProcessor().checkPersistency();
 			for (Activity activity : provider.getActivitySet()) {
 				for (ActivityOffer offer : activity.getActivityOfferSet()) {
 					Booking booking = offer.getBooking(reference);
@@ -148,6 +150,7 @@ public class ActivityInterface {
 
 	private static Booking getBookingByReference(String reference) {
 		for (ActivityProvider provider : FenixFramework.getDomainRoot().getActivityProviderSet()) {
+			provider.getProcessor().checkPersistency();
 			Booking booking = provider.getBooking(reference);
 			if (booking != null) {
 				return booking;
@@ -158,6 +161,7 @@ public class ActivityInterface {
 
 	private Booking getBookingByAdventureId(String adventureId) {
 		for (ActivityProvider provider : FenixFramework.getDomainRoot().getActivityProviderSet()) {
+			provider.getProcessor().checkPersistency();
 			Booking booking = provider.getBookingByAdventureId(adventureId);
 			if (booking != null) {
 				return booking;
