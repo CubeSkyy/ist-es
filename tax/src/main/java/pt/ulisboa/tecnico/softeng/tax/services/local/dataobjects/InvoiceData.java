@@ -30,7 +30,7 @@ public class InvoiceData {
 		this.sellerNif = sellerNif;
 		this.buyerNif = buyerNif;
 		this.itemType = itemType;
-		this.value = value;
+		this.value = (double)value/1000;
 		this.date = date;
 		this.time = time;
 	}
@@ -40,7 +40,7 @@ public class InvoiceData {
 		this.sellerNif = invoice.getSeller().getNif();
 		this.buyerNif = invoice.getBuyer().getNif();
 		this.itemType = invoice.getItemType().getName();
-		this.value = invoice.getValue();
+		this.value = (double)invoice.getValue()/1000;
 		this.date = invoice.getDate();
 		this.iva = invoice.getIva();
 		this.time = invoice.getTime();
@@ -78,12 +78,13 @@ public class InvoiceData {
 		this.itemType = itemType;
 	}
 
-	public Double getValue() {
-		return this.value;
+	public Long getValue() {
+		long l = (new Double(this.value*1000)).longValue();
+		return l;
 	}
 
-	public void setValue(Double value) {
-		this.value = value;
+	public void setValue(Long value) {
+		this.value = (double)value;
 	}
 
 	public LocalDate getDate() {

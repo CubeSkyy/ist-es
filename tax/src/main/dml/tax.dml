@@ -49,7 +49,7 @@ relation IRSHasItemTypes {
 class Invoice {
     String id;
 	String reference;
-	double value;
+	long value;
 	double iva;
 	LocalDate date;
 	boolean cancelled;

@@ -13,7 +13,7 @@ public class RestInvoiceData {
 	private String sellerNif;
 	private String buyerNif;
 	private String itemType;
-	private Double value;
+	private Long value;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private LocalDate date;
 	private Double iva;
@@ -23,7 +23,7 @@ public class RestInvoiceData {
 	public RestInvoiceData() {
 	}
 
-	public RestInvoiceData(String reference, String sellerNif, String buyerNif, String itemType, Double value,
+	public RestInvoiceData(String reference, String sellerNif, String buyerNif, String itemType, Long value,
 			LocalDate date, DateTime time) {
 		if (reference == null) {
 			throw new TaxException();
@@ -80,11 +80,11 @@ public class RestInvoiceData {
 		this.itemType = itemType;
 	}
 
-	public Double getValue() {
+	public Long getValue() {
 		return this.value;
 	}
 
-	public void setValue(Double value) {
+	public void setValue(Long value) {
 		this.value = value;
 	}
 
