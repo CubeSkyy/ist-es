@@ -20,6 +20,9 @@ public class ActivityInterface {
 
 	@Atomic(mode = TxMode.READ)
 	public static List<ActivityProviderData> getProviders() {
+		for (ActivityProvider provider : FenixFramework.getDomainRoot().getActivityProviderSet()){
+			provider.getProcessor().checkPersistency();
+		}
 		return FenixFramework.getDomainRoot().getActivityProviderSet().stream()
 				.sorted(Comparator.comparing(ActivityProvider::getName)).map(ActivityProviderData::new)
 				.collect(Collectors.toList());
