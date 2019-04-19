@@ -27,6 +27,9 @@ public class HotelInterface {
 
 	@Atomic(mode = TxMode.READ)
 	public static List<HotelData> getHotels() {
+		for (Hotel hotel : FenixFramework.getDomainRoot().getHotelSet()) {
+			hotel.getProcessor().checkPersistency();
+		}
 		return FenixFramework.getDomainRoot().getHotelSet().stream().map(HotelData::new)
 				.collect(Collectors.toList());
 	}
