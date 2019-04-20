@@ -59,16 +59,24 @@ public class HotelData {
 		this.iban = iban;
 	}
 
-	public Double getPriceSingle() {
+	/*public Double getPriceSingle() {
 		return this.priceSingle;
+	}*/
+	public Long getPriceSingle() {
+		long l = (new Double(this.priceSingle)).longValue() * 1000;
+		return l;
 	}
 
 	public void setPriceSingle(Double priceSingle) {
 		this.priceSingle = priceSingle;
 	}
 
-	public Double getPriceDouble() {
+	/*public Double getPriceDouble() {
 		return this.priceDouble;
+	}*/
+	public Long getPriceDouble() {
+		long l = (new Double(this.priceDouble)).longValue() * 1000;
+		return l;
 	}
 
 	public void setPriceDouble(Double priceDouble) {

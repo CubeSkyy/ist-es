@@ -37,7 +37,7 @@ public class RoomBookingData {
 		this.roomType = booking.getRoom().getType().name();
 		this.arrival = booking.getArrival();
 		this.departure = booking.getDeparture();
-		this.price = booking.getPrice();
+		this.price = (double)booking.getPrice()/1000;
 		this.buyerNif = booking.getBuyerNif();
 		this.buyerIban = booking.getBuyerIban();
 		this.cancellationDate = booking.getCancellationDate();
@@ -90,8 +90,12 @@ public class RoomBookingData {
 		return this.cancellationDate;
 	}
 
-	public double getPrice() {
+	/*public double getPrice() {
 		return this.price;
+	}*/
+	public Long getPrice() {
+		long l = (new Double(this.price)).longValue() * 1000;
+		return l;
 	}
 
 	public String getPaymentReference() {
