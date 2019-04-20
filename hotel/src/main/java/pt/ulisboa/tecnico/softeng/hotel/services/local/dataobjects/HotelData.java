@@ -59,9 +59,7 @@ public class HotelData {
 		this.iban = iban;
 	}
 
-	/*public Double getPriceSingle() {
-		return this.priceSingle;
-	}*/
+
 	public Long getPriceSingle() {
 		long l = (new Double(this.priceSingle)).longValue() * 1000;
 		return l;
@@ -71,9 +69,7 @@ public class HotelData {
 		this.priceSingle = priceSingle;
 	}
 
-	/*public Double getPriceDouble() {
-		return this.priceDouble;
-	}*/
+
 	public Long getPriceDouble() {
 		long l = (new Double(this.priceDouble)).longValue() * 1000;
 		return l;

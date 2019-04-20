@@ -90,9 +90,7 @@ public class RoomBookingData {
 		return this.cancellationDate;
 	}
 
-	/*public double getPrice() {
-		return this.price;
-	}*/
+
 	public Long getPrice() {
 		long l = (new Double(this.price)).longValue() * 1000;
 		return l;
