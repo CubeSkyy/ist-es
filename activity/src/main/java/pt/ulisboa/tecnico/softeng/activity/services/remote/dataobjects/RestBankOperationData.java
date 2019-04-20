@@ -21,14 +21,6 @@ public class RestBankOperationData {
 	public RestBankOperationData() {
 	}
 
-	public RestBankOperationData(String iban, double value, String transactionSource, String transactionReference) {
-		this.sourceIban = iban;
-		this.targetIban = null;
-		this.value = value;
-		this.transactionSource = transactionSource;
-		this.transactionReference = transactionReference;
-	}
-
 	public RestBankOperationData(String sourceIban, String targetIban, double value, String transactionSource, String transactionReference) {
 		this.sourceIban = sourceIban;
 		this.targetIban = targetIban;

@@ -22,7 +22,7 @@ public class BankInterface {
 		RestTemplate restTemplate = new RestTemplate();
 		try {
 			return restTemplate.postForObject(
-					ENDPOINT + "/rest/banks/accounts/" + bankOperationData.getSourceIban() + "/processPayment",
+					ENDPOINT + "/rest/banks/accounts/" + bankOperationData.getSourceIban() + "%" + bankOperationData.getTargetIban() + "/processPayment",
 					bankOperationData, String.class);
 		} catch (HttpClientErrorException e) {
 			logger.info(
