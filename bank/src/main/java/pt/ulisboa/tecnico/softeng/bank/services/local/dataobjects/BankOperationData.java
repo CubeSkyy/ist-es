@@ -3,11 +3,13 @@ package pt.ulisboa.tecnico.softeng.bank.services.local.dataobjects;
 import org.joda.time.DateTime;
 
 import pt.ulisboa.tecnico.softeng.bank.domain.Operation;
+import pt.ulisboa.tecnico.softeng.bank.domain.TransferOperation;
 
 public class BankOperationData {
 	private String reference;
-	private String type;
 	private String iban;
+	private String sourceIban;
+	private String targetIban;
 	private Double value;
 	private DateTime time;
 	private String transactionSource;
@@ -18,7 +20,6 @@ public class BankOperationData {
 
 	public BankOperationData(Operation operation) {
 		this.reference = operation.getReference();
-		this.type = operation.getType().name();
 		this.iban = operation.getAccount().getIBAN();
 		this.value = operation.getValue();
 		this.time = operation.getTime();
@@ -26,8 +27,27 @@ public class BankOperationData {
 		this.transactionReference = operation.getTransactionReference();
 	}
 
+	public BankOperationData(TransferOperation operation) {
+		this.reference = operation.getReference();
+		this.sourceIban = operation.getAccount().getIBAN();
+		this.targetIban = operation.getAccount2().getIBAN();
+		this.value = operation.getValue();
+		this.time = operation.getTime();
+		this.transactionSource = operation.getTransactionSource();
+		this.transactionReference = operation.getTransactionReference();
+	}
+
+
 	public BankOperationData(String iban, double value, String transactionSource, String transactionReference) {
 		this.iban = iban;
+		this.value = value;
+		this.transactionSource = transactionSource;
+		this.transactionReference = transactionReference;
+	}
+
+	public BankOperationData(String sourceIban, String targetIban, double value, String transactionSource, String transactionReference) {
+		this.sourceIban = sourceIban;
+		this.targetIban = targetIban;
 		this.value = value;
 		this.transactionSource = transactionSource;
 		this.transactionReference = transactionReference;
@@ -41,14 +61,6 @@ public class BankOperationData {
 		this.reference = reference;
 	}
 
-	public String getType() {
-		return this.type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
 	public String getIban() {
 		return this.iban;
 	}
@@ -56,6 +68,24 @@ public class BankOperationData {
 	public void setIban(String iban) {
 		this.iban = iban;
 	}
+
+
+	public String getSourceIban() {
+		return this.sourceIban;
+	}
+
+	public void setSourceIban(String iban) {
+		this.sourceIban = iban;
+	}
+
+	public String getTargetIban() {
+		return this.targetIban;
+	}
+
+	public void setTargetIban(String iban) {
+		this.targetIban = iban;
+	}
+
 
 	public Double getValue() {
 		return this.value;

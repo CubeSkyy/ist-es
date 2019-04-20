@@ -43,7 +43,8 @@ class BankPersistenceSpockTest extends SpockPersistenceTestAbstractClass {
 		def operations=new ArrayList<>(bank.getOperationSet())
 		def operation=operations.get(0)
 
-		assert Operation.Type.DEPOSIT == operation.getType()
+//		assert Operation.Type.DEPOSIT == operation.getType()
+		assert operation instanceof DepositOperation
 		assert 100 == operation.getValue()
 		assert null != operation.getReference()
 		assert null != operation.getTime()
