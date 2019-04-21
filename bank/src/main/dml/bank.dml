@@ -63,8 +63,9 @@ class Operation {
 
 relation BankHasOperation {
 	Bank playsRole bank {
-		multiplicity 1..1;
+		multiplicity 1..2;
 	}
+
 	Operation playsRole operation {
 		multiplicity 0..*;
 	}
@@ -72,7 +73,7 @@ relation BankHasOperation {
 
 relation AccountHasOperation {
 	Account playsRole account {
-		multiplicity 1..1;
+		multiplicity 1..2;
 	}
 	Operation playsRole operation {
 		multiplicity 0..*;

@@ -1,6 +1,8 @@
 package pt.ulisboa.tecnico.softeng.bank.domain;
 
 
+import java.util.Iterator;
+
 public class DepositOperation  extends Operation{
 
     public DepositOperation(Account account1, double value) {
@@ -9,8 +11,9 @@ public class DepositOperation  extends Operation{
     }
 
     public String revert() {
+        Iterator<Account> it = getAccountSet().iterator();
         setCancellation(getReference() + "_CANCEL");
-        return getAccount().withdraw(getValue()).getReference();
+        return it.next().withdraw(getValue()).getReference();
 
     }
 

@@ -13,14 +13,14 @@ public class Operation extends Operation_Base {
         setValue(value);
         setTime(DateTime.now());
 
-        setAccount(account);
+        getAccountSet().add(account);
+        getBankSet().add(account.getBank());
 
-        setBank(account.getBank());
     }
 
     public void delete() {
-        setBank(null);
-        setAccount(null);
+        getBankSet().clear();
+        getAccountSet().clear();
 
         deleteDomainObject();
     }

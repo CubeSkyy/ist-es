@@ -18,39 +18,22 @@ class OperationConstructorMethodSpockTest extends SpockRollbackTestAbstractClass
 	def 'success'() {
 		when: 'when creating an operation'
 		def operation = new DepositOperation(account, 1000);
-//		def operation = new Operation(Type.DEPOSIT, account, 1000)
 
 		then: 'the object should hold the proper values'
 		with(operation) {
+			Iterator<Account> bIte = operation.getBankSet().iterator()
+			Iterator<Account> aIte = operation.getAccountSet().iterator()
+			Bank bank = bIte.next()
+			Account acc = aIte.next()
 			getReference().startsWith(bank.getCode())
 			getReference().length() > Bank.CODE_SIZE
 			operation instanceof DepositOperation
-//			getType() == Type.DEPOSIT
-			getAccount() == account
+			acc == this.account
 			getValue() == 1000
 			getTime() != null
 			bank.getOperation(getReference()) == operation
 		}
 	}
-
-
-//	@Unroll('operation: #type, #acc, #value')
-//	def 'exception'() {
-//		when: 'when creating an invalid operation'
-//		new Operation(type, acc, value)
-//
-//		then: 'throw an exception'
-//		thrown(BankException)
-//
-//		where:
-//		type          | acc     | value
-//		null          | account | 1000
-//		Type.WITHDRAW | null    | 1000
-//		Type.DEPOSIT  | account | 0
-//		Type.DEPOSIT  | account | -1000
-//		Type.WITHDRAW | account | 0
-//		Type.WITHDRAW | account | -1000
-//	}
 
 	@Unroll('operation: #acc, #value')
 	def 'exceptionWithdraw'() {
@@ -83,7 +66,6 @@ class OperationConstructorMethodSpockTest extends SpockRollbackTestAbstractClass
 
 	def 'one amount'() {
 		when:
-//		def operation = new Operation(Type.DEPOSIT, account, 1)
 		def operation = new DepositOperation(account, 1)
 
 		then:

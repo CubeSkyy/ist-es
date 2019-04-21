@@ -4,8 +4,11 @@ import org.joda.time.DateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import pt.ulisboa.tecnico.softeng.bank.domain.Account;
 import pt.ulisboa.tecnico.softeng.bank.domain.Operation;
 import pt.ulisboa.tecnico.softeng.bank.domain.TransferOperation;
+
+import java.util.Iterator;
 
 public class RestBankOperationData {
 	private String reference;
@@ -22,8 +25,9 @@ public class RestBankOperationData {
 	}
 
 	public RestBankOperationData(Operation operation) {
+		Iterator<Account> it = operation.getAccountSet().iterator();
 		this.reference = operation.getReference();
-		this.iban = operation.getAccount().getIBAN();
+		this.iban = it.next().getIBAN();
 		this.value = operation.getValue();
 		this.time = operation.getTime();
 		this.transactionSource = operation.getTransactionSource();
@@ -31,9 +35,10 @@ public class RestBankOperationData {
 	}
 
 	public RestBankOperationData(TransferOperation operation) {
+		Iterator<Account> it = operation.getAccountSet().iterator();
 		this.reference = operation.getReference();
-		this.sourceIban = operation.getAccount().getIBAN();
-		this.targetIban = operation.getAccount2().getIBAN();
+		this.sourceIban = it.next().getIBAN();
+		this.targetIban = it.next().getIBAN();
 		this.value = operation.getValue();
 		this.time = operation.getTime();
 		this.transactionSource = operation.getTransactionSource();

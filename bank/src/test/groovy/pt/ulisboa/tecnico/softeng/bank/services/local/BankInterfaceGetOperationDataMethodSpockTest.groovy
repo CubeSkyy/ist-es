@@ -30,7 +30,6 @@ class BankInterfaceGetOperationDataMethodSpockTest extends SpockRollbackTestAbst
 			getReference() == reference
 			getIban() == account.getIBAN()
 
-//			getType() == Type.DEPOSIT.name()
 			getValue() == 100.0
 			getTime() != null
 		}

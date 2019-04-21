@@ -2,8 +2,11 @@ package pt.ulisboa.tecnico.softeng.bank.services.local.dataobjects;
 
 import org.joda.time.DateTime;
 
+import pt.ulisboa.tecnico.softeng.bank.domain.Account;
 import pt.ulisboa.tecnico.softeng.bank.domain.Operation;
 import pt.ulisboa.tecnico.softeng.bank.domain.TransferOperation;
+
+import java.util.Iterator;
 
 public class BankOperationData {
 	private String reference;
@@ -19,8 +22,9 @@ public class BankOperationData {
 	}
 
 	public BankOperationData(Operation operation) {
+		Iterator<Account> it = operation.getAccountSet().iterator();
 		this.reference = operation.getReference();
-		this.iban = operation.getAccount().getIBAN();
+		this.iban = it.next().getIBAN();
 		this.value = operation.getValue();
 		this.time = operation.getTime();
 		this.transactionSource = operation.getTransactionSource();
@@ -28,9 +32,10 @@ public class BankOperationData {
 	}
 
 	public BankOperationData(TransferOperation operation) {
+		Iterator<Account> it = operation.getAccountSet().iterator();
 		this.reference = operation.getReference();
-		this.sourceIban = operation.getAccount().getIBAN();
-		this.targetIban = operation.getAccount2().getIBAN();
+		this.sourceIban = it.next().getIBAN();
+		this.targetIban = it.next().getIBAN();
 		this.value = operation.getValue();
 		this.time = operation.getTime();
 		this.transactionSource = operation.getTransactionSource();
