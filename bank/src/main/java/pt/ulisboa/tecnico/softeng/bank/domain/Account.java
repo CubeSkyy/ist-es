@@ -42,8 +42,7 @@ public class Account extends Account_Base {
 		}
 
 		setBalance(getBalance() + amount);
-
-		return new Operation(Operation.Type.DEPOSIT, this, amount);
+		return new DepositOperation(this, amount);
 	}
 
 	public Operation withdraw(long amount) {
@@ -52,8 +51,7 @@ public class Account extends Account_Base {
 		}
 
 		setBalance(getBalance() - amount);
-
-		return new Operation(Operation.Type.WITHDRAW, this, amount);
+		return new WithdrawOperation(this, amount);
 	}
 
 }

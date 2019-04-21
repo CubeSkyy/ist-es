@@ -19,10 +19,10 @@ import pt.ulisboa.tecnico.softeng.bank.services.local.dataobjects.BankOperationD
 public class BankRestController {
 	private static Logger logger = LoggerFactory.getLogger(BankRestController.class);
 
-	@RequestMapping(value = "/accounts/{iban}/processPayment", method = RequestMethod.POST)
+	@RequestMapping(value = "/accounts/{sourceIban}%{targetIban}/processPayment", method = RequestMethod.POST)
 	public ResponseEntity<String> processPayment(@RequestBody BankOperationData bankOperationData) {
-		logger.info("processPayment iban:{}, amount:{}, transactionSource:{}, transactionReference:{}",
-				bankOperationData.getIban(), bankOperationData.getValue(), bankOperationData.getTransactionSource(),
+		logger.info("processPayment sourceIban:{}, targetIban:{}, amount:{}, transactionSource:{}, transactionReference:{}",
+				bankOperationData.getSourceIban(), bankOperationData.getTargetIban(), bankOperationData.getValue(), bankOperationData.getTransactionSource(),
 				bankOperationData.getTransactionReference());
 		try {
 			return new ResponseEntity<String>(BankInterface.processPayment(bankOperationData), HttpStatus.OK);

@@ -23,9 +23,10 @@ class AccountDepositMethodSpockTest extends SpockRollbackTestAbstractClass {
 		then: 'the account is updated appropriately'
 		amnt == account.getBalance()
 		Operation operation = bank.getOperation(reference)
+		Account acc = operation.getAccountSet().iterator().next()
 		operation != null
-		operation.getType() == Operation.Type.DEPOSIT
-		operation.getAccount() == account
+		operation instanceof DepositOperation
+		acc == account
 		balance == operation.getValue()
 
 		where:

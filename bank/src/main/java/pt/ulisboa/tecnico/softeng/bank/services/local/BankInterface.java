@@ -6,10 +6,7 @@ import java.util.stream.Collectors;
 import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.Atomic.TxMode;
 import pt.ist.fenixframework.FenixFramework;
-import pt.ulisboa.tecnico.softeng.bank.domain.Account;
-import pt.ulisboa.tecnico.softeng.bank.domain.Bank;
-import pt.ulisboa.tecnico.softeng.bank.domain.Client;
-import pt.ulisboa.tecnico.softeng.bank.domain.Operation;
+import pt.ulisboa.tecnico.softeng.bank.domain.*;
 import pt.ulisboa.tecnico.softeng.bank.exception.BankException;
 import pt.ulisboa.tecnico.softeng.bank.services.local.dataobjects.AccountData;
 import pt.ulisboa.tecnico.softeng.bank.services.local.dataobjects.BankData;
@@ -112,24 +109,53 @@ public class BankInterface {
 	}
 
 	@Atomic(mode = TxMode.WRITE)
+	public static void transfer(String iban1, String iban2, long amount) {
+		Account account1 = getAccountByIban(iban1);
+		Account account2 = getAccountByIban(iban2);
+		if (account1 == null || account2 == null) {
+			throw new BankException();
+		}
+
+		account1.withdraw(amount);
+		account2.deposit(amount);
+	}
+
+
+	@Atomic(mode = TxMode.WRITE)
 	public static String processPayment(BankOperationData bankOperationData) {
 		Operation operation = getOperationBySourceAndReference(bankOperationData.getTransactionSource(),
 				bankOperationData.getTransactionReference());
 		if (operation != null) {
 			return operation.getReference();
 		}
-
+		if (bankOperationData.getTargetIban() == null || bankOperationData.getSourceIban() == null){
+			throw new BankException();
+		}
+		Account account1 = null;
+		Account account2 = null;
 		for (Bank bank : FenixFramework.getDomainRoot().getBankSet()) {
-			Account account = bank.getAccount(bankOperationData.getIban());
-			if (account != null) {
-				Operation newOperation = account.withdraw(bankOperationData.getValue());
-				newOperation.setTransactionSource(bankOperationData.getTransactionSource());
-				newOperation.setTransactionReference(bankOperationData.getTransactionReference());
-				return newOperation.getReference();
+			if (account1 == null){
+				account1 = bank.getAccount(bankOperationData.getSourceIban());
+			}
+			if (account2 == null){
+				account2 = bank.getAccount(bankOperationData.getTargetIban());
 			}
 		}
-		throw new BankException();
+
+		if (account1 != null && account2 != null) {
+			account1.withdraw(bankOperationData.getValue());
+			account2.deposit(bankOperationData.getValue());
+			Operation newOperation = new TransferOperation(account1, account2, bankOperationData.getValue());
+			newOperation.setTransactionSource(bankOperationData.getTransactionSource());
+			newOperation.setTransactionReference(bankOperationData.getTransactionReference());
+			return newOperation.getReference();
+		}else{
+			throw new BankException();
+		}
+
 	}
+
+
 
 	@Atomic(mode = TxMode.WRITE)
 	public static String cancelPayment(String paymentConfirmation) {
