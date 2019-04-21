@@ -61,22 +61,22 @@ public class HotelData {
 
 
 	public Long getPriceSingle() {
-		long l = (new Double(this.priceSingle)).longValue() * 1000;
+		long l = (new Double(this.priceSingle*1000)).longValue();
 		return l;
 	}
 
-	public void setPriceSingle(Double priceSingle) {
-		this.priceSingle = priceSingle;
+	public void setPriceSingle(Long priceSingle) {
+		this.priceSingle = (double)priceSingle/1000;
 	}
 
 
 	public Long getPriceDouble() {
-		long l = (new Double(this.priceDouble)).longValue() * 1000;
+		long l = (new Double(this.priceDouble*1000)).longValue();
 		return l;
 	}
 
-	public void setPriceDouble(Double priceDouble) {
-		this.priceDouble = priceDouble;
+	public void setPriceDouble(Long priceDouble) {
+		this.priceDouble = (double)priceDouble/1000;
 	}
 
 	public List<RoomData> getRooms() {
