@@ -14,7 +14,7 @@ class BulkRoomBookingProcessBookingMethodSpockTest extends SpockRollbackTestAbst
         hotelInterface = Mock(HotelInterface)
         broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF, BROKER_IBAN,
                 new ActivityInterface(), hotelInterface, new CarInterface(), new BankInterface(), new TaxInterface())
-        bulk = new BulkRoomBooking(broker, NUMBER_OF_BULK, BEGIN, END, NIF_AS_BUYER, IBAN_BUYER)
+        bulk = new BulkRoomBooking(broker, NUMBER_OF_BULK, BEGIN, END, BROKER_NIF, IBAN_BUYER)
     }
 
     def 'success'() {
@@ -105,7 +105,7 @@ class BulkRoomBookingProcessBookingMethodSpockTest extends SpockRollbackTestAbst
         (BulkRoomBooking.MAX_HOTEL_EXCEPTIONS - 1) * hotelInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, BROKER_NIF, IBAN_BUYER,
                 bulk.getId()) >> { throw new HotelException() }
         and: 'the next invocation return a remote access exception'
-        1 * hotelInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
+        1 * hotelInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, BROKER_NIF, IBAN_BUYER,
                 bulk.getId()) >> { throw new RemoteAccessException() }
         and: 'the last max hotel error -1 invocations return hotel exceptions'
         (BulkRoomBooking.MAX_HOTEL_EXCEPTIONS - 1) * hotelInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, BROKER_NIF, IBAN_BUYER,
@@ -171,7 +171,7 @@ class BulkRoomBookingProcessBookingMethodSpockTest extends SpockRollbackTestAbst
         (BulkRoomBooking.MAX_REMOTE_ERRORS - 1) * hotelInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, BROKER_NIF, IBAN_BUYER,
                 bulk.getId()) >> { throw new RemoteAccessException() }
         and: 'the next invocation return a hotel exception'
-        1 * hotelInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, NIF_AS_BUYER, IBAN_BUYER,
+        1 * hotelInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, BROKER_NIF, IBAN_BUYER,
                 bulk.getId()) >> { throw new HotelException() }
         and: 'the last max remote access errors -1 invocations return remote access exceptions'
         (BulkRoomBooking.MAX_REMOTE_ERRORS - 1) * hotelInterface.bulkBooking(NUMBER_OF_BULK, ARRIVAL, DEPARTURE, BROKER_NIF, IBAN_BUYER,
