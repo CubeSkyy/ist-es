@@ -9,8 +9,8 @@ import org.slf4j.LoggerFactory;
 import pt.ulisboa.tecnico.softeng.broker.exception.BrokerException;
 
 public class Adventure extends Adventure_Base {
-    public enum Type {
-        SINGLE, DOUBLE
+    public enum RoomType {
+        SINGLE, DOUBLE, NONE
     }
 
     public enum State {
@@ -18,18 +18,18 @@ public class Adventure extends Adventure_Base {
     }
 
     public Adventure(Broker broker, LocalDate begin, LocalDate end, Client client, double margin) {
-        this(broker, begin, end, client, margin, false, null);
+        this(broker, begin, end, client, margin, false, RoomType.NONE);
     }
 
     public Adventure(Broker broker, LocalDate begin, LocalDate end, Client client, double margin, boolean rentVehicle) {
-        this(broker, begin, end, client, margin, rentVehicle, null);
+        this(broker, begin, end, client, margin, rentVehicle, RoomType.NONE);
     }
 
-    public Adventure(Broker broker, LocalDate begin, LocalDate end, Client client, double margin, Type roomType) {
+    public Adventure(Broker broker, LocalDate begin, LocalDate end, Client client, double margin, RoomType roomType) {
         this(broker, begin, end, client, margin, false, roomType);
     }
 
-    public Adventure(Broker broker, LocalDate begin, LocalDate end, Client client, double margin, boolean rentVehicle, Type roomType) {
+    public Adventure(Broker broker, LocalDate begin, LocalDate end, Client client, double margin, boolean rentVehicle, RoomType roomType) {
         checkArguments(broker, begin, end, client, margin);
 
         setID(broker.getCode() + Integer.toString(broker.getCounter()));

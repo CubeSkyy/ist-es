@@ -1,6 +1,6 @@
 package pt.ulisboa.tecnico.softeng.broker.domain;
 
-enum pt.ulisboa.tecnico.softeng.broker.domain.Adventure.Type as RoomType;
+enum pt.ulisboa.tecnico.softeng.broker.domain.Adventure.RoomType as RoomType;
 
 class Broker {
 	String code;

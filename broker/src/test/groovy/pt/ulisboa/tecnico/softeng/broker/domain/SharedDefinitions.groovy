@@ -33,6 +33,7 @@ trait SharedDefinitions {
     @Shared def INVOICE_DATA = "InvoiceData"
     @Shared def SINGLE = "SINGLE"
     @Shared def DOUBLE = "DOUBLE"
+    @Shared def NONE = "NONE"
     @Shared def REF_ONE = "ref1"
     @Shared def REF_TWO = "ref2"
     @Shared def REF_THREE = "ref3"
