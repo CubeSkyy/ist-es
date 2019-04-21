@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 public class WithdrawOperation extends Operation {
 
-    public WithdrawOperation(Account account, double value) {
+    public WithdrawOperation(Account account, long value) {
         super(account, value);
     }
 

@@ -109,7 +109,7 @@ public class BankInterface {
 	}
 
 	@Atomic(mode = TxMode.WRITE)
-	public static void transfer(String iban1, String iban2, double amount) {
+	public static void transfer(String iban1, String iban2, long amount) {
 		Account account1 = getAccountByIban(iban1);
 		Account account2 = getAccountByIban(iban2);
 		if (account1 == null || account2 == null) {

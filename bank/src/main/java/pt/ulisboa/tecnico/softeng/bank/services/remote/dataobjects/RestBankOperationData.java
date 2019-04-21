@@ -52,7 +52,7 @@ public class RestBankOperationData {
 		this.transactionReference = transactionReference;
 	}
 
-	public RestBankOperationData(String sourceIban, String targetIban, double value, String transactionSource, String transactionReference) {
+	public RestBankOperationData(String sourceIban, String targetIban, long value, String transactionSource, String transactionReference) {
 		this.sourceIban = sourceIban;
 		this.targetIban = targetIban;
 		this.value = value;

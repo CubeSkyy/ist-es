@@ -13,7 +13,7 @@ public class BankOperationData {
 	private String iban;
 	private String sourceIban;
 	private String targetIban;
-	private Double value;
+	private double value;
 	private DateTime time;
 	private String transactionSource;
 	private String transactionReference;
@@ -25,7 +25,7 @@ public class BankOperationData {
 		Iterator<Account> it = operation.getAccountSet().iterator();
 		this.reference = operation.getReference();
 		this.iban = it.next().getIBAN();
-		this.value = operation.getValue();
+		this.value = (double)operation.getValue()/1000;
 		this.time = operation.getTime();
 		this.transactionSource = operation.getTransactionSource();
 		this.transactionReference = operation.getTransactionReference();
@@ -53,7 +53,7 @@ public class BankOperationData {
 	public BankOperationData(String sourceIban, String targetIban, double value, String transactionSource, String transactionReference) {
 		this.sourceIban = sourceIban;
 		this.targetIban = targetIban;
-		this.value = value;
+		this.value = (double)value/1000;
 		this.transactionSource = transactionSource;
 		this.transactionReference = transactionReference;
 	}

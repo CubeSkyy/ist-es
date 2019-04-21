@@ -9,7 +9,7 @@ import java.util.Iterator;
 public class TransferOperation extends Operation{
 
 
-    public TransferOperation(Account account,Account account2, double value) {
+    public TransferOperation(Account account,Account account2, long value) {
         super(account, value);
         checkAccount(account2);
         getAccountSet().add(account2);
