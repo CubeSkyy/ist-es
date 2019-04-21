@@ -2,8 +2,9 @@ package pt.ulisboa.tecnico.softeng.tax.domain;
 
 import pt.ulisboa.tecnico.softeng.tax.exception.TaxException;
 
-public abstract class TaxPayer extends TaxPayer_Base {
-	protected TaxPayer() {
+public /*abstract */ class TaxPayer extends TaxPayer_Base {
+	/*
+	TaxPayer() {
 		// this is a FenixFramework artifact; if not present, compilation fails.
 		// the empty constructor is used by the base class to materialize objects from
 		// the database, and in this case the classes Seller_Base and Buyer_Base, which
@@ -11,6 +12,7 @@ public abstract class TaxPayer extends TaxPayer_Base {
 		// their superclass
 		super();
 	}
+	*/
 
 	public TaxPayer(IRS irs, String NIF, String name, String address) {
 		checkArguments(irs, NIF, name, address);
@@ -47,5 +49,25 @@ public abstract class TaxPayer extends TaxPayer_Base {
 
 	}
 
-	public abstract Invoice getInvoiceByReference(String invoiceReference);
+	public Invoice getInvoiceByReference(String invoiceReference) {
+		if (invoiceReference == null || invoiceReference.isEmpty()) {
+			throw new TaxException();
+		}
+
+		for (Invoice invoice : getInvoiceSet()) {
+			if (invoice.getReference().equals(invoiceReference)) {
+				return invoice;
+			}
+		}
+		return null;
+	}
+
+
+	public double calculate(TaxPayerStrategy tps, int year){
+		return tps.calculate(year);
+	}
+
+
+
+
 }
