@@ -58,7 +58,7 @@ public class BankOperationData {
 	}
 
 	public Long getValue() {
-		long l = (new Double(this.value)).longValue() * 1000;
+		long l = (new Double(this.value*1000)).longValue();
 		return l;
 	}
 

@@ -24,7 +24,7 @@ public class AccountData {
 	}
 
 	public Long getBalance() {
-		long l = (new Double(this.balance)).longValue() * 1000;
+		long l = (new Double(this.balance*1000)).longValue();
 		return l;
 	}
 
@@ -33,7 +33,7 @@ public class AccountData {
 	}
 
 	public Long getAmount() {
-		long l = (new Double(this.amount)).longValue() * 1000;
+		long l = (new Double(this.amount*1000)).longValue();
 		return l;
 	}
 
