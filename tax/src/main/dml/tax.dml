@@ -92,24 +92,3 @@ relation TaxPayerBuyerHasInvoices {
       multiplicity 0..*;
     }
 }
-
-
-
-//relation SellerHasInvoices {
-//    Seller playsRole seller {
-//		multiplicity 1..1;
-//	}
-//    Invoice playsRole invoice {
-//        multiplicity 0..*;
-//    }
-//}
-
-//relation BuyerHasInvoices {
-//    Buyer playsRole buyer {
-//		multiplicity 1..1;
-//	}
-//    Invoice playsRole invoice {
-//        multiplicity 0..*;
-//    }
-//}
-
