@@ -1,12 +1,11 @@
 package pt.ulisboa.tecnico.softeng.tax.domain;
 
 import pt.ulisboa.tecnico.softeng.tax.exception.TaxException;
-import pt.ulisboa.tecnico.softeng.tax.services.local.dataobjects.TaxPayerData;
 
 import java.util.Map;
 import java.util.Set;
 
-public /*abstract */ class TaxPayer extends TaxPayer_Base {
+public class TaxPayer extends TaxPayer_Base {
 	/*
 	TaxPayer() {
 		// this is a FenixFramework artifact; if not present, compilation fails.

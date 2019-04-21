@@ -47,11 +47,6 @@ public class TaxInterface {
 
 	@Atomic(mode = TxMode.WRITE)
 	public static void createTaxPayer(TaxPayerData taxPayerData) {
-		/*if (taxPayerData.getType().equals(Type.BUYER)) {
-			new Buyer(IRS.getIRSInstance(), taxPayerData.getNif(), taxPayerData.getName(), taxPayerData.getAddress());
-		} else {
-			new Seller(IRS.getIRSInstance(), taxPayerData.getNif(), taxPayerData.getName(), taxPayerData.getAddress());
-		}*/
 		new TaxPayer(IRS.getIRSInstance(), taxPayerData.getNif(), taxPayerData.getName(), taxPayerData.getAddress());
 	}
 
