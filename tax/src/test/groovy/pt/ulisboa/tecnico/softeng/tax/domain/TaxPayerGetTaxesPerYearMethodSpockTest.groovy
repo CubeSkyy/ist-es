@@ -36,7 +36,7 @@ class TaxPayerGetTaxesPerYearMethodSpockTest extends SpockRollbackTestAbstractCl
 
 		10000 == toPay.get(2017)
 		25000 == toPay.get(2018)
-		Map<Integer, Double> taxReturn=buyer.getTaxReturnPerYear()
+		Map<Integer, Double> taxReturn=buyer.calculatePerYear(new BuyerStrategy())
 
 		taxReturn.keySet().size() == 2
 		500 == taxReturn.get(2017)
