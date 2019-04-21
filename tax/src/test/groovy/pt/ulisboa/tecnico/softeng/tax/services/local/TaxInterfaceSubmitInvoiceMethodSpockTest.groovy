@@ -3,11 +3,11 @@ package pt.ulisboa.tecnico.softeng.tax.services.local
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 
-import pt.ulisboa.tecnico.softeng.tax.domain.Buyer
+
 import pt.ulisboa.tecnico.softeng.tax.domain.IRS
 import pt.ulisboa.tecnico.softeng.tax.domain.ItemType
-import pt.ulisboa.tecnico.softeng.tax.domain.Seller
 import pt.ulisboa.tecnico.softeng.tax.domain.SpockRollbackTestAbstractClass
+import pt.ulisboa.tecnico.softeng.tax.domain.TaxPayer
 import pt.ulisboa.tecnico.softeng.tax.exception.TaxException
 import pt.ulisboa.tecnico.softeng.tax.services.remote.dataobjects.RestInvoiceData
 import spock.lang.Shared
@@ -18,7 +18,7 @@ class TaxInterfaceSubmitInvoiceMethodSpockTest extends SpockRollbackTestAbstract
 	@Shared def SELLER_NIF = '123456789'
 	@Shared def BUYER_NIF = '987654321'
 	@Shared def FOOD = 'FOOD'
-	@Shared def VALUE = 160
+	@Shared def VALUE = 160000
 	@Shared def TAX = 16
 	@Shared def date = new LocalDate(2018, 02, 13)
 	@Shared def time = new DateTime(2018, 02, 13, 10, 10)
@@ -28,8 +28,8 @@ class TaxInterfaceSubmitInvoiceMethodSpockTest extends SpockRollbackTestAbstract
 	def populate4Test() {
 		irs = IRS.getIRSInstance()
 
-		new Seller(irs, SELLER_NIF, 'José Vendido', 'Somewhere')
-		new Buyer(irs, BUYER_NIF, 'Manuel Comprado', 'Anywhere')
+		new TaxPayer(irs, SELLER_NIF, 'José Vendido', 'Somewhere')
+		new TaxPayer(irs, BUYER_NIF, 'Manuel Comprado', 'Anywhere')
 		new ItemType(irs, FOOD, TAX)
 	}
 
@@ -47,7 +47,7 @@ class TaxInterfaceSubmitInvoiceMethodSpockTest extends SpockRollbackTestAbstract
 			getSeller().getNif() == SELLER_NIF
 			getBuyer().getNif() == BUYER_NIF
 			getItemType().getName() == FOOD
-			160.0 == getValue()
+			160000 == getValue()
 			getDate() == date
 		}
 	}
@@ -91,8 +91,8 @@ class TaxInterfaceSubmitInvoiceMethodSpockTest extends SpockRollbackTestAbstract
 		REFERENCE | SELLER_NIF | ''        | FOOD | VALUE  | date | time
 		REFERENCE | SELLER_NIF | BUYER_NIF | null | VALUE  | date | time
 		REFERENCE | SELLER_NIF | BUYER_NIF | ''   | VALUE  | date | time
-		REFERENCE | SELLER_NIF | BUYER_NIF | FOOD | 0.0d   | date | time
-		REFERENCE | SELLER_NIF | BUYER_NIF | FOOD | -23.7d | date | time
+		REFERENCE | SELLER_NIF | BUYER_NIF | FOOD | 0   | date | time
+		REFERENCE | SELLER_NIF | BUYER_NIF | FOOD | -23700 | date | time
 		REFERENCE | SELLER_NIF | BUYER_NIF | FOOD | VALUE  | date | null
 		REFERENCE | SELLER_NIF | BUYER_NIF | FOOD | VALUE  | new LocalDate(1969, 12, 31) | new DateTime(1969, 12, 31, 10, 10)
 	}

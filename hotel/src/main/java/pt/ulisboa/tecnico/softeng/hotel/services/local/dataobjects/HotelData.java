@@ -59,20 +59,24 @@ public class HotelData {
 		this.iban = iban;
 	}
 
-	public Double getPriceSingle() {
-		return this.priceSingle;
+
+	public Long getPriceSingle() {
+		long l = (new Double(this.priceSingle*1000)).longValue();
+		return l;
 	}
 
-	public void setPriceSingle(Double priceSingle) {
-		this.priceSingle = priceSingle;
+	public void setPriceSingle(Long priceSingle) {
+		this.priceSingle = (double)priceSingle/1000;
 	}
 
-	public Double getPriceDouble() {
-		return this.priceDouble;
+
+	public Long getPriceDouble() {
+		long l = (new Double(this.priceDouble*1000)).longValue();
+		return l;
 	}
 
-	public void setPriceDouble(Double priceDouble) {
-		this.priceDouble = priceDouble;
+	public void setPriceDouble(Long priceDouble) {
+		this.priceDouble = (double)priceDouble/1000;
 	}
 
 	public List<RoomData> getRooms() {

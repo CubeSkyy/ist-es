@@ -89,7 +89,7 @@ public class BankInterface {
 	}
 
 	@Atomic(mode = TxMode.WRITE)
-	public static void deposit(String iban, double amount) {
+	public static void deposit(String iban, long amount) {
 		Account account = getAccountByIban(iban);
 		if (account == null) {
 			throw new BankException();
@@ -99,7 +99,7 @@ public class BankInterface {
 	}
 
 	@Atomic(mode = TxMode.WRITE)
-	public static void withdraw(String iban, double amount) {
+	public static void withdraw(String iban, long amount) {
 		Account account = getAccountByIban(iban);
 		if (account == null) {
 			throw new BankException();

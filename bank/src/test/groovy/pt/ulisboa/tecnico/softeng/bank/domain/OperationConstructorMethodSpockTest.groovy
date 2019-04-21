@@ -17,7 +17,7 @@ class OperationConstructorMethodSpockTest extends SpockRollbackTestAbstractClass
 
 	def 'success'() {
 		when: 'when creating an operation'
-		def operation = new DepositOperation(account, 1000);
+		def operation = new DepositOperation(account, 1000000);
 
 		then: 'the object should hold the proper values'
 		with(operation) {
@@ -29,7 +29,7 @@ class OperationConstructorMethodSpockTest extends SpockRollbackTestAbstractClass
 			getReference().length() > Bank.CODE_SIZE
 			operation instanceof DepositOperation
 			acc == this.account
-			getValue() == 1000
+			getValue() == 1000000
 			getTime() != null
 			bank.getOperation(getReference()) == operation
 		}
@@ -45,9 +45,9 @@ class OperationConstructorMethodSpockTest extends SpockRollbackTestAbstractClass
 
 		where:
 		 acc     | value
-		 null    | 1000
+		 null    | 1000000
 		 account | 0
-		 account | -1000
+		 account | - 1000000
 	}
 
 	@Unroll('operation: #acc, #value')
@@ -61,13 +61,12 @@ class OperationConstructorMethodSpockTest extends SpockRollbackTestAbstractClass
 		where:
 		 acc     | value
 		 account | 0
-		 account | -1000
+		 account | -1000000
 	}
 
 	def 'one amount'() {
 		when:
-		def operation = new DepositOperation(account, 1)
-
+		def operation = new DepositOperation(account, 1000)
 		then:
 		bank.getOperation(operation.getReference()) == operation
 	}

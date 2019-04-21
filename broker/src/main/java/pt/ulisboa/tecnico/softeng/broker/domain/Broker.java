@@ -15,7 +15,7 @@ public class Broker extends Broker_Base {
     private final BankInterface bankInterface;
     private final TaxInterface taxInterface;
 
-    public Broker(String code, String name, String nifAsSeller, String nifAsBuyer, String iban,
+    public Broker(String code, String name, String nifAsSeller, String nifAsBuyer/*, String nif*/, String iban,
                   ActivityInterface activityInterface, HotelInterface hotelInterface, CarInterface carInterface,
                   BankInterface bankInterface, TaxInterface taxInterface) {
         checkArguments(code, name, nifAsSeller, nifAsBuyer, iban);
@@ -24,6 +24,7 @@ public class Broker extends Broker_Base {
         setName(name);
         setNifAsSeller(nifAsSeller);
         setNifAsBuyer(nifAsBuyer);
+        //setNifAsTaxPayer(nif)
         setIban(iban);
 
         this.activityInterface = activityInterface;
@@ -126,9 +127,13 @@ public class Broker extends Broker_Base {
         return this.bankInterface;
     }
 
-
     public TaxInterface getTaxInterface() {
         return this.taxInterface;
+    }
+
+    public void setNifAsTaxPayer(String nif){
+        setNifAsSeller(nif);
+        setNifAsBuyer(nif);
     }
 
 }

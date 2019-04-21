@@ -3,38 +3,27 @@ package pt.ulisboa.tecnico.softeng.tax.services.local.dataobjects;
 import java.util.Map;
 import java.util.TreeMap;
 
-import pt.ulisboa.tecnico.softeng.tax.domain.Buyer;
-import pt.ulisboa.tecnico.softeng.tax.domain.Seller;
-import pt.ulisboa.tecnico.softeng.tax.domain.TaxPayer;
+import pt.ulisboa.tecnico.softeng.tax.domain.*;
 
 public class TaxPayerData {
-	public enum Type {
-		BUYER, SELLER
-	}
+
 
 	private String nif;
 	private String name;
 	private String address;
-	private Type type;
-	private Map<Integer, Double> taxes = new TreeMap<Integer, Double>();
+
+	private Map<Integer, Double> sellertaxes = new TreeMap<Integer, Double>();
+	private Map<Integer, Double> buyertaxes = new TreeMap<Integer, Double>();
 
 	public TaxPayerData() {
 	}
 
 	public TaxPayerData(TaxPayer taxPayer) {
-		Seller seller;
-		Buyer buyer;
 		this.nif = taxPayer.getNif();
 		this.name = taxPayer.getName();
 		this.address = taxPayer.getAddress();
-		this.type = taxPayer instanceof Buyer ? Type.BUYER : Type.SELLER;
-		if (taxPayer instanceof Seller) {
-			seller = (Seller) taxPayer;
-			this.taxes = seller.getToPayPerYear();
-		} else {
-			buyer = (Buyer) taxPayer;
-			this.taxes = buyer.getTaxReturnPerYear();
-		}
+		this.buyertaxes = taxPayer.calculatePerYear(new BuyerStrategy());
+		this.sellertaxes = taxPayer.calculatePerYear(new SellerStrategy());
 	}
 
 	public String getName() {
@@ -61,20 +50,18 @@ public class TaxPayerData {
 		this.address = address;
 	}
 
-	public Type getType() {
-		return this.type;
+	public Map<Integer, Double> getBuyerTaxes() {
+		return this.buyertaxes;
+	}
+	public Map<Integer, Double> getSellertaxes() {
+		return this.sellertaxes;
 	}
 
-	public void setType(Type type) {
-		this.type = type;
+	public void setBuyertaxes(Map<Integer, Double> taxes) {
+		this.buyertaxes = taxes;
 	}
-
-	public Map<Integer, Double> getTaxes() {
-		return this.taxes;
-	}
-
-	public void setTaxes(Map<Integer, Double> taxes) {
-		this.taxes = taxes;
+	public void setSellertaxes(Map<Integer, Double> taxes) {
+		this.sellertaxes = taxes;
 	}
 
 }

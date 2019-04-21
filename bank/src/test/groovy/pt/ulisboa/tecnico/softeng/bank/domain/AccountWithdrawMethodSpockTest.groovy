@@ -17,7 +17,7 @@ class AccountWithdrawMethodSpockTest extends SpockRollbackTestAbstractClass {
 	@Unroll('Withdraw: #label')
 	def 'success'() {
 		given: 'an account with balance 100'
-		account.deposit(100)
+		account.deposit(100000)
 
 		when: 'when withdrawing 40'
 		def reference= account.withdraw(amnt).getReference()
@@ -33,9 +33,9 @@ class AccountWithdrawMethodSpockTest extends SpockRollbackTestAbstractClass {
 
 		where:
 		label              | amnt | balance
-		'forty'            | 40   | 60
-		'one amount'       | 1    | 99
-		'equal to balance' | 100  | 0
+		'forty'            | 40000   | 60000
+		'one amount'       | 1000    | 99000
+		'equal to balance' | 100000  | 0
 	}
 
 	@Unroll('Withdraw: #label')
@@ -49,8 +49,8 @@ class AccountWithdrawMethodSpockTest extends SpockRollbackTestAbstractClass {
 		where:
 		amnt | label
 		0    | 'zero amount'
-		-20  | 'negative amount'
-		101  | 'equal to balance plus one'
-		150  | 'more than balance'
+		-20000  | 'negative amount'
+		101000  | 'equal to balance plus one'
+		150000  | 'more than balance'
 	}
 }
