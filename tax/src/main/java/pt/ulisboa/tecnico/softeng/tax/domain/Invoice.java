@@ -7,8 +7,9 @@ import pt.ulisboa.tecnico.softeng.tax.exception.TaxException;
 
 public class Invoice extends Invoice_Base {
 
+
 	public Invoice(long value, LocalDate date, ItemType itemType, Seller seller, Buyer buyer, DateTime time) {
-		checkArguments(value, date, itemType, seller, buyer, time);
+    checkArguments(value, date, itemType, seller, buyer, time);
 
 		setReference(Integer.toString(seller.getIrs().getCounter()));
 		setValue(value);
@@ -23,6 +24,7 @@ public class Invoice extends Invoice_Base {
 
 		setIrs(getSeller().getIrs());
 	}
+
 
 	public Invoice(long value, LocalDate date, ItemType itemType, Seller seller, Buyer buyer) {
 		this(value, date, itemType, seller, buyer, DateTime.now());

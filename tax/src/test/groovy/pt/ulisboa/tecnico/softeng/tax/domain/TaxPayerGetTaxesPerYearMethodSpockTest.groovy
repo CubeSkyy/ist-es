@@ -16,8 +16,8 @@ class TaxPayerGetTaxesPerYearMethodSpockTest extends SpockRollbackTestAbstractCl
 	def populate4Test() {
 		def irs = IRS.getIRSInstance()
 
-		seller = new Seller(irs, SELLER_NIF, 'José Vendido', 'Somewhere')
-		buyer = new Buyer(irs, BUYER_NIF, 'Manuel Comprado', 'Anywhere')
+		seller = new TaxPayer(irs, SELLER_NIF, 'José Vendido', 'Somewhere')
+		buyer = new TaxPayer(irs, BUYER_NIF, 'Manuel Comprado', 'Anywhere')
 		itemType = new ItemType(irs, FOOD, TAX)
 	}
 
@@ -29,10 +29,11 @@ class TaxPayerGetTaxesPerYearMethodSpockTest extends SpockRollbackTestAbstractCl
 		new Invoice(50000, date, itemType, seller, buyer)
 
 		when:
-		def toPay = seller.getToPayPerYear()
+		def toPay = seller.calculatePerYear(new SellerStrategy())
 
 		then:
 		toPay.keySet().size() == 2
+
 		10000 == toPay.get(2017)
 		25000 == toPay.get(2018)
 		Map<Integer, Double> taxReturn=buyer.getTaxReturnPerYear()
@@ -44,11 +45,11 @@ class TaxPayerGetTaxesPerYearMethodSpockTest extends SpockRollbackTestAbstractCl
 
 	def 'success empty'() {
 		when:
-		def toPay=seller.getToPayPerYear()
+		def toPay=seller.calculatePerYear(new SellerStrategy())
 
 		then:
 		toPay.keySet().size() == 0
-		Map<Integer, Double> taxReturn=buyer.getTaxReturnPerYear()
+		Map<Integer, Double> taxReturn = buyer.calculatePerYear(new BuyerStrategy())
 		taxReturn.keySet().size() == 0
 	}
 
