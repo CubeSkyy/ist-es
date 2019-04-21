@@ -17,8 +17,8 @@ class SellerToPayMethodSpockTest extends SpockRollbackTestAbstractClass {
 	def populate4Test() {
 		def irs = IRS.getIRSInstance()
 
-		seller = new Seller(irs, SELLER_NIF, 'José Vendido', 'Somewhere')
-		buyer = new Buyer(irs, BUYER_NIF, 'Manuel Comprado', 'Anywhere')
+		seller = new TaxPayer(irs, SELLER_NIF, 'José Vendido', 'Somewhere')
+		buyer = new TaxPayer(irs, BUYER_NIF, 'Manuel Comprado', 'Anywhere')
 		itemType = new ItemType(irs, FOOD, TAX)
 	}
 
@@ -29,7 +29,7 @@ class SellerToPayMethodSpockTest extends SpockRollbackTestAbstractClass {
 		new Invoice(50, date, itemType, seller, buyer)
 
 		when:
-		def value = seller.toPay(year)
+		def value = seller.calculate(new SellerStrategy(),year)
 
 		then:
 		toPay  ==  value
@@ -43,7 +43,7 @@ class SellerToPayMethodSpockTest extends SpockRollbackTestAbstractClass {
 
 	def 'no invoices'() {
 		expect:
-		def value  =  seller.toPay(2018)
+		def value  =  seller.calculate(new SellerStrategy(),2018)
 		0.00f  ==  value
 	}
 
@@ -52,7 +52,7 @@ class SellerToPayMethodSpockTest extends SpockRollbackTestAbstractClass {
 		new Invoice(100, new LocalDate(1969, 02, 13), itemType, seller, buyer)
 		new Invoice(50, new LocalDate(1969, 02, 13), itemType, seller, buyer)
 
-		seller.toPay(1969)
+		seller.calculate(new SellerStrategy(),1969)
 
 		then:
 		thrown(TaxException)
@@ -63,7 +63,7 @@ class SellerToPayMethodSpockTest extends SpockRollbackTestAbstractClass {
 		new Invoice(100, new LocalDate(1970, 02, 13), itemType, seller, buyer)
 		new Invoice(50, new LocalDate(1970, 02, 13), itemType, seller, buyer)
 
-		def value = seller.toPay(1970)
+		def value = seller.calculate(new SellerStrategy(),1970)
 
 		then:
 		15.0  ==  value
@@ -77,7 +77,7 @@ class SellerToPayMethodSpockTest extends SpockRollbackTestAbstractClass {
 		new Invoice(50, date, itemType, seller, buyer)
 		invoice.cancel()
 
-		def value = seller.toPay(2018)
+		def value = seller.calculate(new SellerStrategy(),2018)
 
 		then:
 		15.0  ==  value
