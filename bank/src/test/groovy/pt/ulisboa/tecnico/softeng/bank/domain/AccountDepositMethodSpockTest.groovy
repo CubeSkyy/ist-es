@@ -30,8 +30,8 @@ class AccountDepositMethodSpockTest extends SpockRollbackTestAbstractClass {
 
 		where:
 		label              | amnt | balance
-		'fifty'            | 50   | 50
-		'one amount'       | 1    | 1
+		'fifty'            | 50000   | 50000
+		'one amount'       | 1000    | 1000
 	}
 
 	@Unroll('Deposit: #label')
@@ -45,6 +45,6 @@ class AccountDepositMethodSpockTest extends SpockRollbackTestAbstractClass {
 		where:
 		amnt | label
 		0    | 'zero amount'
-		-100 | 'negative amount'
+		-100000 | 'negative amount'
 	}
 }

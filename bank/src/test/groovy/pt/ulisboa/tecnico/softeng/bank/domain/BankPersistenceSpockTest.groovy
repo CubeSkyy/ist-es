@@ -12,7 +12,7 @@ class BankPersistenceSpockTest extends SpockPersistenceTestAbstractClass {
 		def bank = new Bank(BANK_NAME,BANK_CODE)
 		def client = new Client(bank,CLIENT_NAME)
 		def account = new Account(bank,client)
-		account.deposit(100)
+		account.deposit(100000)
 	}
 
 	@Override
@@ -38,13 +38,13 @@ class BankPersistenceSpockTest extends SpockPersistenceTestAbstractClass {
 
 		assert client == account.getClient()
 		assert null != account.getIBAN()
-		assert 100 == account.getBalance()
+		assert 100000 == account.getBalance()
 
 		def operations=new ArrayList<>(bank.getOperationSet())
 		def operation=operations.get(0)
 
 		assert Operation.Type.DEPOSIT == operation.getType()
-		assert 100 == operation.getValue()
+		assert 100000 == operation.getValue()
 		assert null != operation.getReference()
 		assert null != operation.getTime()
 	}
