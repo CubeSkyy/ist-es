@@ -1,4 +1,4 @@
-# Adventure Builder [![Build Status](https://travis-ci.com/tecnico-softeng/prototype-2019.svg?token=xDPBAaQ2epnFt9PRstYY&branch=master)](https://travis-ci.com/tecnico-softeng/prototype-2019)[![codecov](https://codecov.io/gh/tecnico-softeng/prototype-2019/branch/master/graph/badge.svg?token=bB74DA0VHo)](https://codecov.io/gh/tecnico-softeng/prototype-2019)
+# Adventure Builder [![Build Status](https://travis-ci.com/tecnico-softeng/es19tg_13-project.svg?token=18mQisuv59o2ZBZknWxY&branch=develop)](https://travis-ci.com/tecnico-softeng/es19tg_13-project)[![codecov](https://codecov.io/gh/tecnico-softeng/es19tg_13-project/branch/develop/graph/badge.svg?token=3UtdufKikD)](https://codecov.io/gh/tecnico-softeng/es19tg_13-project)
 
 
 To run tests execute: mvn clean install
@@ -9,7 +9,7 @@ To see the coverage reports, go to <module name>/target/site/jacoco/index.html.
 
 Ordene a tabela por ordem crescente da data de término.
 
-|   Issue id | Owner (ist number)      | Owner (github username) | PRs id (with link)  |            Date    |  
+|   Issue id | Owner (ist number)      | Owner (github username) | PRs id (with link)  |            Date    |
 | ---------- | ----------------------- | ----------------------- | ------------------- | ------------------ |
 |            |                         |                         |                     |                    |
 |            |                         |                         |                     |                    |
