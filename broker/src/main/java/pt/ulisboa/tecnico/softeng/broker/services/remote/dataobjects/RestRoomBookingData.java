@@ -4,7 +4,8 @@ import org.joda.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import pt.ulisboa.tecnico.softeng.broker.services.remote.HotelInterface.Type;
+//import pt.ulisboa.tecnico.softeng.broker.services.remote.HotelInterface.Type;
+import pt.ulisboa.tecnico.softeng.broker.domain.Adventure.Type;
 
 public class RestRoomBookingData {
 	private String reference;
