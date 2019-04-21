@@ -79,7 +79,7 @@ public /*abstract */ class TaxPayer extends TaxPayer_Base {
 		return tps.calculate(this);
 	}
 
-	public Set<Invoice> getBuyerinvoiceSet(){ return super.getBuyerinvoiceSet(); }
+	public Set<Invoice> getBuyerinvoiceSet(){ return super.getBuyerinvoiceSet();  }
 	public Set<Invoice> getSellerinvoiceSet(){ return super.getSellerinvoiceSet(); }
 
 }
