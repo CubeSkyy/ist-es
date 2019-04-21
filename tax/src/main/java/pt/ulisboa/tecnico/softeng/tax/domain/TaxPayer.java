@@ -1,6 +1,10 @@
 package pt.ulisboa.tecnico.softeng.tax.domain;
 
 import pt.ulisboa.tecnico.softeng.tax.exception.TaxException;
+import pt.ulisboa.tecnico.softeng.tax.services.local.dataobjects.TaxPayerData;
+
+import java.util.Map;
+import java.util.Set;
 
 public /*abstract */ class TaxPayer extends TaxPayer_Base {
 	/*
@@ -54,7 +58,12 @@ public /*abstract */ class TaxPayer extends TaxPayer_Base {
 			throw new TaxException();
 		}
 
-		for (Invoice invoice : getInvoiceSet()) {
+		for (Invoice invoice : getBuyerinvoiceSet()) {
+			if (invoice.getReference().equals(invoiceReference)) {
+				return invoice;
+			}
+		}
+		for (Invoice invoice : getSellerinvoiceSet()) {
 			if (invoice.getReference().equals(invoiceReference)) {
 				return invoice;
 			}
@@ -62,12 +71,15 @@ public /*abstract */ class TaxPayer extends TaxPayer_Base {
 		return null;
 	}
 
-
 	public double calculate(TaxPayerStrategy tps, int year){
-		return tps.calculate(year);
+		return tps.calculate(year, this);
 	}
 
+	public Map<Integer, Double>  calculatePerYear (TaxPayerStrategy tps){
+		return tps.calculate(this);
+	}
 
-
+	public Set<Invoice> getBuyerinvoiceSet(){ return super.getBuyerinvoiceSet(); }
+	public Set<Invoice> getSellerinvoiceSet(){ return super.getSellerinvoiceSet(); }
 
 }

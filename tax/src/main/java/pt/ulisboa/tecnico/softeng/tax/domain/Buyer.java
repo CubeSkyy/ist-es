@@ -1,10 +1,11 @@
+
 package pt.ulisboa.tecnico.softeng.tax.domain;
 
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import pt.ulisboa.tecnico.softeng.tax.exception.TaxException;
-
+/*
 public class Buyer extends Buyer_Base {
 	private final static int PERCENTAGE = 5;
 
@@ -61,3 +62,4 @@ public class Buyer extends Buyer_Base {
 	}
 
 }
+*/
