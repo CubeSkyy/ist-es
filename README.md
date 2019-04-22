@@ -11,13 +11,16 @@ Ordene a tabela por ordem crescente da data de término.
 
 |   Issue id | Owner (ist number)      | Owner (github username) | PRs id (with link)  |            Date    |
 | ---------- | ----------------------- | ----------------------- | ------------------- | ------------------ |
-|   124         |   ist187635                      |    BSantosCoding                     |   [162](https://github.com/tecnico-softeng/es19tg_13-project/pull/162)                  |    04/20/2019                |
-|   123         |   ist187635                      |     BSantosCoding                    |   [137](https://github.com/tecnico-softeng/es19tg_13-project/pull/137)                  |    04/19/2019                |
-|   121         |   ist187635                      |    BSantosCoding                     |   [163](https://github.com/tecnico-softeng/es19tg_13-project/pull/163)                 |     04/20/2019               |
-|   120         |   ist187635                      |    BSantosCoding                     |   [139](https://github.com/tecnico-softeng/es19tg_13-project/pull/139)                  |     04/19/2019               |
-|            |                         |                         |                     |                    |
-|            |                         |                         |                     |                    |
-|            |                         |                         |                     |                    |
+|   124      |   ist187635             |    BSantosCoding        |   [162](https://github.com/tecnico-softeng/es19tg_13-project/pull/162)                  |    04/20/2019                |
+|   123      |   ist187635             |     BSantosCoding       |   [137](https://github.com/tecnico-softeng/es19tg_13-project/pull/137)                  |    04/19/2019                |
+|   121      |   ist187635             |    BSantosCoding        |   [163](https://github.com/tecnico-softeng/es19tg_13-project/pull/163)                 |     04/20/2019               |
+|   120      |   ist187635             |    BSantosCoding        |   [139](https://github.com/tecnico-softeng/es19tg_13-project/pull/139)                  |     04/19/2019               |
+|   147      |   ist187700             |    genlike              |   [151](https://github.com/tecnico-softeng/es19tg_13-project/pull/151)                  |    04/21/2019                |
+|   152      |   ist187700             |    genlike              |   [157](https://github.com/tecnico-softeng/es19tg_13-project/pull/157)                  |    04/21/2019                |
+|   158      |   ist187700             |    genlike              |   [159](https://github.com/tecnico-softeng/es19tg_13-project/pull/159)                  |    04/21/2019                |
+
+
+
 
 
 ### Infrastructure
