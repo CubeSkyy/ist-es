@@ -23,15 +23,16 @@ class AccountDepositMethodSpockTest extends SpockRollbackTestAbstractClass {
 		then: 'the account is updated appropriately'
 		amnt == account.getBalance()
 		Operation operation = bank.getOperation(reference)
+		Account acc = operation.getAccountSet().iterator().next()
 		operation != null
-		operation.getType() == Operation.Type.DEPOSIT
-		operation.getAccount() == account
+		operation instanceof DepositOperation
+		acc == account
 		balance == operation.getValue()
 
 		where:
 		label              | amnt | balance
-		'fifty'            | 50   | 50
-		'one amount'       | 1    | 1
+		'fifty'            | 50000   | 50000
+		'one amount'       | 1000    | 1000
 	}
 
 	@Unroll('Deposit: #label')
@@ -45,6 +46,6 @@ class AccountDepositMethodSpockTest extends SpockRollbackTestAbstractClass {
 		where:
 		amnt | label
 		0    | 'zero amount'
-		-100 | 'negative amount'
+		-100000 | 'negative amount'
 	}
 }

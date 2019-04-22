@@ -36,24 +36,22 @@ public class Account extends Account_Base {
 
 	}
 
-	public Operation deposit(double amount) {
+	public Operation deposit(long amount) {
 		if (amount <= 0) {
 			throw new BankException();
 		}
 
 		setBalance(getBalance() + amount);
-
-		return new Operation(Operation.Type.DEPOSIT, this, amount);
+		return new DepositOperation(this, amount);
 	}
 
-	public Operation withdraw(double amount) {
+	public Operation withdraw(long amount) {
 		if (amount <= 0 || amount > getBalance()) {
 			throw new BankException();
 		}
 
 		setBalance(getBalance() - amount);
-
-		return new Operation(Operation.Type.WITHDRAW, this, amount);
+		return new WithdrawOperation(this, amount);
 	}
 
 }

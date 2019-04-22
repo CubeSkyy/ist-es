@@ -17,7 +17,7 @@ class BankInterfaceCancelPaymentSpockTest extends SpockRollbackTestAbstractClass
 		bank = new Bank('Money','BK01')
 		def client = new Client(bank,'António')
 		account = new Account(bank, client)
-		reference = account.deposit(100).getReference()
+		reference = account.deposit(100000).getReference()
 	}
 
 	def 'success'() {

@@ -18,8 +18,8 @@ class BuyerToReturnMethodSpockTest extends SpockRollbackTestAbstractClass {
 	def populate4Test() {
 		def irs = IRS.getIRSInstance()
 
-		seller = new Seller(irs,SELLER_NIF,'José Vendido','Somewhere')
-		buyer = new Buyer(irs,BUYER_NIF,'Manuel Comprado','Anywhere')
+		seller = new TaxPayer(irs,SELLER_NIF,'José Vendido','Somewhere')
+		buyer = new TaxPayer(irs,BUYER_NIF,'Manuel Comprado','Anywhere')
 		itemType = new ItemType(irs, FOOD, TAX)
 	}
 
@@ -31,7 +31,7 @@ class BuyerToReturnMethodSpockTest extends SpockRollbackTestAbstractClass {
 		new Invoice(50000, date, itemType, seller, buyer)
 
 		when:
-		def value = buyer.taxReturn(year)
+		def value = buyer.calculate(new BuyerStrategy(),year)
 
 		then:
 		val == value
@@ -45,7 +45,7 @@ class BuyerToReturnMethodSpockTest extends SpockRollbackTestAbstractClass {
 
 	def 'no invoices'() {
 		when:
-		def value = buyer.taxReturn(2018)
+		def value = buyer.calculate(new BuyerStrategy(), 2018)
 
 		then:
 		0 == value
@@ -64,7 +64,7 @@ class BuyerToReturnMethodSpockTest extends SpockRollbackTestAbstractClass {
 		new Invoice(100000,new LocalDate(1970,02,13), itemType, seller, buyer)
 
 		when:
-		def value = buyer.taxReturn(1970)
+		def value = buyer.calculate(new BuyerStrategy(), 1970)
 
 		then:
 		500 == value
@@ -79,10 +79,9 @@ class BuyerToReturnMethodSpockTest extends SpockRollbackTestAbstractClass {
 		invoice.cancel()
 
 		when:
-		def value = buyer.taxReturn(2018)
+		def value = buyer.calculate(new BuyerStrategy(), 2018)
 
 		then:
 		750 == value
 	}
-
 }
