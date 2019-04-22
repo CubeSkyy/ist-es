@@ -24,7 +24,7 @@ public class Adventure extends Adventure_Base {
     }
 
     public Adventure(Broker broker, LocalDate begin, LocalDate end, Client client, double margin, CarInterface.Type carType) {
-        this(broker, begin, end, client, margin, false, carType, RoomType.NONE);
+        this(broker, begin, end, client, margin, true, carType, RoomType.NONE);
     }
 
     public Adventure(Broker broker, LocalDate begin, LocalDate end, Client client, double margin, RoomType roomType) {
@@ -32,7 +32,7 @@ public class Adventure extends Adventure_Base {
     }
   
     public Adventure(Broker broker, LocalDate begin, LocalDate end, Client client, double margin, CarInterface.Type carType, RoomType roomType) {
-        this(broker, begin, end, client, margin, false, carType, roomType);
+        this(broker, begin, end, client, margin, true, carType, roomType);
     }
 
     private Adventure(Broker broker, LocalDate begin, LocalDate end, Client client, double margin, boolean rentVehicle,CarInterface.Type carType, RoomType roomType) {
