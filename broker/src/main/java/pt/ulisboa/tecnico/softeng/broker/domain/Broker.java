@@ -9,11 +9,11 @@ import pt.ulisboa.tecnico.softeng.broker.services.remote.dataobjects.RestRoomBoo
 import java.util.Objects;
 
 public class Broker extends Broker_Base {
-    private final ActivityInterface activityInterface;
-    private final HotelInterface hotelInterface;
-    private final CarInterface carInterface;
-    private final BankInterface bankInterface;
-    private final TaxInterface taxInterface;
+    private ActivityInterface activityInterface;
+    private HotelInterface hotelInterface;
+    private CarInterface carInterface;
+    private BankInterface bankInterface;
+    private TaxInterface taxInterface;
 
     public Broker(String code, String name, String nifAsSeller, String nifAsBuyer/*, String nif*/, String iban,
                   ActivityInterface activityInterface, HotelInterface hotelInterface, CarInterface carInterface,
@@ -35,6 +35,30 @@ public class Broker extends Broker_Base {
 
         FenixFramework.getDomainRoot().addBroker(this);
     }
+
+
+    public void checkPersistency() {
+        if(this.activityInterface == null) {
+            this.activityInterface = new ActivityInterface();
+        }
+
+        if(this.hotelInterface == null) {
+            this.hotelInterface = new HotelInterface();
+        }
+
+        if(this.carInterface == null) {
+            this.carInterface = new CarInterface();
+        }
+
+        if (this.bankInterface == null) {
+            this.bankInterface = new BankInterface();
+        }
+
+        if(this.taxInterface == null) {
+            this.taxInterface = new TaxInterface();
+        }
+    }
+
 
     public void delete() {
         setRoot(null);

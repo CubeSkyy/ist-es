@@ -24,6 +24,7 @@ public class BrokerInterface {
     public static List<BrokerData> getBrokers() {
         List<BrokerData> brokers = new ArrayList<>();
         for (Broker broker : FenixFramework.getDomainRoot().getBrokerSet()) {
+            broker.checkPersistency();
             brokers.add(new BrokerData(broker, CopyDepth.SHALLOW));
         }
         return brokers;
@@ -103,12 +104,14 @@ public class BrokerInterface {
     @Atomic(mode = TxMode.WRITE)
     public static void deleteBrokers() {
         for (Broker broker : FenixFramework.getDomainRoot().getBrokerSet()) {
+            broker.checkPersistency();
             broker.delete();
         }
     }
 
     private static Broker getBrokerByCode(String code) {
         for (Broker broker : FenixFramework.getDomainRoot().getBrokerSet()) {
+            broker.checkPersistency();
             if (broker.getCode().equals(code)) {
                 return broker;
             }
