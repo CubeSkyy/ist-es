@@ -23,8 +23,11 @@ Ordene a tabela por ordem crescente da data de término.
 | 145        | ist187633          | esteveste               | [156](https://github.com/tecnico-softeng/es19tg_13-project/pull/156) | 04/21/2019 |
 | 134        | ist187633          | esteveste               | [165](https://github.com/tecnico-softeng/es19tg_13-project/pull/165), [153](https://github.com/tecnico-softeng/es19tg_13-project/pull/153) | 04/22/2019 |
 |   130      |   ist187631             |    Andrempp              |   [164](https://github.com/tecnico-softeng/es19tg_13-project/pull/164)                  |    04/22/2019                |
-
-
+|   141      |  ist187636              |    BernardoFaria         |     [148](https://github.com/tecnico-softeng/es19tg_13-project/pull/148)                |    04/22/2019
+|   142      |  ist187636              |    BernardoFaria         |     [149](https://github.com/tecnico-softeng/es19tg_13-project/pull/149)                |    04/21/2019
+|   143      |  ist187636              |    BernardoFaria         |     [150](https://github.com/tecnico-softeng/es19tg_13-project/pull/150)                |    04/21/2019
+|   122      |  ist187636              |    BernardoFaria         |     [155](https://github.com/tecnico-softeng/es19tg_13-project/pull/155)                |    04/22/2019
+|   140      |  ist187636              |    BernardoFaria         |     [160](https://github.com/tecnico-softeng/es19tg_13-project/pull/160)                |    04/22/2019
 
 
 
