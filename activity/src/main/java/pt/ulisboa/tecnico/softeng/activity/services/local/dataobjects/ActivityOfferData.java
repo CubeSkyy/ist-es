@@ -33,7 +33,7 @@ public class ActivityOfferData {
 		this.begin = offer.getBegin();
 		this.end = offer.getEnd();
 		this.capacity = offer.getCapacity();
-		this.amount = offer.getAmount();
+		this.amount = (double)offer.getAmount()/1000;
 		this.reservations = offer.getBookingSet().stream().map(b -> new RestActivityBookingData(b))
 				.collect(Collectors.toList());
 	}
@@ -94,12 +94,13 @@ public class ActivityOfferData {
 		this.reservations = reservations;
 	}
 
-	public Double getAmount() {
-		return this.amount;
+	public Long getAmount() {
+		long l = (new Double(this.amount*1000)).longValue();
+		return l;
 	}
 
-	public void setAmount(Double amount) {
-		this.amount = amount;
+	public void setAmount(Long amount) {
+		this.amount = (double)amount/1000;
 	}
 
 	public String getName() {

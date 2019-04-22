@@ -1,5 +1,6 @@
 package pt.ulisboa.tecnico.softeng.tax.services.local;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -10,17 +11,17 @@ import org.slf4j.LoggerFactory;
 import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.Atomic.TxMode;
 import pt.ist.fenixframework.FenixFramework;
-import pt.ulisboa.tecnico.softeng.tax.domain.Buyer;
+
 import pt.ulisboa.tecnico.softeng.tax.domain.IRS;
 import pt.ulisboa.tecnico.softeng.tax.domain.Invoice;
 import pt.ulisboa.tecnico.softeng.tax.domain.ItemType;
-import pt.ulisboa.tecnico.softeng.tax.domain.Seller;
+
 import pt.ulisboa.tecnico.softeng.tax.domain.TaxPayer;
 import pt.ulisboa.tecnico.softeng.tax.exception.TaxException;
 import pt.ulisboa.tecnico.softeng.tax.services.local.dataobjects.InvoiceData;
 import pt.ulisboa.tecnico.softeng.tax.services.local.dataobjects.ItemTypeData;
 import pt.ulisboa.tecnico.softeng.tax.services.local.dataobjects.TaxPayerData;
-import pt.ulisboa.tecnico.softeng.tax.services.local.dataobjects.TaxPayerData.Type;
+
 import pt.ulisboa.tecnico.softeng.tax.services.remote.dataobjects.RestInvoiceData;
 
 public class TaxInterface {
@@ -46,11 +47,7 @@ public class TaxInterface {
 
 	@Atomic(mode = TxMode.WRITE)
 	public static void createTaxPayer(TaxPayerData taxPayerData) {
-		if (taxPayerData.getType().equals(Type.BUYER)) {
-			new Buyer(IRS.getIRSInstance(), taxPayerData.getNif(), taxPayerData.getName(), taxPayerData.getAddress());
-		} else {
-			new Seller(IRS.getIRSInstance(), taxPayerData.getNif(), taxPayerData.getName(), taxPayerData.getAddress());
-		}
+		new TaxPayer(IRS.getIRSInstance(), taxPayerData.getNif(), taxPayerData.getName(), taxPayerData.getAddress());
 	}
 
 	@Atomic(mode = TxMode.WRITE)
@@ -66,13 +63,10 @@ public class TaxInterface {
 			throw new TaxException();
 		}
 
-		if (taxPayer instanceof Buyer) {
-			return ((Buyer) taxPayer).getInvoiceSet().stream().map(i -> new InvoiceData(i))
-					.sorted((i1, i2) -> i1.getSellerNif().compareTo(i2.getSellerNif())).collect(Collectors.toList());
-		} else {
-			return ((Seller) taxPayer).getInvoiceSet().stream().map(i -> new InvoiceData(i))
-					.sorted((i1, i2) -> i1.getBuyerNif().compareTo(i2.getBuyerNif())).collect(Collectors.toList());
-		}
+
+		List<InvoiceData> l = taxPayer.getBuyerinvoiceSet().stream().map(i -> new InvoiceData(i)).sorted(Comparator.comparing(InvoiceData::getSellerNif)).collect(Collectors.toList());
+		l.addAll(taxPayer.getSellerinvoiceSet().stream().map(i -> new InvoiceData(i)).sorted(Comparator.comparing(InvoiceData::getBuyerNif)).collect(Collectors.toList()));
+		return l;
 	}
 
 	@Atomic(mode = TxMode.WRITE)
@@ -86,14 +80,15 @@ public class TaxInterface {
 		TaxPayer taxPayer = IRS.getIRSInstance().getTaxPayerByNIF(nif);
 		ItemType itemType = IRS.getIRSInstance().getItemTypeByName(invoiceData.getItemType());
 
-		Seller seller;
-		Buyer buyer;
+		TaxPayer seller;
+		TaxPayer buyer;
+
 		if (invoiceData.getSellerNif() != null) {
-			seller = (Seller) IRS.getIRSInstance().getTaxPayerByNIF(invoiceData.getSellerNif());
-			buyer = (Buyer) taxPayer;
+			seller = IRS.getIRSInstance().getTaxPayerByNIF(invoiceData.getSellerNif());
+			buyer = taxPayer;
 		} else {
-			seller = (Seller) taxPayer;
-			buyer = (Buyer) IRS.getIRSInstance().getTaxPayerByNIF(invoiceData.getBuyerNif());
+			seller = taxPayer;
+			buyer = IRS.getIRSInstance().getTaxPayerByNIF(invoiceData.getBuyerNif());
 		}
 
 		new Invoice(invoiceData.getValue(), invoiceData.getDate(), itemType, seller, buyer);
@@ -106,8 +101,8 @@ public class TaxInterface {
 			return invoice.getReference();
 		}
 
-		Seller seller = (Seller) IRS.getIRSInstance().getTaxPayerByNIF(invoiceData.getSellerNif());
-		Buyer buyer = (Buyer) IRS.getIRSInstance().getTaxPayerByNIF(invoiceData.getBuyerNif());
+		TaxPayer seller = IRS.getIRSInstance().getTaxPayerByNIF(invoiceData.getSellerNif());
+		TaxPayer buyer = IRS.getIRSInstance().getTaxPayerByNIF(invoiceData.getBuyerNif());
 		ItemType itemType = IRS.getIRSInstance().getItemTypeByName(invoiceData.getItemType());
 
 		invoice = new Invoice(invoiceData.getValue(), invoiceData.getDate(), itemType, seller, buyer,
