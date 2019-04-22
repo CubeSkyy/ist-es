@@ -9,8 +9,6 @@ To see the coverage reports, go to <module name>/target/site/jacoco/index.html.
 
 Ordene a tabela por ordem crescente da data de término.
 
-|   Issue id | Owner (ist number)      | Owner (github username) | PRs id (with link)  |            Date    |
-| ---------- | ----------------------- | ----------------------- | ------------------- | ------------------ |
 |   124      |   ist187635             |    BSantosCoding        |   [162](https://github.com/tecnico-softeng/es19tg_13-project/pull/162)                  |    04/20/2019                |
 |   123      |   ist187635             |     BSantosCoding       |   [137](https://github.com/tecnico-softeng/es19tg_13-project/pull/137)                  |    04/19/2019                |
 |   121      |   ist187635             |    BSantosCoding        |   [163](https://github.com/tecnico-softeng/es19tg_13-project/pull/163)                 |     04/20/2019               |
@@ -21,6 +19,9 @@ Ordene a tabela por ordem crescente da data de término.
 |   125      |   ist187687             |    CubeSkyy              |   [161](https://github.com/tecnico-softeng/es19tg_13-project/pull/161)                  |    04/21/2019                |
 |   128      |   ist187631             |    Andrempp              |   [133](https://github.com/tecnico-softeng/es19tg_13-project/pull/133)                  |    04/21/2019                |
 |   127      |   ist187631             |    Andrempp              |   [132](https://github.com/tecnico-softeng/es19tg_13-project/pull/132)                  |    04/21/2019                |
+| 146        | ist187633          | esteveste               | [154](https://github.com/tecnico-softeng/es19tg_13-project/pull/154) | 04/21/2019 |
+| 145        | ist187633          | esteveste               | [156](https://github.com/tecnico-softeng/es19tg_13-project/pull/156) | 04/21/2019 |
+| 134        | ist187633          | esteveste               | [165](https://github.com/tecnico-softeng/es19tg_13-project/pull/165), [153](https://github.com/tecnico-softeng/es19tg_13-project/pull/153) | 04/22/2019 |
 |   130      |   ist187631             |    Andrempp              |   [164](https://github.com/tecnico-softeng/es19tg_13-project/pull/164)                  |    04/22/2019                |
 
 
