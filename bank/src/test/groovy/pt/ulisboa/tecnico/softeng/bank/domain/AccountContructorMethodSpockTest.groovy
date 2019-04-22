@@ -26,7 +26,7 @@ class AccountContructorMethodSpockTest extends SpockRollbackTestAbstractClass {
 			getBank() == bank
 			getIBAN().startsWith(bank.getCode())
 			getClient() == client
-			0.0d == getBalance()
+			0 == getBalance()
 		}
 		bank.getAccountSet().size() == 1
 		bank.getClientSet().contains(client)

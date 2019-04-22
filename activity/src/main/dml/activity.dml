@@ -78,7 +78,8 @@ relation ActivityOfferHasBookings {
 	}
 }
 
-class Processor;
+class Processor {
+}
 
 relation ActivityProviderHasProcessor {
 	ActivityProvider playsRole activityProvider {

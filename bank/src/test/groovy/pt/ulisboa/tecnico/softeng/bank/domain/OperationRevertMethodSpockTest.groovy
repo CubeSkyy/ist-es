@@ -13,7 +13,7 @@ class OperationRevertMethodSpockTest extends SpockRollbackTestAbstractClass {
 
 	def 'revert deposit'() {
 		given: 'a deposit operation'
-		def reference = account.deposit(100).getReference()
+		def reference = account.deposit(100000).getReference()
 		def operation = bank.getOperation(reference)
 
 		when: 'when reverting the deposit'
@@ -31,15 +31,15 @@ class OperationRevertMethodSpockTest extends SpockRollbackTestAbstractClass {
 
 	def 'revert withdraw'() {
 		given: 'given a deposit operation'
-		account.deposit(1000)
-		def reference = this.account.withdraw(100).getReference()
+		account.deposit(1000000)
+		def reference = this.account.withdraw(100000).getReference()
 		def operation = this.bank.getOperation(reference)
 
 		when: 'when reverting the operation'
 		def newReference = operation.revert()
 
 		then: 'account should have the balance as before'
-		1000 == this.account.getBalance()
+		1000000 == this.account.getBalance()
 
 		and: 'a new operation is added'
 		this.bank.getOperation(newReference) != null
