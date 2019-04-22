@@ -5,25 +5,37 @@ import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 import pt.ulisboa.tecnico.softeng.broker.exception.BrokerException;
 
 import pt.ulisboa.tecnico.softeng.broker.services.remote.CarInterface;
 
 public class Adventure extends Adventure_Base {
+    public enum RoomType {
+        SINGLE, DOUBLE, NONE
+    }
 
     public enum State {
         PROCESS_PAYMENT, RESERVE_ACTIVITY, BOOK_ROOM, RENT_VEHICLE, UNDO, CONFIRMED, CANCELLED, TAX_PAYMENT
     }
 
     public Adventure(Broker broker, LocalDate begin, LocalDate end, Client client, double margin) {
-        this(broker, begin, end, client, margin, false,null);
+        this(broker, begin, end, client, margin, false, null, RoomType.NONE);
     }
 
-    public Adventure(Broker broker, LocalDate begin, LocalDate end, Client client, double margin,CarInterface.Type carType){
-        this(broker, begin, end, client, margin, true,carType);
+    public Adventure(Broker broker, LocalDate begin, LocalDate end, Client client, double margin, CarInterface.Type carType) {
+        this(broker, begin, end, client, margin, true, carType, RoomType.NONE);
     }
 
-    private Adventure(Broker broker, LocalDate begin, LocalDate end, Client client, double margin, boolean rentVehicle,CarInterface.Type carType) {
+    public Adventure(Broker broker, LocalDate begin, LocalDate end, Client client, double margin, RoomType roomType) {
+        this(broker, begin, end, client, margin, false, null, roomType);
+    }
+  
+    public Adventure(Broker broker, LocalDate begin, LocalDate end, Client client, double margin, CarInterface.Type carType, RoomType roomType) {
+        this(broker, begin, end, client, margin, true, carType, roomType);
+    }
+
+    private Adventure(Broker broker, LocalDate begin, LocalDate end, Client client, double margin, boolean rentVehicle,CarInterface.Type carType, RoomType roomType) {
         checkArguments(broker, begin, end, client, margin);
 
         setID(broker.getCode() + Integer.toString(broker.getCounter()));
@@ -33,6 +45,7 @@ public class Adventure extends Adventure_Base {
         setRentVehicle(rentVehicle);
         setCarType(carType);
         setClient(client);
+        setRoomType(roomType);
 
         broker.addAdventure(this);
         setBroker(broker);

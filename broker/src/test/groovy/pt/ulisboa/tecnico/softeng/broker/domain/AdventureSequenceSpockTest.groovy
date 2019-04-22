@@ -119,7 +119,7 @@ class AdventureSequenceSpockTest extends SpockRollbackTestAbstractClass {
 
     def 'unsuccess sequence fail hotel'() {
         given: 'an adventure'
-        def adventure = new Adventure(broker, ARRIVAL, DEPARTURE, client, MARGIN)
+        def adventure = new Adventure(broker, ARRIVAL, DEPARTURE, client, MARGIN, SINGLE_T)
         and: 'an activity reservation'
         activityInterface.reserveActivity(_) >> bookingActivityData
         and: 'an hotel exception'

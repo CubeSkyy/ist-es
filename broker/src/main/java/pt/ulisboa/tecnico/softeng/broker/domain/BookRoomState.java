@@ -17,13 +17,14 @@ public class BookRoomState extends BookRoomState_Base {
 
     @Override
     public void process() {
-        RestRoomBookingData bookingData = getAdventure().getBroker().getRoomBookingFromBulkBookings(Type.SINGLE.toString(), getAdventure().getBegin(), getAdventure().getEnd());
+        RestRoomBookingData bookingData = getAdventure().getBroker().getRoomBookingFromBulkBookings(getAdventure().getRoomType().toString(), getAdventure().getBegin(), getAdventure().getEnd());
 
         if (bookingData == null) {
             HotelInterface hotelInterface = getAdventure().getBroker().getHotelInterface();
             try {
-                bookingData = hotelInterface.reserveRoom(new RestRoomBookingData(Type.SINGLE,
+                bookingData = hotelInterface.reserveRoom(new RestRoomBookingData(getAdventure().getRoomType(),
                         getAdventure().getBegin(), getAdventure().getEnd(), getAdventure().getBroker().getNif(),
+
                         getAdventure().getBroker().getIban(), getAdventure().getID()));
             } catch (HotelException he) {
                 getAdventure().setState(State.UNDO);

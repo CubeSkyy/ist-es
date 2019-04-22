@@ -4,7 +4,8 @@ import org.joda.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import pt.ulisboa.tecnico.softeng.broker.services.remote.HotelInterface.Type;
+//import pt.ulisboa.tecnico.softeng.broker.services.remote.HotelInterface.Type;
+import pt.ulisboa.tecnico.softeng.broker.domain.Adventure.RoomType;
 
 public class RestRoomBookingData {
 	private String reference;
@@ -29,7 +30,7 @@ public class RestRoomBookingData {
 	public RestRoomBookingData() {
 	}
 
-	public RestRoomBookingData(Type single, LocalDate arrival, LocalDate departure, String nifAsBuyer, String iban,
+	public RestRoomBookingData(RoomType single, LocalDate arrival, LocalDate departure, String nifAsBuyer, String iban,
 			String adventureId) {
 		this.roomType = single.toString();
 		this.arrival = arrival;

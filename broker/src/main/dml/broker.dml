@@ -1,5 +1,6 @@
 package pt.ulisboa.tecnico.softeng.broker.domain;
 
+enum pt.ulisboa.tecnico.softeng.broker.domain.Adventure.RoomType as RoomType;
 enum pt.ulisboa.tecnico.softeng.broker.services.remote.CarInterface.Type as CarType;
 
 class Broker {
@@ -38,6 +39,7 @@ class Adventure {
 	double margin;
     long currentAmount;
     DateTime time;
+    RoomType roomType;
 }
 
 relation BrokerHasAdventures {

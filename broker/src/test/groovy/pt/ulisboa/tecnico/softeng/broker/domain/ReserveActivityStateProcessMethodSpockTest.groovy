@@ -64,7 +64,7 @@ class ReserveActivityStateProcessMethodSpockTest extends SpockRollbackTestAbstra
         adventure.process()
 
         then: 'state of adventure is as expected'
-        adventure.getState().getValue() == Adventure.State.BOOK_ROOM
+        adventure.getState().getValue() == Adventure.State.PROCESS_PAYMENT
     }
 
     @Unroll('#label: #mock_exception')
@@ -102,7 +102,7 @@ class ReserveActivityStateProcessMethodSpockTest extends SpockRollbackTestAbstra
         }
 
         then: 'state of adventure is as expected'
-        adventure.getState().getValue() == Adventure.State.BOOK_ROOM
+        adventure.getState().getValue() == Adventure.State.PROCESS_PAYMENT
     }
 
     def 'one remote access exception and one activity exception'() {
