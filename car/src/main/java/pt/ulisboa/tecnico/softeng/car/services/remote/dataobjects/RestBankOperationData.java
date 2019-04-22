@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class RestBankOperationData {
 	private String reference;
 	private String type;
+
 	private String sourceIban;
 	private String targetIban;
 	private Long value;
@@ -17,6 +18,7 @@ public class RestBankOperationData {
 
 	public RestBankOperationData() {
 	}
+
 
 	public RestBankOperationData(String sourceIban,String targetIban, Long value, String transactionSource, String transactionReference) {
 		this.sourceIban = sourceIban;

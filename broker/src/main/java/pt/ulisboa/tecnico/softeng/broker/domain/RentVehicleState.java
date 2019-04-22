@@ -20,7 +20,8 @@ public class RentVehicleState extends RentVehicleState_Base {
         try {
 
             RestRentingData rentingData = getAdventure().getBroker().getCarInterface().rentCar(getAdventure().getCarType(), getAdventure().getClient().getDrivingLicense(),
-                    getAdventure().getBroker().getNifAsBuyer(), getAdventure().getBroker().getIban(),
+                    getAdventure().getBroker().getNif(), getAdventure().getBroker().getIban(),
+
                     getAdventure().getBegin(), getAdventure().getEnd(), getAdventure().getID());
 
             getAdventure().setRentingConfirmation(rentingData.getReference());
