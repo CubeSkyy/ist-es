@@ -19,23 +19,11 @@ public class TaxPayerData {
 	}
 
 	public TaxPayerData(TaxPayer taxPayer) {
-		/*Seller seller;
-		Buyer buyer;*/
 		this.nif = taxPayer.getNif();
 		this.name = taxPayer.getName();
 		this.address = taxPayer.getAddress();
 		this.buyertaxes = taxPayer.calculatePerYear(new BuyerStrategy());
 		this.sellertaxes = taxPayer.calculatePerYear(new SellerStrategy());
-
-
-		/*
-		if (taxPayer instanceof Seller) {
-			seller = (Seller) taxPayer;
-			this.taxes = seller.getToPayPerYear();
-		} else {
-			buyer = (Buyer) taxPayer;
-			this.taxes = buyer.getTaxReturnPerYear();
-		}*/
 	}
 
 	public String getName() {
