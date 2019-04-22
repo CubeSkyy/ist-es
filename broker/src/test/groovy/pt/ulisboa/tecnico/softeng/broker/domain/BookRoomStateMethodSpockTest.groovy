@@ -22,7 +22,7 @@ class BookRoomStateMethodSpockTest extends SpockRollbackTestAbstractClass {
         new Reference(bulk, REF_ONE)
         new Reference(bulk, REF_TWO)
         client = new Client(broker, CLIENT_IBAN, CLIENT_NIF, DRIVING_LICENSE, AGE)
-        adventure = new Adventure(broker, BEGIN, END, client, MARGIN)
+        adventure = new Adventure(broker, BEGIN, END, client, MARGIN, SINGLE_T)
 
         bookingData = new RestRoomBookingData()
         bookingData.setRoomType(SINGLE)

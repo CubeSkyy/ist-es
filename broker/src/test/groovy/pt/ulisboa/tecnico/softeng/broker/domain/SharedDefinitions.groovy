@@ -1,6 +1,7 @@
 package pt.ulisboa.tecnico.softeng.broker.domain
 
 import org.joda.time.LocalDate
+import pt.ulisboa.tecnico.softeng.broker.domain.Adventure.RoomType
 import spock.lang.Shared
 
 trait SharedDefinitions {
@@ -34,6 +35,7 @@ trait SharedDefinitions {
     @Shared def SINGLE = "SINGLE"
     @Shared def DOUBLE = "DOUBLE"
     @Shared def NONE = "NONE"
+    @Shared def SINGLE_T = RoomType.SINGLE
     @Shared def REF_ONE = "ref1"
     @Shared def REF_TWO = "ref2"
     @Shared def REF_THREE = "ref3"
