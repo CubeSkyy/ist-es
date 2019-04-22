@@ -31,8 +31,7 @@ public class Adventure extends Adventure_Base {
         setEnd(end);
         setMargin(margin);
         setRentVehicle(rentVehicle);
-
-        setCarType(CarInterface.Type.CAR);
+        setCarType(carType);
         setClient(client);
 
         broker.addAdventure(this);
