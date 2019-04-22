@@ -12,6 +12,7 @@ import pt.ulisboa.tecnico.softeng.activity.services.remote.exceptions.RemoteAcce
 public class BankInterface {
 	private static Logger logger = LoggerFactory.getLogger(BankInterface.class);
 
+
 	private static String ENDPOINT = "http://localhost:8082";
 
 	public String processPayment(RestBankOperationData bankOperationData) {
