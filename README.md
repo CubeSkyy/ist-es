@@ -18,7 +18,7 @@ Ordene a tabela por ordem crescente da data de término.
 |   147      |   ist187700             |    genlike              |   [151](https://github.com/tecnico-softeng/es19tg_13-project/pull/151)                  |    04/21/2019                |
 |   152      |   ist187700             |    genlike              |   [157](https://github.com/tecnico-softeng/es19tg_13-project/pull/157)                  |    04/21/2019                |
 |   158      |   ist187700             |    genlike              |   [159](https://github.com/tecnico-softeng/es19tg_13-project/pull/159)                  |    04/21/2019                |
-
+|   125      |   ist187687             |    CubeSkyy              |   [161](https://github.com/tecnico-softeng/es19tg_13-project/pull/161)                  |    04/21/2019                |
 
 
 
