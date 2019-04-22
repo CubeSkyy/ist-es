@@ -3,6 +3,7 @@ package pt.ulisboa.tecnico.softeng.broker.services.local.dataobjects;
 import org.joda.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import pt.ulisboa.tecnico.softeng.broker.services.remote.CarInterface;
 import pt.ulisboa.tecnico.softeng.broker.domain.Adventure;
 
 public class AdventureData {
@@ -15,6 +16,7 @@ public class AdventureData {
 	private String iban;
 	private Double margin;
 	private Boolean vehicle;
+	private CarInterface.Type carType;
 	private Double amount;
 	private Adventure.State state;
 
@@ -36,6 +38,7 @@ public class AdventureData {
 		this.iban = adventure.getIban();
 		this.margin = adventure.getMargin();
 		this.vehicle = adventure.getRentVehicle();
+		this.carType = adventure.getCarType();
 		this.state = adventure.getState().getValue();
 
 		this.paymentConfirmation = adventure.getPaymentConfirmation();
@@ -165,5 +168,9 @@ public class AdventureData {
 	public void setVehicle(Boolean vehicle) {
 		this.vehicle = vehicle;
 	}
+
+	public CarInterface.Type getCarType(){return this.carType;}
+
+	public void setCarType(CarInterface.Type carType){this.carType = carType;}
 
 }
