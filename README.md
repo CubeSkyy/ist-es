@@ -19,6 +19,10 @@ Ordene a tabela por ordem crescente da data de término.
 |   152      |   ist187700             |    genlike              |   [157](https://github.com/tecnico-softeng/es19tg_13-project/pull/157)                  |    04/21/2019                |
 |   158      |   ist187700             |    genlike              |   [159](https://github.com/tecnico-softeng/es19tg_13-project/pull/159)                  |    04/21/2019                |
 |   125      |   ist187687             |    CubeSkyy              |   [161](https://github.com/tecnico-softeng/es19tg_13-project/pull/161)                  |    04/21/2019                |
+|   128      |   ist187631             |    Andrempp              |   [133](https://github.com/tecnico-softeng/es19tg_13-project/pull/133)                  |    04/21/2019                |
+|   127      |   ist187631             |    Andrempp              |   [132](https://github.com/tecnico-softeng/es19tg_13-project/pull/132)                  |    04/21/2019                |
+|   130      |   ist187631             |    Andrempp              |   [164](https://github.com/tecnico-softeng/es19tg_13-project/pull/164)                  |    04/22/2019                |
+
 
 
 
