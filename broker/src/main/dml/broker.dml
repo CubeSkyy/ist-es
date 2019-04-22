@@ -36,7 +36,7 @@ class Adventure {
 	boolean rentVehicle;
 	CarType carType;
 	double margin;
-    double currentAmount;
+    long currentAmount;
     DateTime time;
 }
 
