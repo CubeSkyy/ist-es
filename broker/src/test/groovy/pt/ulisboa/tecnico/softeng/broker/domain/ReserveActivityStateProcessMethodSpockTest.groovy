@@ -17,8 +17,8 @@ class ReserveActivityStateProcessMethodSpockTest extends SpockRollbackTestAbstra
     def populate4Test() {
         activityInterface = Mock(ActivityInterface)
         broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN,
-                            activityInterface, new HotelInterface(), new CarInterface(), new BankInterface(),
-                            new TaxInterface())
+                activityInterface, new HotelInterface(), new CarInterface(), new BankInterface(),
+                new TaxInterface())
         client = new Client(broker, CLIENT_IBAN, CLIENT_NIF, DRIVING_LICENSE, AGE)
 
         adventure = new Adventure(broker, BEGIN, END, client, MARGIN)
@@ -34,7 +34,12 @@ class ReserveActivityStateProcessMethodSpockTest extends SpockRollbackTestAbstra
         given: 'activity reserved'
         activityInterface.reserveActivity(_) >> bookingData
         and: 'an adventure on the same day'
-        def sameDayAdventure = new Adventure(broker, BEGIN, BEGIN, client, MARGIN, rent_a_car)
+        def sameDayAdventure
+        if (rent_a_car != null) {
+            sameDayAdventure = new Adventure(broker, BEGIN, BEGIN, client, MARGIN, rent_a_car)
+        } else {
+            sameDayAdventure = new Adventure(broker, BEGIN, BEGIN, client, MARGIN)
+        }
         sameDayAdventure.setState(Adventure.State.RESERVE_ACTIVITY)
 
         when: 'the adventure is processed'
@@ -44,9 +49,10 @@ class ReserveActivityStateProcessMethodSpockTest extends SpockRollbackTestAbstra
         sameDayAdventure.getState().getValue() == adventure_state
 
         where:
-        rent_a_car | adventure_state                 | label
-        true       | Adventure.State.RENT_VEHICLE    | 'success to rent vehicle'
-        false      | Adventure.State.PROCESS_PAYMENT | 'success no book room'
+        rent_a_car                   | adventure_state                 | label
+        CarInterface.Type.CAR        | Adventure.State.RENT_VEHICLE    | 'success to rent vehicle'
+        CarInterface.Type.MOTORCYCLE | Adventure.State.RENT_VEHICLE    | 'success to rent vehicle'
+        null                         | Adventure.State.PROCESS_PAYMENT | 'success no book room'
     }
 
     def 'success book room'() {
@@ -63,7 +69,7 @@ class ReserveActivityStateProcessMethodSpockTest extends SpockRollbackTestAbstra
     @Unroll('#label: #mock_exception')
     def 'exceptional states'() {
         given: 'activity reservation throws exception'
-        activityInterface.reserveActivity(_) >> {throw mock_exception}
+        activityInterface.reserveActivity(_) >> { throw mock_exception }
 
         when: 'adventure is processed #process_iterations time(s)'
         1.upto(process_iterations) {
@@ -85,13 +91,13 @@ class ReserveActivityStateProcessMethodSpockTest extends SpockRollbackTestAbstra
     def 'two remote access exception and success'() {
         given: 'activity reservation fails with two remote exceptions and then succeeds'
         activityInterface.reserveActivity(_) >>
-                {throw new RemoteAccessException()} >>
-                {throw new RemoteAccessException()}  >>
+                { throw new RemoteAccessException() } >>
+                { throw new RemoteAccessException() } >>
                 bookingData
 
         when: 'adventure is processes 3 times'
         1.upto(3) {
-          adventure.process()
+            adventure.process()
         }
 
         then: 'state of adventure is as expected'
@@ -101,8 +107,8 @@ class ReserveActivityStateProcessMethodSpockTest extends SpockRollbackTestAbstra
     def 'one remote access exception and one activity exception'() {
         given: 'activity reservation fails with a remote exception followed by an activity exception'
         activityInterface.reserveActivity(_) >>
-                {throw new RemoteAccessException()} >>
-                {throw new ActivityException()}
+                { throw new RemoteAccessException() } >>
+                { throw new ActivityException() }
 
         when: 'adventure is processes 2 times'
         1.upto(2) {
