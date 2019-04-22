@@ -43,15 +43,14 @@ public class Adventure extends Adventure_Base {
         setEnd(end);
         setMargin(margin);
         setRentVehicle(rentVehicle);
-
-        setCarType(CarInterface.Type.CAR);
+        setCarType(carType);
         setClient(client);
         setRoomType(roomType);
 
         broker.addAdventure(this);
         setBroker(broker);
 
-        setCurrentAmount(0.0);
+        setCurrentAmount(0);
         setTime(DateTime.now());
 
         setState(State.RESERVE_ACTIVITY);
@@ -92,12 +91,12 @@ public class Adventure extends Adventure_Base {
         return getClient().getIban();
     }
 
-    public void incAmountToPay(double toPay) {
+    public void incAmountToPay(long toPay) {
         setCurrentAmount(getCurrentAmount() + toPay);
     }
 
-    public double getAmount() {
-        return getCurrentAmount() * (1 + getMargin());
+    public long getAmount() {
+        return (long) (getCurrentAmount() * (1 + getMargin()));
     }
 
     public boolean shouldRentVehicle() {

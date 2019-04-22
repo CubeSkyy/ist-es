@@ -16,6 +16,7 @@ public class Booking extends Booking_Base {
 		setProviderNif(provider.getNif());
 		setBuyerNif(buyerNif);
 		setIban(buyerIban);
+		setProviderIban(offer.getActivity().getActivityProvider().getIban());
 		setAge(age);
 		setAmount(offer.getPrice());
 		setDate(offer.getBegin());

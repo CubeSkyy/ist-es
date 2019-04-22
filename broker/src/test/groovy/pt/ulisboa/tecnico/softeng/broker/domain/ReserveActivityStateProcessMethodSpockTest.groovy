@@ -16,9 +16,10 @@ class ReserveActivityStateProcessMethodSpockTest extends SpockRollbackTestAbstra
     @Override
     def populate4Test() {
         activityInterface = Mock(ActivityInterface)
-        broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, NIF_AS_BUYER, BROKER_IBAN,
-                activityInterface, new HotelInterface(), new CarInterface(), new BankInterface(),
-                new TaxInterface())
+        broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF, BROKER_IBAN,
+                            activityInterface, new HotelInterface(), new CarInterface(), new BankInterface(),
+                            new TaxInterface())
+
         client = new Client(broker, CLIENT_IBAN, CLIENT_NIF, DRIVING_LICENSE, AGE)
 
         adventure = new Adventure(broker, BEGIN, END, client, MARGIN)
@@ -26,7 +27,7 @@ class ReserveActivityStateProcessMethodSpockTest extends SpockRollbackTestAbstra
 
         bookingData = new RestActivityBookingData()
         bookingData.setReference(ACTIVITY_CONFIRMATION)
-        bookingData.setPrice(76.78)
+        bookingData.setPrice(76780)
     }
 
     @Unroll('#label: #rent_a_car #adventure_state')

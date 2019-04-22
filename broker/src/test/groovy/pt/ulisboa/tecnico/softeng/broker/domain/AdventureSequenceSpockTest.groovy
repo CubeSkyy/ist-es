@@ -29,25 +29,25 @@ class AdventureSequenceSpockTest extends SpockRollbackTestAbstractClass {
         hotelInterface = Mock(HotelInterface)
         carInterface = Mock(CarInterface)
 
-        broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF_AS_SELLER, BROKER_NIF_AS_BUYER, BROKER_IBAN,
+        broker = new Broker("BR01", "eXtremeADVENTURE", BROKER_NIF, BROKER_IBAN,
                 activityInterface, hotelInterface, carInterface, bankInterface, taxInterface)
         client = new Client(broker, CLIENT_IBAN, CLIENT_NIF, DRIVING_LICENSE, AGE)
 
         bookingActivityData = new RestActivityBookingData()
         bookingActivityData.setReference(ACTIVITY_CONFIRMATION)
-        bookingActivityData.setPrice(70.0)
+        bookingActivityData.setPrice(70000)
         bookingActivityData.setPaymentReference(PAYMENT_CONFIRMATION)
         bookingActivityData.setInvoiceReference(INVOICE_REFERENCE)
 
         bookingRoomData = new RestRoomBookingData()
         bookingRoomData.setReference(ROOM_CONFIRMATION)
-        bookingRoomData.setPrice(80.0)
+        bookingRoomData.setPrice(80000)
         bookingRoomData.setPaymentReference(PAYMENT_CONFIRMATION)
         bookingRoomData.setInvoiceReference(INVOICE_REFERENCE)
 
         rentingData = new RestRentingData()
         rentingData.setReference(RENTING_CONFIRMATION)
-        rentingData.setPrice(60.0)
+        rentingData.setPrice(60000)
         rentingData.setPaymentReference(PAYMENT_CONFIRMATION)
         rentingData.setInvoiceReference(INVOICE_REFERENCE)
     }

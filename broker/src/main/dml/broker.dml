@@ -6,8 +6,7 @@ enum pt.ulisboa.tecnico.softeng.broker.services.remote.CarInterface.Type as CarT
 class Broker {
 	String code;
 	String name;
-	String nifAsSeller;
-	String nifAsBuyer;
+	String nif;
 	String iban;
 	int counter;
 }
@@ -38,7 +37,7 @@ class Adventure {
 	boolean rentVehicle;
 	CarType carType;
 	double margin;
-    double currentAmount;
+    long currentAmount;
     DateTime time;
     RoomType roomType;
 }
