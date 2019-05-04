@@ -37,6 +37,7 @@
             <th>Actual Number</th>
             <th>Cancelled</th>
             <th>Process</th>
+            <th>Cancel</th>
             <th>References</th>
         </tr>
         </thead>
@@ -52,6 +53,13 @@
                       th:action="@{/brokers/{code}/bulks/{id}/process(code=${broker.code},id=${bulk.id})}"
                       method="post">
                     <input class="btn btn-primary" type="submit" value="Submit"/>
+                </form>
+            </td>
+            <td>
+                <form class="form-inline"
+                      th:action="@{/brokers/{code}/bulks/{id}/cancel(code=${broker.code},id=${bulk.id})}"
+                      method="post">
+                    <input class="btn btn-danger" type="submit" value="Cancel"/>
                 </form>
             </td>
             <td><p th:each="reference: ${bulk.references}"><span th:text="${reference}">reference</span></p></td>

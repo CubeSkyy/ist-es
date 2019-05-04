@@ -64,4 +64,13 @@ public class BulkController {
 		return "redirect:/brokers/" + brokerCode + "/bulks";
 	}
 
+	@RequestMapping(value = "/{bulkId}/cancel", method = RequestMethod.POST)
+	public String cancelBulk(Model model, @PathVariable String brokerCode, @PathVariable String bulkId) {
+		logger.info("cancelBulk brokerCode:{}, bulkId:{}, ", brokerCode, bulkId);
+
+		BrokerInterface.cancelBulk(brokerCode, bulkId);
+
+		return "redirect:/brokers/" + brokerCode + "/bulks";
+	}
+
 }

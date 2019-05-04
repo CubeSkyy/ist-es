@@ -101,6 +101,15 @@ public class BrokerInterface {
     }
 
     @Atomic(mode = TxMode.WRITE)
+    public static void cancelBulk(String brokerCode, String bulkId) {
+        BulkRoomBooking bulkRoomBooking = FenixFramework.getDomainRoot().getBrokerSet().stream()
+                .filter(b -> b.getCode().equals(brokerCode)).flatMap(b -> b.getRoomBulkBookingSet().stream())
+                .filter(r -> r.getId().equals(bulkId)).findFirst().orElseThrow(BrokerException::new);
+
+        bulkRoomBooking.setCancelled(true);
+    }
+
+    @Atomic(mode = TxMode.WRITE)
     public static void deleteBrokers() {
         for (Broker broker : FenixFramework.getDomainRoot().getBrokerSet()) {
             broker.delete();
