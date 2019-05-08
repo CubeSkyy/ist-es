@@ -14,6 +14,8 @@ import pt.ulisboa.tecnico.softeng.broker.services.local.dataobjects.AdventureDat
 import pt.ulisboa.tecnico.softeng.broker.services.local.dataobjects.BrokerData;
 import pt.ulisboa.tecnico.softeng.broker.services.local.dataobjects.ClientData;
 
+import javax.validation.Valid;
+
 @Controller
 @RequestMapping(value = "/brokers/{brokerCode}/clients/{clientNif}/adventures")
 public class AdventureController {
@@ -35,27 +37,27 @@ public class AdventureController {
 
         model.addAttribute("adventure", new AdventureData());
         model.addAttribute("client", clientData);
-        return "adventures";
 
+
+        return "adventures";
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value="/adventure",method = RequestMethod.POST)
     public String submitAdventure(Model model, @PathVariable String brokerCode, @PathVariable String clientNif,
-                                  @ModelAttribute AdventureData adventureData) {
+                                  @Valid @ModelAttribute("adventure") AdventureData adventureData) {
         logger.info("adventureSubmit brokerCode:{}, clientNif:{}, begin:{}, end:{},margin:{}, age:{}, room:{} vehicle:{}",
                 brokerCode, clientNif, adventureData.getBegin(), adventureData.getEnd(), adventureData.getMargin(),
                 adventureData.getAge(), adventureData.getBookRoom() != null ? adventureData.getBookRoom().name() : "null",
                 adventureData.getRentVehicle() != null ? adventureData.getRentVehicle().name() : "null");
-
         try {
             BrokerInterface.createAdventure(brokerCode, clientNif, adventureData);
         } catch (BrokerException be) {
+            be.printStackTrace();
             model.addAttribute("error", "Error: it was not possible to create the adventure");
             model.addAttribute("adventure", adventureData);
             model.addAttribute("client", BrokerInterface.getClientDataByBrokerCodeAndNif(brokerCode, clientNif));
             return "adventures";
         }
-
         return "redirect:/brokers/" + brokerCode + "/clients/" + clientNif + "/adventures";
     }
 
@@ -64,8 +66,9 @@ public class AdventureController {
                                    @PathVariable String id) {
         logger.info("processAdventure brokerCode:{}, adventureId:{}", brokerCode, id);
 
+
         BrokerInterface.processAdventure(brokerCode, id);
+
         return "redirect:/brokers/" + brokerCode + "/clients/" + clientNif + "/adventures";
     }
-
 }
