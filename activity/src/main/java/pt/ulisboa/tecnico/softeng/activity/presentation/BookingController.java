@@ -16,13 +16,12 @@ import pt.ulisboa.tecnico.softeng.activity.services.local.dataobjects.ActivityPr
 import pt.ulisboa.tecnico.softeng.activity.services.remote.dataobjects.RestActivityBookingData;
 
 @Controller
-@RequestMapping(value = "/providers/{codeProvider}/activities/{codeActivity}/offers/{externalId}/bookings")
 public class BookingController {
 	private static Logger logger = LoggerFactory.getLogger(BookingController.class);
 
 	private static final ActivityInterface activityInterface = new ActivityInterface();
 
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value = "/providers/{codeProvider}/activities/{codeActivity}/offers/{externalId}/bookings", method = RequestMethod.GET)
 	public String offerBookingsPage(Model model, @PathVariable String codeProvider, @PathVariable String codeActivity,
 			@PathVariable String externalId) {
 		logger.info("offerBookingsPage codeProvider:{}, codeActivity:{}, externalId:{}", codeProvider, codeActivity,
@@ -42,7 +41,7 @@ public class BookingController {
 		}
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(value = "/providers/{codeProvider}/activities/{codeActivity}/offers/{externalId}/bookings", method = RequestMethod.POST)
 	public String bookingSubmit(Model model, @PathVariable String codeProvider, @PathVariable String codeActivity,
 			@PathVariable String externalId, @ModelAttribute RestActivityBookingData booking) {
 		logger.info("offerSubmit codeProvider:{}, codeActivity:{}, externalId:{}", codeProvider, codeActivity,
@@ -61,17 +60,16 @@ public class BookingController {
 				+ "/bookings";
 	}
 
-	@RequestMapping(value = "/providers/{codeProvider}/activities/{codeActivity}/offers/{externalId}/bookings/cancel", method = RequestMethod.POST)
+	@RequestMapping(value = "/providers/{codeProvider}/activities/{codeActivity}/offers/{externalId}/bookings/{bookingRef}/cancel", method = RequestMethod.GET)
 	public String bookingCancel(Model model, @PathVariable String codeProvider, @PathVariable String codeActivity,
-								@PathVariable String externalId, @ModelAttribute RestActivityBookingData booking) {
+								@PathVariable String externalId, @PathVariable String bookingRef) {
 		logger.info("bookingCancel codeProvider:{}, codeActivity:{}, externalId:{}", codeProvider, codeActivity,
 				externalId);
 
 		try {
-			activityInterface.cancelReservation(booking.getReference());
+			activityInterface.cancelReservation(bookingRef);
 		} catch (ActivityException e) {
 			model.addAttribute("error", "Error: it was not possible to cancel the booking");
-			model.addAttribute("booking", booking);
 			model.addAttribute("offer", activityInterface.getActivityOfferDataByExternalId(externalId));
 			return "bookings";
 		}

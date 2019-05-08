@@ -41,17 +41,19 @@
             <th>NIF</th>
             <th>IBAN</th>
             <th>AGE</th>
+            <th>PRICE</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="booking: ${offer.reservations}">
+        <tr th:each="booking: ${offer.reservations}" th:if="${booking.getCancellation() == null}">
             <td th:text="${booking.nif}">132452623</td>
             <td th:text="${booking.iban}">PT 89265897 8745982</td>
             <td th:text="${booking.age}">60</td>
+            <td th:text="${booking.price/1000.0}"></td>
             <td th:if="${offer.end.toDate().after(#dates.createNow())}">
-                <form th:action="@{/providers/{codeProvider}/activities/{codeActivity}/offers/{externalId}/bookings/cancel(codeProvider=${offer.codeProvider},codeActivity=${offer.codeActivity},externalId=${offer.externalId})}"  th:object="${booking}" th:method="post">
-                <input class="btn btn-primary btn-sm" type="submit" value="Cancel"/></form>
+                <a th:href="@{/providers/{codeProvider}/activities/{codeActivity}/offers/{externalId}/bookings/{bookingRef}/cancel(codeProvider=${offer.codeProvider},codeActivity=${offer.codeActivity},externalId=${offer.externalId},bookingRef=${booking.reference})}">Cancel</a>
             </td>
+            </form>
         </tr>
         </tbody>
     </table>
