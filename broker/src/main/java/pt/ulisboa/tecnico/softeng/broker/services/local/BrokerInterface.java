@@ -74,7 +74,7 @@ public class BrokerInterface {
 
         new Adventure(broker, adventureData.getBegin(), adventureData.getEnd(), client,
                 adventureData.getMargin() == null ? -1 : adventureData.getMarginLong(),
-                adventureData.getBookRoom() == null ? Adventure.BookRoom.NONE : adventureData.getBookRoom(),
+                adventureData.getBookRoom() == null ? Adventure.BookRoom.SINGLE : adventureData.getBookRoom(),
                 adventureData.getRentVehicle() == null ? Adventure.RentVehicle.NONE :  adventureData.getRentVehicle());
     }
 
