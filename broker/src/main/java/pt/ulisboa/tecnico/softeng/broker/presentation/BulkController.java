@@ -14,6 +14,9 @@ import pt.ulisboa.tecnico.softeng.broker.services.local.BrokerInterface;
 import pt.ulisboa.tecnico.softeng.broker.services.local.dataobjects.BrokerData;
 import pt.ulisboa.tecnico.softeng.broker.services.local.dataobjects.BrokerData.CopyDepth;
 import pt.ulisboa.tecnico.softeng.broker.services.local.dataobjects.BulkData;
+import pt.ulisboa.tecnico.softeng.broker.services.remote.dataobjects.RestRoomBookingData;
+
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/brokers/{brokerCode}/bulks")
@@ -64,6 +67,17 @@ public class BulkController {
 		return "redirect:/brokers/" + brokerCode + "/bulks";
 	}
 
+	@RequestMapping(value = "{bulkId}/bookings", method = RequestMethod.GET)
+	public String showBookings(Model model, @PathVariable String brokerCode, @PathVariable String bulkId) {
+		logger.info("showBooking code:{}, bulkId:{}", brokerCode, bulkId);
+		List<RestRoomBookingData> bookings = BrokerInterface.getRooms(brokerCode, bulkId);
+
+		model.addAttribute("bookings", bookings);
+		model.addAttribute("bulkId", bulkId);
+		model.addAttribute("brokerCode", brokerCode);
+		return  "bookings";
+	}
+
 	@RequestMapping(value = "/{bulkId}/cancel", method = RequestMethod.POST)
 	public String cancelBulk(Model model, @PathVariable String brokerCode, @PathVariable String bulkId) {
 		logger.info("cancelBulk brokerCode:{}, bulkId:{}, ", brokerCode, bulkId);
@@ -72,5 +86,15 @@ public class BulkController {
 
 		return "redirect:/brokers/" + brokerCode + "/bulks";
 	}
+
+	@RequestMapping(value = "{bulkId}/bookings/{ref}/cancel", method = RequestMethod.POST)
+	public String cancelBooking(Model model, @PathVariable String brokerCode, @PathVariable String bulkId, @PathVariable String  ref) {
+		logger.info("cancelBooking brokerCode:{}, bulkId:{}, reference:{}", brokerCode, bulkId, ref);
+
+		BrokerInterface.cancelBooking(brokerCode, ref);
+
+		return "redirect:/brokers/" + brokerCode + "/bulks/" + bulkId + "/bookings";
+	}
+
 
 }
