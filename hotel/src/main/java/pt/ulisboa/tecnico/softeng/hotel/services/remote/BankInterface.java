@@ -52,5 +52,4 @@ public class BankInterface {
             throw new RemoteAccessException();
         }
     }
-
 }

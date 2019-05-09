@@ -29,37 +29,35 @@
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th>Hotel Code</th>
-					<th>RoomType</th>
-					<th>Room Number</th>
 					<th>Arrival</th>
  					<th>Departure</th>
 					<th>Reference</th>
  					<th>NIF</th>
 					<th>IBAN</th>
 					<th>Price</th>
-					<th>Payment Reference</th>
-					<th>Invoice Reference</th>
+					<th>STATE</th>
 					<th>Cancellation</th>
 					<th>Cancellation Date</th>					
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="booking : ${room.bookings}">
-					<td th:text="${booking.hotelCode}">12/12/2016</td>
-					<td th:text="${booking.roomType}">12/12/2016</td>
-					<td th:text="${booking.roomNumber}">12/12/2016</td>
 					<td th:text="${booking.arrival}">12/12/2016</td>
 					<td th:text="${booking.departure}">21/12/2016</td>
 					<td th:text="${booking.reference}">xpto3456</td>
 					<td th:text="${booking.buyerNif}">123456779</td>
 					<td th:text="${booking.buyerIban}">CGD 1235 7487439 8498</td>
 					<td th:text="${booking.price}">49.99</td>
-					<td th:text="${booking.paymentReference}">xpto</td>
-					<td th:text="${booking.invoiceReference}">xpto</td>
-					<td th:switch="${booking.cancellationDate}">
+					<td>
+						<div th:if="${booking.cancellationDate == null}" >
+								<div class="label label-primary" th:if="${booking.paymentReference == null}">RESERVED</div>
+								<div class="label label-success" th:unless="${booking.paymentReference == null}" >CONFIRMED PAYMENT</div>
+						</div>
+						<div class="label label-default" th:unless="${booking.cancellationDate == null}" >CANCELED</div>
+					</td>
+					<td>
 						<form class="form-inline"
-							  th:case="${null}" th:action="@{/hotels/{code}/rooms/{number}/bookings/{bookCode}/cancel(code=${room.hotelCode},number=${room.number},bookCode=${booking.reference})}"
+							  th:if="${booking.cancellationDate == null}" th:action="@{/hotels/{code}/rooms/{number}/bookings/{bookCode}/cancel(code=${room.hotelCode},number=${room.number},bookCode=${booking.reference})}"
 							  method="post">
 							<input class="btn btn-primary" type="submit" value="Cancel" />
 						</form>
