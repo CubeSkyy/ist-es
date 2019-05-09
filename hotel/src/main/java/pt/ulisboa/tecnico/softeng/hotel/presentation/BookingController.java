@@ -16,6 +16,10 @@ import pt.ulisboa.tecnico.softeng.hotel.services.local.dataobjects.RoomBookingDa
 import pt.ulisboa.tecnico.softeng.hotel.services.local.dataobjects.RoomData;
 import pt.ulisboa.tecnico.softeng.hotel.services.remote.dataobjects.RestRoomBookingData;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
 @Controller
 @RequestMapping(value = "/hotels/{code}/rooms/{number}/bookings")
 public class BookingController {
@@ -64,7 +68,7 @@ public class BookingController {
 	@RequestMapping(value="{bookingCode}/cancel", method = RequestMethod.POST)
 	public String cancelSubmit(Model model, @PathVariable String code, @PathVariable String number,
 								@PathVariable String bookingCode) {
-		logger.info("cancelBooking bookingCode:{}",bookingCode);
+		logger.info("cancelBooking bookingCode:{}, canceldate:{}",bookingCode, LocalDate.now());
 
 		hotelInterface.cancelBooking(bookingCode);
 
