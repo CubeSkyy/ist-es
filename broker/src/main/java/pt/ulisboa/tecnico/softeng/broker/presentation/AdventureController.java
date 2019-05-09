@@ -8,11 +8,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import pt.ulisboa.tecnico.softeng.broker.domain.Adventure;
 import pt.ulisboa.tecnico.softeng.broker.exception.BrokerException;
 import pt.ulisboa.tecnico.softeng.broker.services.local.BrokerInterface;
 import pt.ulisboa.tecnico.softeng.broker.services.local.dataobjects.AdventureData;
 import pt.ulisboa.tecnico.softeng.broker.services.local.dataobjects.BrokerData;
 import pt.ulisboa.tecnico.softeng.broker.services.local.dataobjects.ClientData;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping(value = "/brokers/{brokerCode}/clients/{clientNif}/adventures")
@@ -34,28 +37,32 @@ public class AdventureController {
         }
 
         model.addAttribute("adventure", new AdventureData());
+        model.addAttribute("rentVehicleList", Adventure.RentVehicle.values());
+        model.addAttribute("bookRoomList", Adventure.BookRoom.values());
         model.addAttribute("client", clientData);
-        return "adventures";
 
+
+        return "adventures";
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public String submitAdventure(Model model, @PathVariable String brokerCode, @PathVariable String clientNif,
-                                  @ModelAttribute AdventureData adventureData) {
+                                  @Valid @ModelAttribute("adventure") AdventureData adventureData) {
         logger.info("adventureSubmit brokerCode:{}, clientNif:{}, begin:{}, end:{},margin:{}, age:{}, room:{} vehicle:{}",
                 brokerCode, clientNif, adventureData.getBegin(), adventureData.getEnd(), adventureData.getMargin(),
                 adventureData.getAge(), adventureData.getBookRoom() != null ? adventureData.getBookRoom().name() : "null",
                 adventureData.getRentVehicle() != null ? adventureData.getRentVehicle().name() : "null");
-
         try {
             BrokerInterface.createAdventure(brokerCode, clientNif, adventureData);
         } catch (BrokerException be) {
+            be.printStackTrace();
             model.addAttribute("error", "Error: it was not possible to create the adventure");
             model.addAttribute("adventure", adventureData);
+            model.addAttribute("rentVehicleList", Adventure.RentVehicle.values());
+            model.addAttribute("bookRoomList", Adventure.BookRoom.values());
             model.addAttribute("client", BrokerInterface.getClientDataByBrokerCodeAndNif(brokerCode, clientNif));
             return "adventures";
         }
-
         return "redirect:/brokers/" + brokerCode + "/clients/" + clientNif + "/adventures";
     }
 
@@ -63,9 +70,7 @@ public class AdventureController {
     public String processAdventure(Model model, @PathVariable String brokerCode, @PathVariable String clientNif,
                                    @PathVariable String id) {
         logger.info("processAdventure brokerCode:{}, adventureId:{}", brokerCode, id);
-
         BrokerInterface.processAdventure(brokerCode, id);
         return "redirect:/brokers/" + brokerCode + "/clients/" + clientNif + "/adventures";
     }
-
 }
