@@ -2,6 +2,7 @@ package pt.ulisboa.tecnico.softeng.broker.services.local.dataobjects;
 
 import org.joda.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
 import pt.ulisboa.tecnico.softeng.broker.domain.Adventure;
 
 public class AdventureData {
@@ -16,6 +17,7 @@ public class AdventureData {
     private Double margin;
     private Adventure.BookRoom bookRoom;
     private Adventure.RentVehicle rentVehicle;
+    private Boolean rentVehicleCheckBox;
     private Double amount;
     private Adventure.State state;
 
@@ -165,8 +167,8 @@ public class AdventureData {
         return Math.round(getMargin() * Adventure.SCALE);
     }
 
-    public void setMargin(long margin) {
-        this.margin = Long.valueOf(margin).doubleValue() * Adventure.SCALE;
+    public void setMargin(Double margin) {
+        this.margin = margin;
     }
 
     public Adventure.BookRoom getBookRoom() {
@@ -177,13 +179,20 @@ public class AdventureData {
         this.bookRoom = bookRoom;
     }
 
-
     public Adventure.RentVehicle getRentVehicle() {
         return this.rentVehicle;
     }
 
     public void setRentVehicle(Adventure.RentVehicle rentVehicle) {
         this.rentVehicle = rentVehicle;
+    }
+
+    public Boolean getRentVehicleCheckBox() {
+        return rentVehicleCheckBox;
+    }
+
+    public void setRentVehicleCheckBox(Boolean rentVehicleCheckBox) {
+        this.rentVehicleCheckBox = rentVehicleCheckBox;
     }
 
 }
