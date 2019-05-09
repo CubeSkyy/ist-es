@@ -806,9 +806,9 @@
           </HTTPSamplerProxy>
           <hashTree/>
         </hashTree>
-        <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Create 6 TaxPayers" enabled="true">
+        <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Create 5 TaxPayers" enabled="true">
           <boolProp name="LoopController.continue_forever">true</boolProp>
-          <stringProp name="LoopController.loops">6</stringProp>
+          <stringProp name="LoopController.loops">5</stringProp>
         </LoopController>
         <hashTree>
           <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Define TaxPayers Data" enabled="true">
@@ -1350,7 +1350,7 @@
             <collectionProp name="Asserion.test_strings">
               <stringProp name="1998218233">Broker</stringProp>
               <stringProp name="63235404">BK126</stringProp>
-              <stringProp name="461626612">100072.00</stringProp>
+              <stringProp name="457157962">100027.00</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -1383,7 +1383,7 @@
             <collectionProp name="Asserion.test_strings">
               <stringProp name="2021122027">Client</stringProp>
               <stringProp name="63235405">BK127</stringProp>
-              <stringProp name="1081544148">99208.00</stringProp>
+              <stringProp name="1224540948">99703.00</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -1415,7 +1415,7 @@
             <collectionProp name="Asserion.test_strings">
               <stringProp name="69915028">Hotel</stringProp>
               <stringProp name="63235406">BK128</stringProp>
-              <stringProp name="1448639844">100500</stringProp>
+              <stringProp name="1448635194">100050</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -1606,8 +1606,8 @@
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
             <collectionProp name="Asserion.test_strings">
               <stringProp name="2092500720">ADVENTURE</stringProp>
-              <stringProp name="52541266">792.0</stringProp>
-              <stringProp name="1694758">79.2</stringProp>
+              <stringProp name="47928466">297.0</stringProp>
+              <stringProp name="1545808">29.7</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
