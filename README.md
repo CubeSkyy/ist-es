@@ -11,7 +11,9 @@ Ordene a tabela por ordem crescente da data de término.
 
 |   Issue id | Owner (ist number)      | Owner (github username) | PRs id (with link)  |            Date    |  
 | ---------- | ----------------------- | ----------------------- | ------------------- | ------------------ |
-|          211  |              87636           |                    BernardoFaria     |       https://github.com/tecnico-softeng/es19tg_13-project/pull/212              |                 05/10/2019   |
+|          178  |              87633           |                    esteveste     |       https://github.com/tecnico-softeng/es19tg_13-project/pull/219              |                 05/10/2019   |
+|          179  |              87633           |                    esteveste     |       https://github.com/tecnico-softeng/es19tg_13-project/pull/218              |                 05/10/2019   |
+|          211  |              87636           |                    esteveste     |       https://github.com/tecnico-softeng/es19tg_13-project/pull/212              |                 05/10/2019   |
 |      171      |   87635                      |   BSantosCoding                      |     https://github.com/tecnico-softeng/es19tg_13-project/pull/206                |     05/09/2019               |
 |          169  |              87687           |                    CubeSkyy     |       https://github.com/tecnico-softeng/es19tg_13-project/pull/205              |                 05/09/2019   |
 |          181  |              87700           |                    genlike     |       https://github.com/tecnico-softeng/es19tg_13-project/pull/202              |                 05/09/2019   |
