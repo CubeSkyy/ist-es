@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Pending Rentings</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" />
+    <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div class="container">
+    <h2>
+        Pending Rentings from <span th:text="${rentACarcode}"></span>
+    </h2>
+    <a class="btn btn-default pull-right" th:href="@{/rentacars}">rentacars</a>
+    <br/>
+    <h3>
+        Total of <span th:text="${numRents}"></span>
+    </h3>
+    <br/>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Reference</th>
+            <th>Type</th>
+            <th>Begin</th>
+            <th>End</th>
+            <th>Plate</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="rent: ${rents}">
+            <td th:text="${rent.reference}">ref</td>
+            <td th:text="${rent.typeValue}">1234556789</td>
+            <td th:text="${rent.begin}">PT501020301</td>
+            <td th:text="${rent.end}">PT501020301</td>
+            <td th:text="${rent.plate}">PT501020301</td>
+            <td>
+                <a th:href="@{/rentacars/rentacar/{code}/vehicles/vehicle/{plate}/rentings(code=${rentACarcode},plate=${rent.plate})}">Link</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
