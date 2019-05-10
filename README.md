@@ -11,14 +11,27 @@ Ordene a tabela por ordem crescente da data de término.
 
 |   Issue id | Owner (ist number)      | Owner (github username) | PRs id (with link)  |            Date    |  
 | ---------- | ----------------------- | ----------------------- | ------------------- | ------------------ |
-|            |                         |                         |                     |                    |
-|            |                         |                         |                     |                    |
-|            |                         |                         |                     |                    |
-|            |                         |                         |                     |                    |
-|            |                         |                         |                     |                    |
-|            |                         |                         |                     |                    |
-|            |                         |                         |                     |                    |
-
+|          178  |              87633           |                    esteveste     |       https://github.com/tecnico-softeng/es19tg_13-project/pull/219              |                 05/10/2019   |
+|          179  |              87633           |                    esteveste     |       https://github.com/tecnico-softeng/es19tg_13-project/pull/218              |                 05/10/2019   |
+|          211  |              87636           |                    esteveste     |       https://github.com/tecnico-softeng/es19tg_13-project/pull/212              |                 05/10/2019   |
+|      171      |   87635                      |   BSantosCoding                      |     https://github.com/tecnico-softeng/es19tg_13-project/pull/206                |     05/09/2019               |
+|          169  |              87687           |                    CubeSkyy     |       https://github.com/tecnico-softeng/es19tg_13-project/pull/205              |                 05/09/2019   |
+|          181  |              87700           |                    genlike     |       https://github.com/tecnico-softeng/es19tg_13-project/pull/202              |                 05/09/2019   |
+|          200  |              87700           |                    genlike     |       https://github.com/tecnico-softeng/es19tg_13-project/pull/201              |                 05/09/2019   |
+|          204  |              87700           |                    genlike     |       https://github.com/tecnico-softeng/es19tg_13-project/pull/210              |                 05/09/2019   |
+|          195  |              87700           |                    genlike     |       https://github.com/tecnico-softeng/es19tg_13-project/pull/199              |                 05/10/2019   |
+|          177  |              87633           |                    esteveste     |       https://github.com/tecnico-softeng/es19tg_13-project/pull/203              |                 05/09/2019   |
+|      172      |     87635                    |   BSantosCoding                      |     https://github.com/tecnico-softeng/es19tg_13-project/pull/207                |     05/09/2019               |
+|      170      |    87635                     |      BSantosCoding                   |    https://github.com/tecnico-softeng/es19tg_13-project/pull/208                 |     05/09/2019               |
+|      173      |    87635                     |      BSantosCoding                   |      https://github.com/tecnico-softeng/es19tg_13-project/pull/209               |      05/08/2019              |
+|         193   |    87631                     |            Andrempp             |          https://github.com/tecnico-softeng/es19tg_13-project/pull/196            |       05/08/2019             |
+|          176  |         87631                |    Andrempp                     |      https://github.com/tecnico-softeng/es19tg_13-project/pull/192               |             05/08/2019       |
+|          175  |              87631           |                    Andrempp     |       https://github.com/tecnico-softeng/es19tg_13-project/pull/191              |                 05/08/2019   |
+|          182  |              87636           |                    BernardoFaria     |       https://github.com/tecnico-softeng/es19tg_13-project/pull/187              |                 05/08/2019   |
+|          183  |              87636           |                    BernardoFaria     |       https://github.com/tecnico-softeng/es19tg_13-project/pull/186              |                 05/08/2019   |
+|          184  |              87636           |                    BernardoFaria     |       https://github.com/tecnico-softeng/es19tg_13-project/pull/185              |                 05/08/2019   |
+|          168  |              87687           |                    CubeSkyy     |       https://github.com/tecnico-softeng/es19tg_13-project/pull/198              |                 05/08/2019   |
+|          167  |              87687           |                    CubeSkyy     |       https://github.com/tecnico-softeng/es19tg_13-project/pull/197              |                 05/08/2019   |
 
 ### Infrastructure
 
