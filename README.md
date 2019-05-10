@@ -15,9 +15,9 @@ Ordene a tabela por ordem crescente da data de término.
 |      172      |     87635                    |   BSantosCoding                      |     https://github.com/tecnico-softeng/es19tg_13-project/pull/207                |     05/09/2019               |
 |      170      |    87635                     |      BSantosCoding                   |    https://github.com/tecnico-softeng/es19tg_13-project/pull/208                 |     05/09/2019               |
 |      173      |    87635                     |      BSantosCoding                   |      https://github.com/tecnico-softeng/es19tg_13-project/pull/209               |      05/08/2019              |
-|            |                         |                         |                     |                    |
-|            |                         |                         |                     |                    |
-|            |                         |                         |                     |                    |
+|         193   |    87631                     |            Andrempp             |          https://github.com/tecnico-softeng/es19tg_13-project/pull/196            |       05/08/2019             |
+|          176  |         87631                |    Andrempp                     |      https://github.com/tecnico-softeng/es19tg_13-project/pull/192               |             05/08/2019       |
+|          175  |              87631           |                    Andrempp     |       https://github.com/tecnico-softeng/es19tg_13-project/pull/191              |                 05/08/2019   |
 
 
 ### Infrastructure
