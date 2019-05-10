@@ -15,9 +15,7 @@ import pt.ulisboa.tecnico.softeng.tax.services.local.dataobjects.ItemTypeData;
 import pt.ulisboa.tecnico.softeng.tax.services.local.dataobjects.TaxPayerData;
 import pt.ulisboa.tecnico.softeng.tax.services.remote.dataobjects.RestInvoiceData;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -42,7 +40,51 @@ public class TaxInterface {
                 .sorted(Comparator.comparing(TaxPayerData::getNif)).collect(Collectors.toList());
     }
 
-    @Atomic(mode = TxMode.WRITE)
+    @Atomic(mode = TxMode.READ)
+    public static Map<Integer,Long> getTotalPayPerYear() {
+
+
+        Map<Integer, Long> totalPayPeryear = new HashMap<>();
+        Set<TaxPayer> ltpd = IRS.getIRSInstance().getTaxPayerSet();
+
+        for (TaxPayer tp: ltpd) {
+            for(Integer year: tp.getToPayPerYear().keySet()){
+                if (totalPayPeryear.get(year)==null){
+                    totalPayPeryear.put(year, tp.getToPayPerYear().get(year)/100);
+                } else {
+                    totalPayPeryear.put(year, (totalPayPeryear.get(year) + tp.getToPayPerYear().get(year))/100);
+                }
+            }
+        }
+
+        return totalPayPeryear;
+
+    }
+
+
+    @Atomic(mode = TxMode.READ)
+    public static Map<Integer,Long> getTotalReturnsPerYear() {
+
+
+        Map<Integer, Long> totalReturnsPeryear = new HashMap<>();
+        Set<TaxPayer> ltpd = IRS.getIRSInstance().getTaxPayerSet();
+
+        for (TaxPayer tp: ltpd) {
+            for(Integer year: tp.getTaxReturnPerYear().keySet()){
+                if (totalReturnsPeryear.get(year)==null){
+                    totalReturnsPeryear.put(year, tp.getTaxReturnPerYear().get(year));
+                } else {
+                    totalReturnsPeryear.put(year,totalReturnsPeryear.get(year) + tp.getTaxReturnPerYear().get(year));
+                }
+            }
+        }
+
+        return totalReturnsPeryear;
+
+    }
+
+
+        @Atomic(mode = TxMode.WRITE)
     public static void createTaxPayer(TaxPayerData taxPayerData) {
         new TaxPayer(IRS.getIRSInstance(), taxPayerData.getNif(), taxPayerData.getName(), taxPayerData.getAddress());
     }
