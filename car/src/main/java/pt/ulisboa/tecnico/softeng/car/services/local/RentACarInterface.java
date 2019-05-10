@@ -13,6 +13,7 @@ import pt.ulisboa.tecnico.softeng.car.services.remote.TaxInterface;
 import pt.ulisboa.tecnico.softeng.car.services.remote.dataobjects.RestRentingData;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -24,6 +25,30 @@ public class RentACarInterface {
                 .map(r -> new RentACarData(r.getCode(), r.getName(), r.getNif(), r.getIban(), r.getVehicleSet().size()))
                 .collect(Collectors.toList());
     }
+
+    public List<RentingData> getProcessorsRentsByRentACarCode(final String rentACarcode) {
+        //List<RentingData> rents = new LinkedList<>();
+        List<RentingData> aa = null;
+
+            System.out.println(
+                    "SIZE OF getRentACarSet: " +  FenixFramework.getDomainRoot().getRentACarSet() + "\n"
+
+
+            );
+        try {
+             //FenixFramework.getDomainRoot().getRentACarSet()
+                    //.filter(rentACar -> rentACar.getCode().equals(rentACarcode))
+                    //.map(RentACar::getProcessor)
+                    //.flatMap(p -> p.getRentingSet().stream())
+                    //.filter(r -> !r.isCancelled() && r.getPaymentReference() == null)
+                    //.map(RentingData::new)
+             //       .collect(Collectors.toList());
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return aa;
+    }
+
 
     @Atomic(mode = Atomic.TxMode.WRITE)
     public void createRentACar(final RentACarData rentACarData) {
