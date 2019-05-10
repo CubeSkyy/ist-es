@@ -19,6 +19,10 @@ public class TaxPayerController {
     @RequestMapping(method = RequestMethod.GET)
     public String taxPayerForm(Model model) {
         logger.info("taxPayerForm");
+
+        model.addAttribute("payPerYear", TaxInterface.getTotalPayPerYear());
+        model.addAttribute("returnPerYear", TaxInterface.getTotalReturnsPerYear());
+
         model.addAttribute("payer", new TaxPayerData());
         model.addAttribute("payers", TaxInterface.getTaxPayerDataList());
         return "payersView";
