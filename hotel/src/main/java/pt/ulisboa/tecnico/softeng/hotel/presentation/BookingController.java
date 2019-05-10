@@ -14,6 +14,11 @@ import pt.ulisboa.tecnico.softeng.hotel.services.local.HotelInterface;
 import pt.ulisboa.tecnico.softeng.hotel.services.local.dataobjects.HotelData;
 import pt.ulisboa.tecnico.softeng.hotel.services.local.dataobjects.RoomBookingData;
 import pt.ulisboa.tecnico.softeng.hotel.services.local.dataobjects.RoomData;
+import pt.ulisboa.tecnico.softeng.hotel.services.remote.dataobjects.RestRoomBookingData;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 @Controller
 @RequestMapping(value = "/hotels/{code}/rooms/{number}/bookings")
@@ -48,7 +53,6 @@ public class BookingController {
 				number, booking.getArrival(), booking.getDeparture(), booking.getBuyerNif(), booking.getBuyerIban());
 
 		try {
-
 			hotelInterface.createBooking(code, number, booking);
 		} catch (HotelException be) {
 			model.addAttribute("error", "Error: it was not possible to book the room");
@@ -56,6 +60,17 @@ public class BookingController {
 			model.addAttribute("room", hotelInterface.getRoomDataByNumber(code, number));
 			return "bookings";
 		}
+
+		return "redirect:/hotels/" + code + "/rooms/" + number + "/bookings";
+	}
+
+
+	@RequestMapping(value="{bookingCode}/cancel", method = RequestMethod.POST)
+	public String cancelSubmit(Model model, @PathVariable String code, @PathVariable String number,
+								@PathVariable String bookingCode) {
+		logger.info("cancelBooking bookingCode:{}, canceldate:{}",bookingCode, LocalDate.now());
+
+		hotelInterface.cancelBooking(bookingCode);
 
 		return "redirect:/hotels/" + code + "/rooms/" + number + "/bookings";
 	}
