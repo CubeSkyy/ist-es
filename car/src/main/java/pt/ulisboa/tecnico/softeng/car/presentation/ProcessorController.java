@@ -25,9 +25,7 @@ public class ProcessorController {
     public String processorForm(Model model, @PathVariable String rentACarcode) {
         logger.info("processorForm rentACarcode{}", rentACarcode);
 
-        List<RentingData>  rents = new LinkedList<>();
-
-        (new RentACarInterface()).getProcessorsRentsByRentACarCode(rentACarcode);
+        List<RentingData>  rents = (new RentACarInterface()).getProcessorsRentsByRentACarCode(rentACarcode);
 
         model.addAttribute("rents", rents);
         model.addAttribute("rentACarcode", rentACarcode);

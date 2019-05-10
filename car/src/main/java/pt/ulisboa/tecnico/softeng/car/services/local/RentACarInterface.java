@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class RentACarInterface {
+
     @Atomic(mode = Atomic.TxMode.READ)
     public List<RentACarData> getRentACars() {
         return FenixFramework.getDomainRoot().getRentACarSet().stream()
@@ -26,29 +27,16 @@ public class RentACarInterface {
                 .collect(Collectors.toList());
     }
 
+    @Atomic(mode = Atomic.TxMode.READ)
     public List<RentingData> getProcessorsRentsByRentACarCode(final String rentACarcode) {
-        //List<RentingData> rents = new LinkedList<>();
-        List<RentingData> aa = null;
-
-            System.out.println(
-                    "SIZE OF getRentACarSet: " +  FenixFramework.getDomainRoot().getRentACarSet() + "\n"
-
-
-            );
-        try {
-             //FenixFramework.getDomainRoot().getRentACarSet()
-                    //.filter(rentACar -> rentACar.getCode().equals(rentACarcode))
-                    //.map(RentACar::getProcessor)
-                    //.flatMap(p -> p.getRentingSet().stream())
-                    //.filter(r -> !r.isCancelled() && r.getPaymentReference() == null)
-                    //.map(RentingData::new)
-             //       .collect(Collectors.toList());
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        return aa;
+        return FenixFramework.getDomainRoot().getRentACarSet().stream()
+                .filter(rentACar -> rentACar.getCode().equals(rentACarcode))
+                .map(RentACar::getProcessor)
+                .flatMap(p -> p.getRentingSet().stream())
+                .filter(r -> !r.isCancelled() && r.getPaymentReference() == null)
+                .map(RentingData::new)
+                .collect(Collectors.toList());
     }
-
 
     @Atomic(mode = Atomic.TxMode.WRITE)
     public void createRentACar(final RentACarData rentACarData) {

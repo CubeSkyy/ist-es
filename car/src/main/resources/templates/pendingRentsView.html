@@ -13,7 +13,7 @@
     <h2>
         Pending Rentings from <span th:text="${rentACarcode}"></span>
     </h2>
-    <a class="btn btn-default pull-right" th:href="@{/rentacars}">Rent-A-Cars</a>
+    <a class="btn btn-default pull-right" th:href="@{/rentacars}">rentacars</a>
     <br/>
     <h3>
         Total of <span th:text="${numRents}"></span>
@@ -37,7 +37,7 @@
             <td th:text="${rent.end}">PT501020301</td>
             <td th:text="${rent.plate}">PT501020301</td>
             <td>
-                <a class="btn btn-default pull-right" th:href="@{/rentacars/rentacar/{code}/vehicles/vehicle/{plate}/rentings(code=${rentACarcode},plate=${rent.plate})}">Link</a>
+                <a th:href="@{/rentacars/rentacar/{code}/vehicles/vehicle/{plate}/rentings(code=${rentACarcode},plate=${rent.plate})}">Link</a>
             </td>
         </tr>
         </tbody>
