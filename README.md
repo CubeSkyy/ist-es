@@ -11,10 +11,10 @@ Ordene a tabela por ordem crescente da data de término.
 
 |   Issue id | Owner (ist number)      | Owner (github username) | PRs id (with link)  |            Date    |  
 | ---------- | ----------------------- | ----------------------- | ------------------- | ------------------ |
-|            |                         |                         |                     |                    |
-|            |                         |                         |                     |                    |
-|            |                         |                         |                     |                    |
-|            |                         |                         |                     |                    |
+|      171      |   87635                      |   BSantosCoding                      |     https://github.com/tecnico-softeng/es19tg_13-project/pull/206                |     05/09/2019               |
+|      172      |     87635                    |   BSantosCoding                      |     https://github.com/tecnico-softeng/es19tg_13-project/pull/207                |     05/09/2019               |
+|      170      |    87635                     |      BSantosCoding                   |    https://github.com/tecnico-softeng/es19tg_13-project/pull/208                 |     05/09/2019               |
+|      173      |    87635                     |      BSantosCoding                   |      https://github.com/tecnico-softeng/es19tg_13-project/pull/209               |      05/08/2019              |
 |            |                         |                         |                     |                    |
 |            |                         |                         |                     |                    |
 |            |                         |                         |                     |                    |
