@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Bulks</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"/>
+
+    <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div class="container">
+    <h2>
+        Bookings
+    </h2>
+    <a class="btn btn-default pull-right" th:href="@{/brokers/{code}/bulks(code=${brokerCode})}">Bulk Bookings</a>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Arrival</th>
+            <th>Departure</th>
+            <th>Reference</th>
+            <th>Buyer Nif</th>
+            <th>Buyer Iban</th>
+            <th>Price</th>
+            <th>STATE</th>
+            <th>Cancellation</th>
+            <th>Cancellation Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="booking: ${bookings}">
+            <td th:text="${booking.arrival}">12/12/2016</td>
+            <td th:text="${booking.departure}">21/12/2016</td>
+            <td th:text="${booking.reference}">xpto3456</td>
+            <td th:text="${booking.buyerNif}">123456779</td>
+            <td th:text="${booking.buyerIban}">CGD 1235 7487439 8498</td>
+            <td th:text="${booking.getPriceDouble()}">49.99</td>
+            <td>
+                <div th:if="${booking.cancellationDate == null}" >
+                    <div class="label label-primary" th:if="${booking.paymentReference == null}">RESERVED</div>
+                    <div class="label label-success" th:unless="${booking.paymentReference == null}" >CONFIRMED PAYMENT</div>
+                </div>
+                <div class="label label-default" th:unless="${booking.cancellationDate == null}" >CANCELED</div>
+            </td>
+            <td>
+                <form class="form-inline"
+                      th:if="${booking.cancellationDate == null}" th:action="@{/brokers/{code}/bulks/{id}/bookings/{ref}/cancel(code=${brokerCode},id=${bulkId},ref=${booking.reference})}"
+                      method="post">
+                    <input class="btn btn-primary" type="submit" value="Cancel" />
+                </form>
+            </td>
+            <td th:text="${booking.cancellationDate}">07/12/2016</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
