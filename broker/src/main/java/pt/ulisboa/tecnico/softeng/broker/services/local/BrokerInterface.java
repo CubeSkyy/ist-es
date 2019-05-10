@@ -14,6 +14,7 @@ import pt.ulisboa.tecnico.softeng.broker.services.local.dataobjects.BrokerData.C
 import pt.ulisboa.tecnico.softeng.broker.services.local.dataobjects.BulkData;
 import pt.ulisboa.tecnico.softeng.broker.services.local.dataobjects.ClientData;
 import pt.ulisboa.tecnico.softeng.broker.services.remote.*;
+import pt.ulisboa.tecnico.softeng.broker.services.remote.dataobjects.RestRoomBookingData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +76,7 @@ public class BrokerInterface {
         new Adventure(broker, adventureData.getBegin(), adventureData.getEnd(), client,
                 adventureData.getMargin() == null ? -1 : adventureData.getMarginLong(),
                 adventureData.getBookRoom() == null ? Adventure.BookRoom.SINGLE : adventureData.getBookRoom(),
-                adventureData.getRentVehicle() == null ? Adventure.RentVehicle.NONE :  adventureData.getRentVehicle());
+                adventureData.getRentVehicle() == null ? Adventure.RentVehicle.CAR :  adventureData.getRentVehicle());
     }
 
     @Atomic(mode = TxMode.WRITE)
@@ -101,6 +102,31 @@ public class BrokerInterface {
                 .filter(r -> r.getId().equals(bulkId)).findFirst().orElseThrow(BrokerException::new);
 
         bulkRoomBooking.processBooking();
+    }
+
+    @Atomic(mode = TxMode.READ)
+    public static List<RestRoomBookingData> getRooms(String brokerCode, String bulkId) {
+        BulkRoomBooking bulkRoomBooking = FenixFramework.getDomainRoot().getBrokerSet().stream()
+                .filter(b -> b.getCode().equals(brokerCode)).flatMap(b -> b.getRoomBulkBookingSet().stream())
+                .filter(r -> r.getId().equals(bulkId)).findFirst().orElseThrow(BrokerException::new);
+
+        return bulkRoomBooking.getRoomBookings();
+    }
+
+    @Atomic(mode = TxMode.WRITE)
+    public static void cancelBooking(String brokerCode, String reference) {
+        getBrokerByCode(brokerCode).getHotelInterface().cancelBooking(reference);
+    }
+
+
+    @Atomic(mode = TxMode.WRITE)
+    public static void cancelBulk(String brokerCode, String bulkId) {
+        BulkRoomBooking bulkRoomBooking = FenixFramework.getDomainRoot().getBrokerSet().stream()
+                .filter(b -> b.getCode().equals(brokerCode)).flatMap(b -> b.getRoomBulkBookingSet().stream())
+                .filter(r -> r.getId().equals(bulkId)).findFirst().orElseThrow(BrokerException::new);
+
+        bulkRoomBooking.cancelBookings();
+        bulkRoomBooking.setCancelled(true);
     }
 
     @Atomic(mode = TxMode.WRITE)
