@@ -63,6 +63,42 @@
 				</tr>
 			</tbody>
 		</table>
+
+		<h3>Total Taxes Payed Per Year</h3>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Year</th>
+					<th>Total Taxes Payed</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="key: ${payPerYear.keySet()}">
+					<td th:text="${key}">2018</td>
+					<td th:text="${payPerYear.get(key)}">567.98</td>
+				</tr>
+			</tbody>
+
+		</table>
+
+
+		<h3>Total Taxes Returned Per Year</h3>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Year</th>
+					<th>Total Taxes Returned</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="key: ${returnPerYear.keySet()}">
+				<td th:text="${key}">2018</td>
+				<td th:text="${returnPerYear.get(key)}">567.98</td>
+			</tr>
+			</tbody>
+		</table>
+
 	</div>
 </body>
 </html>
