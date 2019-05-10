@@ -37,7 +37,8 @@
             <th>Actual Number</th>
             <th>Cancell ed</th>
             <th>Process</th>
-            <th>References</th>
+            <th>Cancel</th>
+            <th>Bookings</th>
         </tr>
         </thead>
         <tbody>
@@ -46,7 +47,11 @@
             <td th:text="${bulk.arrival}">arrival</td>
             <td th:text="${bulk.departure}">departure</td>
             <td th:text="${bulk.actualNumber}">actual number</td>
-            <td th:text="${bulk.cancelled}">cancelled</td>
+            <td>
+                <div class="label label-success" th:if="${bulk.cancelled}">Yes</div>
+                <div class="label label-danger" th:unless="${bulk.cancelled}">No</div>
+            </td>
+
             <td>
                 <form class="form-inline"
                       th:action="@{/brokers/{code}/bulks/{id}/process(code=${broker.code},id=${bulk.id})}"
@@ -54,7 +59,14 @@
                     <input class="btn btn-primary" type="submit" value="Submit"/>
                 </form>
             </td>
-            <td><p th:each="reference: ${bulk.references}"><span th:text="${reference}">reference</span></p></td>
+            <td>
+                <form class="form-inline"
+                      th:if="${!bulk.cancelled}" th:action="@{/brokers/{code}/bulks/{id}/cancel(code=${broker.code},id=${bulk.id})}"
+                      method="post">
+                    <input class="btn btn-danger" type="submit" value="Cancel"/>
+                </form>
+            </td>
+            <td><a th:href="@{/brokers/{code}/bulks/{id}/bookings(code=${broker.code},id=${bulk.id})}">Link</a></td>
         </tr>
         </tbody>
     </table>

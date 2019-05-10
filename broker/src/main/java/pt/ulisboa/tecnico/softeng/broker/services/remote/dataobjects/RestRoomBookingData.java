@@ -114,6 +114,9 @@ public class RestRoomBookingData {
         return this.price;
     }
 
+    public double getPriceDouble(){
+        return new Double(this.price) / Adventure.SCALE;
+    }
     public void setPrice(long price) {
         this.price = price;
     }
