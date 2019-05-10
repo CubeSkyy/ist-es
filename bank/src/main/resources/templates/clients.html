@@ -51,6 +51,7 @@
  					<th>Source Iban</th>
 					<th>Target Iban</th>
  					<th>Value</th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -61,6 +62,7 @@
 					<td th:text="${operation.sourceIban}">123456</td>
 					<td th:text="${operation.targetIban}">123456</td>
 					<td th:text="${operation.value}">200</td>
+					<td><a th:href="@{/banks/{code}/clients/{opRef}/undo(code=${bank.code},opRef=${operation.reference})}">Undo</a></td>
 				</tr>
 			</tbody>
 		</table>
