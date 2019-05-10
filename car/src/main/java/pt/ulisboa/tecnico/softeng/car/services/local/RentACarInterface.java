@@ -13,15 +13,28 @@ import pt.ulisboa.tecnico.softeng.car.services.remote.TaxInterface;
 import pt.ulisboa.tecnico.softeng.car.services.remote.dataobjects.RestRentingData;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class RentACarInterface {
+
     @Atomic(mode = Atomic.TxMode.READ)
     public List<RentACarData> getRentACars() {
         return FenixFramework.getDomainRoot().getRentACarSet().stream()
                 .map(r -> new RentACarData(r.getCode(), r.getName(), r.getNif(), r.getIban(), r.getVehicleSet().size()))
+                .collect(Collectors.toList());
+    }
+
+    @Atomic(mode = Atomic.TxMode.READ)
+    public List<RentingData> getProcessorsRentsByRentACarCode(final String rentACarcode) {
+        return FenixFramework.getDomainRoot().getRentACarSet().stream()
+                .filter(rentACar -> rentACar.getCode().equals(rentACarcode))
+                .map(RentACar::getProcessor)
+                .flatMap(p -> p.getRentingSet().stream())
+                .filter(r -> !r.isCancelled() && r.getPaymentReference() == null)
+                .map(RentingData::new)
                 .collect(Collectors.toList());
     }
 
