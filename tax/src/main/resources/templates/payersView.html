@@ -73,7 +73,10 @@
 				</tr>
 			</thead>
 			<tbody>
-
+				<tr th:each="key: ${payPerYear.keySet()}">
+					<td th:text="${key}">2018</td>
+					<td th:text="${payPerYear.get(key)}">567.98</td>
+				</tr>
 			</tbody>
 
 		</table>
@@ -87,6 +90,13 @@
 					<th>Total Taxes Returned</th>
 				</tr>
 			</thead>
+
+			<tbody>
+				<tr th:each="key: ${returnPerYear.keySet()}">
+				<td th:text="${key}">2018</td>
+				<td th:text="${returnPerYear.get(key)}">567.98</td>
+			</tr>
+			</tbody>
 		</table>
 
 	</div>
