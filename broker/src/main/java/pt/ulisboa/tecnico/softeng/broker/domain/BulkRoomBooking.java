@@ -6,6 +6,8 @@ import pt.ulisboa.tecnico.softeng.broker.services.remote.dataobjects.RestRoomBoo
 import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.HotelException;
 import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.RemoteAccessException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -71,24 +73,51 @@ public class BulkRoomBooking extends BulkRoomBooking_Base {
         }
     }
 
+    public List<RestRoomBookingData> getRoomBookings() {
+        List<RestRoomBookingData> roomList = new ArrayList<>();
+        for (Reference reference : getReferenceSet()) {
+            RestRoomBookingData data = getRoomBookingData(reference);
+
+            if (data != null) {
+                roomList.add(data);
+            }
+        }
+
+        return roomList;
+    }
+
+    public void cancelBookings(){
+        List<RestRoomBookingData> roomList = new ArrayList<>();
+        for (Reference reference : getReferenceSet()) {
+            getBroker().getHotelInterface().cancelBooking(reference.getValue());
+        }
+    }
+
+    public RestRoomBookingData getRoomBookingData(Reference reference) {
+
+        RestRoomBookingData data = null;
+        try {
+            data = getBroker().getHotelInterface().getRoomBookingData(reference.getValue());
+        } catch (HotelException he) {
+            setNumberOfRemoteErrors(0);
+        } catch (RemoteAccessException rae) {
+            setNumberOfRemoteErrors(getNumberOfRemoteErrors() + 1);
+            if (getNumberOfRemoteErrors() == MAX_REMOTE_ERRORS) {
+                setCancelled(true);
+            }
+
+        }
+        return data;
+    }
+
+
     public RestRoomBookingData getRoomBookingData4Type(String type, LocalDate arrival, LocalDate departure) {
         if (getCancelled()) {
             return null;
         }
 
         for (Reference reference : getReferenceSet()) {
-            RestRoomBookingData data = null;
-            try {
-                data = getBroker().getHotelInterface().getRoomBookingData(reference.getValue());
-                setNumberOfRemoteErrors(0);
-            } catch (HotelException he) {
-                setNumberOfRemoteErrors(0);
-            } catch (RemoteAccessException rae) {
-                setNumberOfRemoteErrors(getNumberOfRemoteErrors() + 1);
-                if (getNumberOfRemoteErrors() == MAX_REMOTE_ERRORS) {
-                    setCancelled(true);
-                }
-            }
+            RestRoomBookingData data = getRoomBookingData(reference);
 
             if (data != null && data.getRoomType().equals(type) && data.getArrival().equals(arrival)
                     && data.getDeparture().equals(departure)) {

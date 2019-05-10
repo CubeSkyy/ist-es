@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import pt.ulisboa.tecnico.softeng.bank.domain.Bank;
 import pt.ulisboa.tecnico.softeng.bank.exception.BankException;
 import pt.ulisboa.tecnico.softeng.bank.services.local.BankInterface;
 import pt.ulisboa.tecnico.softeng.bank.services.local.dataobjects.BankData;
@@ -52,4 +53,20 @@ public class ClientController {
 
 		return "redirect:/banks/" + code + "/clients";
 	}
+
+	@RequestMapping(value =  "/{opRef}/undo",method = RequestMethod.GET)
+	public String operationUndo(Model model,@PathVariable String opRef, @PathVariable String code){
+		logger.info("operationUndo ref:{}",opRef);
+		try{
+			BankInterface.cancelPayment(opRef);
+		}catch (BankException be){
+			model.addAttribute("error", "Error: it was not possible to revert operation");
+			model.addAttribute("client", new ClientData());
+			model.addAttribute("bank", BankInterface.getBankDataByCode(code));
+			return "clients";
+		}
+
+		return "redirect:/banks/" + code + "/clients";
+	}
+
 }
