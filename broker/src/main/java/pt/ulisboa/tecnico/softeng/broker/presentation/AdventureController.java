@@ -66,6 +66,7 @@ public class AdventureController {
         return "redirect:/brokers/" + brokerCode + "/clients/" + clientNif + "/adventures";
     }
 
+
     @RequestMapping(value = "/{id}/process", method = RequestMethod.POST)
     public String processAdventure(Model model, @PathVariable String brokerCode, @PathVariable String clientNif,
                                    @PathVariable String id) {
